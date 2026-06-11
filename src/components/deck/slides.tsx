@@ -378,18 +378,18 @@ export function SlideManyWorlds() {
   return (
     <SlideShell>
       <Eyebrow>solution · interactive</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-4xl mb-3">
+      <H1 className="text-4xl md:text-6xl max-w-4xl mb-3">
         The map of <span className="italic text-pin">many worlds.</span>
       </H1>
-      <p className="text-lg text-ink-soft max-w-3xl mb-5">
+      <p className="text-base md:text-lg text-ink-soft max-w-3xl mb-4 md:mb-5">
         Every community maps the city differently. Step into the worlds of foodies, skaters, architects, musicians, parents, and locals.
       </p>
-      <div className="flex flex-wrap gap-2 mb-5">
+      <div className="flex flex-wrap gap-1.5 md:gap-2 mb-4 md:mb-5">
         {worlds.map(w => (
           <button
             key={w.id}
             onClick={() => setActive(w.id)}
-            className={`px-4 py-2 rounded-full border-2 border-ink font-marker text-lg transition-all ${
+            className={`px-3 py-1.5 md:px-4 md:py-2 rounded-full border-2 border-ink font-marker text-sm md:text-lg transition-all ${
               active === w.id ? "bg-ink text-paper sticker" : "bg-paper hover:bg-paper-2"
             }`}
           >
@@ -397,10 +397,10 @@ export function SlideManyWorlds() {
           </button>
         ))}
       </div>
-      <div className="flex-1 grid grid-cols-3 gap-4 min-h-0">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 min-h-0">
         {/* Map */}
-        <div className="col-span-2 relative border-2 border-ink sticker bg-paper-2 overflow-hidden">
-          <div className="absolute top-3 left-4 font-marker text-xl z-10 text-ink-soft">Saigon · {world.tagline}</div>
+        <div className="md:col-span-2 relative border-2 border-ink sticker bg-paper-2 overflow-hidden aspect-[4/3] md:aspect-auto">
+          <div className="absolute top-2 left-3 md:top-3 md:left-4 font-marker text-sm md:text-xl z-10 text-ink-soft">Saigon · {world.tagline}</div>
           <AnimatePresence mode="wait">
             <motion.div
               key={world.id}
@@ -413,12 +413,12 @@ export function SlideManyWorlds() {
               <StylizedMap tint={world.tint}>
                 {world.pins.map((p, i) => (
                   <div key={p.label}>
-                    <Pin x={p.x} y={p.y} label={p.label} delay={0.1 + i * 0.08} color={world.tint} size={26} />
+                    <Pin x={p.x} y={p.y} label={p.label} delay={0.1 + i * 0.08} color={world.tint} size={20} />
                     <motion.div
                       initial={{ opacity: 0, y: 4 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.25 + i * 0.08 }}
-                      className="absolute font-marker text-[13px] text-ink bg-paper/85 px-1.5 py-0.5 rounded border border-ink/30 whitespace-nowrap"
+                      className="absolute font-marker text-[10px] md:text-[13px] text-ink bg-paper/85 px-1 md:px-1.5 py-0.5 rounded border border-ink/30 whitespace-nowrap"
                       style={{ left: `${p.x}%`, top: `${p.y + 4}%`, transform: "translate(-50%, 0)" }}
                     >
                       {p.note}
@@ -437,15 +437,15 @@ export function SlideManyWorlds() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -8 }}
             transition={{ duration: 0.3 }}
-            className="flex flex-col gap-4 min-h-0"
+            className="flex flex-col gap-3 md:gap-4 min-h-0"
           >
-            <div className="border-2 border-ink sticker bg-paper p-4">
-              <div className="font-marker text-base text-ink-soft mb-2">filters this world cares about</div>
+            <div className="border-2 border-ink sticker bg-paper p-3 md:p-4">
+              <div className="font-marker text-sm md:text-base text-ink-soft mb-2">filters this world cares about</div>
               <div className="flex flex-wrap gap-1.5">
                 {world.filters.map(f => (
                   <span
                     key={f}
-                    className="px-2.5 py-1 rounded-full border-2 border-ink text-sm bg-paper-2"
+                    className="px-2 py-0.5 md:px-2.5 md:py-1 rounded-full border-2 border-ink text-xs md:text-sm bg-paper-2"
                     style={{ background: world.tint, color: "var(--paper)" }}
                   >
                     {f}
@@ -453,18 +453,18 @@ export function SlideManyWorlds() {
                 ))}
               </div>
             </div>
-            <div className="border-2 border-ink sticker bg-paper p-4 flex-1 min-h-0 overflow-auto">
-              <div className="font-marker text-base text-ink-soft mb-2">happening · for this world</div>
+            <div className="border-2 border-ink sticker bg-paper p-3 md:p-4 flex-1 min-h-0 overflow-auto">
+              <div className="font-marker text-sm md:text-base text-ink-soft mb-2">happening · for this world</div>
               <ul className="space-y-2">
                 {world.events.map(e => (
                   <li key={e.title} className="flex gap-2 items-start">
                     <span
-                      className="font-marker text-sm px-2 py-0.5 rounded border-2 border-ink whitespace-nowrap"
+                      className="font-marker text-xs md:text-sm px-2 py-0.5 rounded border-2 border-ink whitespace-nowrap"
                       style={{ background: world.tint, color: "var(--paper)" }}
                     >
                       {e.when}
                     </span>
-                    <span className="text-sm text-ink leading-snug">{e.title}</span>
+                    <span className="text-xs md:text-sm text-ink leading-snug">{e.title}</span>
                   </li>
                 ))}
               </ul>
