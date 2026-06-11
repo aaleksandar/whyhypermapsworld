@@ -46,7 +46,7 @@ export function Pin({
         <circle cx="11" cy="11" r="4" fill="var(--paper)" />
       </svg>
       {label && (
-        <div className="absolute left-1/2 -translate-x-1/2 -top-6 font-marker text-sm whitespace-nowrap text-ink-soft bg-paper/80 px-1 rounded">
+        <div className="absolute left-1/2 -translate-x-1/2 -top-7 font-marker text-base md:text-lg whitespace-nowrap text-ink-soft bg-paper/80 px-1.5 rounded">
           {label}
         </div>
       )}
