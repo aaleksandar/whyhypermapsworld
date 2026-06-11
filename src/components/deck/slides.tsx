@@ -852,15 +852,17 @@ export function SlideCharacter() {
 type AskMsg =
   | { who: "you"; text: string }
   | { who: "ai"; text: string; pin?: { x: number; y: number; label: string } }
-  | { who: "local"; name: string; text: string; pin?: { x: number; y: number; label: string } };
+  | { who: "local"; name: string; role: string; avatarTone: string; pin?: { x: number; y: number; label: string }; text: string };
 
 const chatScript: AskMsg[] = [
   { who: "you", text: "where can i find art around me right now?" },
   { who: "ai", text: "3 open galleries in District 3, and a street-mural walk along Pasteur. Want pins?",
     pin: { x: 32, y: 30, label: "District 3 galleries" } },
-  { who: "local", name: "Linh, local", text: "go to San Art before 6pm. Pop-up tonight on Ly Tu Trong — DM me 🌸",
+  { who: "local", name: "Linh Nguyen", role: "lives in District 3 · curator", avatarTone: "var(--terracotta)",
+    text: "go to San Art before 6pm. Pop-up tonight on Ly Tu Trong — DM me 🌸",
     pin: { x: 70, y: 28, label: "San Art" } },
-  { who: "local", name: "Minh, mural-hunter", text: "the wall behind Cafe Apartment is fresh this week.",
+  { who: "local", name: "Minh Tran", role: "mural-hunter · 4 yrs in Saigon", avatarTone: "var(--sage)",
+    text: "the wall behind Cafe Apartment is fresh this week.",
     pin: { x: 66, y: 62, label: "Cafe Apartment mural" } },
 ];
 
