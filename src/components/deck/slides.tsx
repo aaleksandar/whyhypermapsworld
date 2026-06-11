@@ -161,12 +161,58 @@ const decaySlots = [
 const CYCLE = 5200; // ms per pin lifecycle
 const STEP = CYCLE / 4; // staggered phase between slots
 
-export function SlideDecay() {
-  const [tick, setTick] = React.useState(0);
+function DecaySlot({ slot, si }: { slot: typeof decaySlots[number]; si: number }) {
+  const [t0] = React.useState(() => Date.now());
+  const [now, setNow] = React.useState(0);
   React.useEffect(() => {
-    const id = setInterval(() => setTick(t => t + 1), STEP);
+    const id = setInterval(() => setNow(Date.now() - t0), 150);
     return () => clearInterval(id);
-  }, []);
+  }, [t0]);
+
+  // Each slot's lifecycle is offset by si * STEP so cards are always overlapping somewhere on the map.
+  const elapsed = now - si * STEP;
+  if (elapsed < 0) return null;
+  const cycleN = Math.floor(elapsed / CYCLE);
+  const idx = (cycleN + si * 5) % decayTips.length;
+  const p = decayTips[idx];
+  const meta = SOURCE_META[p.source] ?? SOURCE_META.DM;
+  const Icon = meta.Icon;
+
+  return (
+    <div className="absolute" style={{ left: `${slot.x}%`, top: `${slot.y}%` }}>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={`${si}-${cycleN}`}
+          initial={{ opacity: 0, y: 8, filter: "blur(0px)" }}
+          animate={{
+            opacity: [0, 1, 1, 0.35, 0],
+            y: [8, 0, 0, -10, -22],
+            filter: ["blur(0px)", "blur(0px)", "blur(0px)", "blur(2px)", "blur(6px)"],
+          }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: CYCLE / 1000, times: [0, 0.1, 0.72, 0.9, 1], ease: "easeOut" }}
+          className="relative"
+        >
+          <Pin x={0} y={0} delay={0} size={22} color={p.c} />
+          <div
+            className="absolute left-5 -top-1 bg-paper border-2 border-ink sticker px-3 py-2 md:px-4 md:py-3 shadow-[3px_3px_0_rgba(26,23,20,0.18)]"
+            style={{ transform: `rotate(${slot.rot}deg)` }}
+          >
+            <div className="font-marker text-sm md:text-lg leading-snug text-ink w-[200px] md:w-[300px] whitespace-normal">
+              "{p.tip}"
+            </div>
+            <div className="flex items-center gap-1.5 mt-1.5 text-[11px] md:text-sm text-ink-soft italic">
+              <Icon size={14} className="shrink-0" style={{ color: meta.color }} />
+              <span>{meta.label} · {p.when}</span>
+            </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
+
+export function SlideDecay() {
   return (
     <SlideShell>
       <Eyebrow>problem 02</Eyebrow>
@@ -180,49 +226,9 @@ export function SlideDecay() {
         </div>
         <div className="md:col-span-3 relative aspect-[4/3] md:aspect-auto md:h-full">
           <StylizedMap tint="var(--terracotta)" showLabels={false}>
-            {decaySlots.map((slot, si) => {
-              const slotTick = Math.floor((tick + 1000 - si) / 4);
-              const idx = (slotTick + si * 5) % decayTips.length;
-              const p = decayTips[idx];
-              const meta = SOURCE_META[p.source] ?? SOURCE_META.DM;
-              const Icon = meta.Icon;
-              return (
-                <div
-                  key={si}
-                  className="absolute"
-                  style={{ left: `${slot.x}%`, top: `${slot.y}%` }}
-                >
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={idx}
-                      initial={{ opacity: 0, y: 8, filter: "blur(0px)" }}
-                      animate={{
-                        opacity: [0, 1, 1, 0.35, 0],
-                        y: [8, 0, 0, -10, -22],
-                        filter: ["blur(0px)", "blur(0px)", "blur(0px)", "blur(2px)", "blur(6px)"],
-                      }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: CYCLE / 1000, times: [0, 0.1, 0.72, 0.9, 1], ease: "easeOut" }}
-                      className="relative"
-                    >
-                      <Pin x={0} y={0} delay={0} size={22} color={p.c} />
-                      <div
-                        className="absolute left-5 -top-1 bg-paper border-2 border-ink sticker px-3 py-2 md:px-4 md:py-3 shadow-[3px_3px_0_rgba(26,23,20,0.18)]"
-                        style={{ transform: `rotate(${slot.rot}deg)` }}
-                      >
-                        <div className="font-marker text-sm md:text-lg leading-snug text-ink w-[200px] md:w-[300px] whitespace-normal">
-                          "{p.tip}"
-                        </div>
-                        <div className="flex items-center gap-1.5 mt-1.5 text-[11px] md:text-sm text-ink-soft italic">
-                          <Icon size={14} className="shrink-0" style={{ color: meta.color }} />
-                          <span>{meta.label} · {p.when}</span>
-                        </div>
-                      </div>
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-              );
-            })}
+            {decaySlots.map((slot, si) => (
+              <DecaySlot key={si} slot={slot} si={si} />
+            ))}
           </StylizedMap>
         </div>
       </div>
