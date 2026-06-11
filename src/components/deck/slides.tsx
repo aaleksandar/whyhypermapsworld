@@ -1079,7 +1079,7 @@ export function SlidePin() {
             ))}
           </StylizedMap>
           <div className="absolute bottom-2 left-2 right-2 md:bottom-3 md:left-3 md:right-3 font-marker text-xs md:text-sm text-ink-soft bg-paper/80 px-2 py-1 rounded">
-            ↑ tap any glowing pin
+            ↑ open any glowing pin
           </div>
         </div>
 
