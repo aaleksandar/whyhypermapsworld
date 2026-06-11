@@ -1368,15 +1368,24 @@ export function SlidePin() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 md:gap-3 flex-1 min-h-0">
                   {d.perspectives.map((p) => {
                     const v = verdictStyle[p.verdict];
+                    const Icon = v.Icon;
                     return (
-                      <div key={p.community} className={`border border-ink/50 p-2.5 md:p-3.5 flex flex-col ${v.bg}`}>
+                      <div key={p.community} className={`relative border border-ink/50 p-2.5 md:p-3.5 flex flex-col ${v.bg}`}>
                         <div className="flex items-center gap-2 mb-1.5">
                           <span className="text-base md:text-xl leading-none">{p.emoji}</span>
                           <span className="font-display font-bold text-[13px] md:text-base flex-1 min-w-0 truncate">{p.community}</span>
-                          <span className={`font-marker text-[9px] md:text-xs px-1.5 py-0.5 bg-paper border border-ink/60 ${v.tone}`}>{v.label}</span>
+                          <span className={`inline-flex items-center gap-1 font-marker text-[9px] md:text-xs px-1.5 py-0.5 bg-paper border border-ink/60 ${v.tone}`}>
+                            <Icon className="w-3 h-3 md:w-3.5 md:h-3.5" strokeWidth={2.5} />
+                            {v.label}
+                          </span>
                         </div>
-                        <div className="font-display text-xs md:text-[15px] leading-snug text-ink">{p.insight}</div>
+                        <div className="font-display text-xs md:text-[15px] leading-snug text-ink pr-8">{p.insight}</div>
                         <div className="font-marker text-[10px] md:text-xs text-ink-soft mt-auto pt-1.5">{p.voices} voices</div>
+                        <Icon
+                          aria-hidden
+                          className={`absolute bottom-2 right-2 md:bottom-2.5 md:right-2.5 w-5 h-5 md:w-7 md:h-7 opacity-70 ${v.iconColor}`}
+                          strokeWidth={2.25}
+                        />
                       </div>
                     );
                   })}
