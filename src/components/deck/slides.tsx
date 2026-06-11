@@ -105,21 +105,48 @@ export function SlideDecay() {
         </div>
         <div className="col-span-3 h-full relative">
           <StylizedMap tint="var(--terracotta)" showLabels={false}>
-            {Array.from({ length: 18 }).map((_, i) => {
-              const x = 10 + ((i * 37) % 80);
-              const y = 10 + ((i * 19) % 45);
-              return (
+            {[
+              { x: 14, y: 12, c: "var(--pin)",       tip: "best bún bò — auntie at 6am",    src: "WhatsApp · 2021" },
+              { x: 38, y: 8,  c: "var(--terracotta)",tip: "rooftop jam every Thursday",     src: "Telegram · 2022" },
+              { x: 62, y: 14, c: "var(--sage)",      tip: "tailor who copies any jacket",   src: "Reddit · 2019" },
+              { x: 82, y: 10, c: "var(--mustard)",   tip: "kid-friendly café, has cradle",  src: "FB group · 2020" },
+              { x: 20, y: 32, c: "var(--terracotta)",tip: "tiny natural wine bar, no sign", src: "DM · 2023" },
+              { x: 46, y: 28, c: "var(--pin)",       tip: "skate spot — smooth till 11pm",  src: "Discord · 2022" },
+              { x: 70, y: 34, c: "var(--sage)",      tip: "affordable vintage, Tue only",   src: "WhatsApp · 2020" },
+              { x: 12, y: 48, c: "var(--mustard)",   tip: "gallery opening every 1st Fri",  src: "Email · 2021" },
+              { x: 34, y: 50, c: "var(--pin)",       tip: "she'll braid your hair, $8",     src: "Note · 2019" },
+              { x: 58, y: 46, c: "var(--terracotta)",tip: "queer-safe dance floor",         src: "Group chat · 2022" },
+              { x: 80, y: 44, c: "var(--sage)",      tip: "wheelchair-accessible entrance", src: "Forum · 2020" },
+              { x: 26, y: 18, c: "var(--sage)",      tip: "vegan pho — ask for #7",         src: "DM · 2023" },
+            ].map((p, i) => (
+              <motion.div
+                key={i}
+                className="absolute"
+                style={{ left: `${p.x}%`, top: `${p.y}%` }}
+                animate={{ opacity: [1, 1, 0.05, 0.05, 1] }}
+                transition={{ duration: 7, repeat: Infinity, delay: i * 0.35, times: [0, 0.35, 0.55, 0.85, 1] }}
+              >
+                <Pin x={0} y={0} delay={0} size={16} color={p.c} />
                 <motion.div
-                  key={i}
-                  className="absolute"
-                  style={{ left: `${x}%`, top: `${y}%` }}
-                  animate={{ opacity: [1, 1, 0.1, 0.1, 1] }}
-                  transition={{ duration: 6, repeat: Infinity, delay: i * 0.25 }}
+                  className="absolute left-3 top-1 whitespace-nowrap bg-paper border border-ink/60 sticker px-2 py-1 shadow-[2px_2px_0_rgba(26,23,20,0.15)]"
+                  style={{ transform: `rotate(${(i % 2 ? 1 : -1) * (1 + (i % 3))}deg)` }}
+                  animate={{
+                    opacity: [1, 0.4, 0, 0, 1],
+                    filter: ["blur(0px)", "blur(1px)", "blur(4px)", "blur(4px)", "blur(0px)"],
+                    y: [0, -4, -14, -14, 0],
+                  }}
+                  transition={{ duration: 7, repeat: Infinity, delay: i * 0.35 + 0.2, times: [0, 0.3, 0.5, 0.85, 1] }}
                 >
-                  <Pin x={0} y={0} delay={0} size={18} color={i % 3 === 0 ? "var(--pin)" : i % 3 === 1 ? "var(--terracotta)" : "var(--sage)"} />
+                  <div className="font-marker text-[11px] leading-tight text-ink max-w-[150px] whitespace-normal">
+                    "{p.tip}"
+                  </div>
+                  <div className="text-[9px] text-ink-soft italic mt-0.5">{p.src}</div>
                 </motion.div>
-              );
-            })}
+              </motion.div>
+            ))}
+            <div className="absolute bottom-2 right-2 font-marker text-xs text-terracotta bg-paper/80 px-2 py-0.5 rounded">
+              tips evaporate →
+            </div>
           </StylizedMap>
         </div>
       </div>
