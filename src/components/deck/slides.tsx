@@ -397,15 +397,6 @@ export function SlideManyWorlds() {
       <p className="text-base md:text-lg text-ink-soft max-w-3xl mb-4 md:mb-5">
         Every community maps the city differently. Step into the worlds of foodies, skaters, architects, musicians, parents, and locals.
       </p>
-      <div className="flex items-center gap-2 mb-2">
-        <motion.span
-          className="font-marker text-sm md:text-base text-terracotta"
-          animate={{ x: [0, 4, 0] }}
-          transition={{ duration: 1.4, repeat: Infinity }}
-        >
-          👇 switch worlds
-        </motion.span>
-      </div>
       <div className="flex flex-wrap gap-1.5 md:gap-2 mb-4 md:mb-5">
         {worlds.map(w => {
           const isActive = active === w.id;
