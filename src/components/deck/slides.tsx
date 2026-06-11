@@ -626,7 +626,7 @@ export function SlideManyWorlds() {
 
 /* 7. Vibes (merged: matching + layers of understanding) */
 const vibeSignals = [
-  { name: "Niche facts", desc: "Has a cradle. Late kitchen. Sauna. Open now.", color: "var(--water)" },
+  { name: "Niche facts", desc: "Has a cradle. Late kitchen. Sauna. Wheelchair-friendly.", color: "var(--water)" },
   { name: "Reviews from people like you", desc: "Not the loudest voices — the closest ones.", color: "var(--sage)" },
   { name: "Friends & taste-graph", desc: "Where the people you trust already are.", color: "var(--mustard)" },
   { name: "AI vibe estimate", desc: "We approximate the feeling of a place — and of you.", color: "var(--pin)" },
