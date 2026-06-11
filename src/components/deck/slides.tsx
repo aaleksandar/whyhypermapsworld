@@ -96,7 +96,8 @@ export function SlidePersonas() {
                 backgroundPosition: `${(i % 3) * 50}% ${Math.floor(i / 3) * 100}%`,
               }}
             />
-            <div className="mt-1 md:mt-2 font-marker text-sm md:text-lg text-ink-soft">{p.name}</div>
+            <div className="mt-1 md:mt-2 font-marker text-sm md:text-lg text-ink-soft leading-tight">{p.name}</div>
+            <div className="font-display text-[11px] md:text-sm text-ink-soft/80 italic leading-snug">{p.ctx}</div>
             <AnimatePresence>
               {hover === i && (
                 <motion.div
