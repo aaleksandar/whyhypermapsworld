@@ -153,13 +153,14 @@ const decayTips = [
 ];
 
 const decaySlots = [
-  { x: 16, y: 20, rot: -2 },
-  { x: 64, y: 16, rot: 1.5 },
-  { x: 20, y: 58, rot: 1 },
-  { x: 66, y: 54, rot: -1.5 },
+  { x: 12, y: 14, rot: -2 },
+  { x: 58, y: 10, rot: 1.5 },
+  { x: 38, y: 38, rot: -1 },
+  { x: 8,  y: 60, rot: 1 },
+  { x: 62, y: 58, rot: -1.5 },
 ];
-const CYCLE = 5200; // ms per pin lifecycle
-const STEP = CYCLE / 4; // staggered phase between slots
+const CYCLE = 3200; // ms per pin lifecycle
+const STEP = CYCLE / decaySlots.length; // stagger between slot phases (~640ms)
 
 function DecaySlot({ slot, si }: { slot: typeof decaySlots[number]; si: number }) {
   const [t0] = React.useState(() => Date.now());
