@@ -504,6 +504,7 @@ const worlds: World[] = [
 ];
 export function SlideManyWorlds() {
   const [active, setActive] = useState("jam");
+  const [interacted, setInteracted] = useState(false);
   const world = worlds.find(w => w.id === active)!;
   return (
     <SlideShell>
@@ -514,7 +515,8 @@ export function SlideManyWorlds() {
       <p className="text-base md:text-lg text-ink-soft max-w-3xl mb-4 md:mb-5">
         Every community maps the city differently. Step into the worlds of foodies, skaters, architects, musicians, parents, and locals.
       </p>
-      <div className="flex flex-wrap gap-2 md:gap-3 mb-4 md:mb-5">
+      <div className="relative flex flex-wrap gap-2 md:gap-3 mb-4 md:mb-5">
+        <CursorHint x="22%" y="80%" show={!interacted} label="try a world" />
         {worlds.map(w => {
           const isActive = active === w.id;
           return (
