@@ -93,7 +93,7 @@ export function SlidePersonas() {
               </div>
             )}
             <div
-              className="aspect-[3/2] bg-cover bg-no-repeat"
+              className="aspect-square bg-no-repeat"
               style={{
                 backgroundImage: `url(${personas})`,
                 backgroundSize: "300% 200%",
