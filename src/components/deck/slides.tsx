@@ -56,9 +56,6 @@ export function SlidePersonas() {
       <H1 className="text-3xl md:text-6xl max-w-4xl mb-3 md:mb-6">
         The same city means <span className="text-terracotta italic">different things</span> to different people.
       </H1>
-      <p className="font-marker text-sm md:text-base text-terracotta mb-4 md:mb-6 animate-pulse">
-        👆 tap a face to hear what they're really asking
-      </p>
       <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-3 md:grid-rows-2 gap-3 md:gap-6 flex-1 max-w-5xl">
         {personaQuotes.map((p, i) => (
           <motion.div
@@ -73,12 +70,10 @@ export function SlidePersonas() {
           >
             {!seen.has(i) && (
               <motion.div
-                className="absolute -top-2 -right-2 z-10 w-7 h-7 rounded-full bg-pin border-2 border-ink grid place-items-center text-paper font-marker text-xs shadow-[2px_2px_0_var(--ink)]"
-                animate={{ scale: [1, 1.15, 1] }}
-                transition={{ duration: 1.2, repeat: Infinity }}
-              >
-                tap
-              </motion.div>
+                className="absolute -top-1.5 -right-1.5 z-10 w-3.5 h-3.5 rounded-full bg-pin border-2 border-ink"
+                animate={{ scale: [1, 1.4, 1], boxShadow: ["0 0 0 0 var(--pin)", "0 0 0 8px transparent", "0 0 0 0 var(--pin)"] }}
+                transition={{ duration: 1.4, repeat: Infinity }}
+              />
             )}
             <div
               className="aspect-[3/2] bg-cover bg-no-repeat"
@@ -402,15 +397,6 @@ export function SlideManyWorlds() {
       <p className="text-base md:text-lg text-ink-soft max-w-3xl mb-4 md:mb-5">
         Every community maps the city differently. Step into the worlds of foodies, skaters, architects, musicians, parents, and locals.
       </p>
-      <div className="flex items-center gap-2 mb-2">
-        <motion.span
-          className="font-marker text-sm md:text-base text-terracotta"
-          animate={{ x: [0, 4, 0] }}
-          transition={{ duration: 1.4, repeat: Infinity }}
-        >
-          👇 switch worlds
-        </motion.span>
-      </div>
       <div className="flex flex-wrap gap-1.5 md:gap-2 mb-4 md:mb-5">
         {worlds.map(w => {
           const isActive = active === w.id;
@@ -810,7 +796,7 @@ export function SlideAsk() {
           >
             {step >= chatScript.length ? "replay ↻" : (
               <>
-                tap for next reply
+                next reply
                 <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 0.9, repeat: Infinity }}>→</motion.span>
               </>
             )}
@@ -1062,18 +1048,10 @@ function GlowPin({ spot, active, onClick }: { spot: PinSpot; active: boolean; on
             fill={spot.color} stroke="var(--ink)" strokeWidth="1.5"/>
           <circle cx="11" cy="11" r="4" fill="var(--paper)"/>
         </svg>
-        {active ? (
+        {active && (
           <div className="absolute left-1/2 -translate-x-1/2 -top-7 font-marker text-base whitespace-nowrap bg-paper border border-ink/50 px-2 rounded sticker">
             {spot.name}
           </div>
-        ) : (
-          <motion.div
-            className="absolute left-1/2 -translate-x-1/2 -top-8 font-marker text-[11px] whitespace-nowrap bg-pin text-paper border-2 border-ink px-1.5 py-0.5 rounded sticker shadow-[2px_2px_0_var(--ink)]"
-            animate={{ y: [0, -2, 0] }}
-            transition={{ duration: 1, repeat: Infinity }}
-          >
-            👆 tap
-          </motion.div>
         )}
       </motion.div>
     </button>
@@ -1090,7 +1068,7 @@ export function SlidePin() {
         Every place remembers <span className="italic text-pin">what each community said.</span>
       </H1>
       <p className="text-sm md:text-lg text-ink-soft max-w-3xl mb-4 md:mb-5">
-        Tap a pin — see how parents, nomads, vegans, lifters and more actually experienced it. Plus the photos, the highlights, and an AI summary of the room.
+        Open any pin — see how parents, nomads, vegans, lifters and more actually experienced it. Plus the photos, the highlights, and an AI summary of the room.
       </p>
       <div className="flex-1 grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-6 min-h-0">
         {/* map */}
@@ -1101,7 +1079,7 @@ export function SlidePin() {
             ))}
           </StylizedMap>
           <div className="absolute bottom-2 left-2 right-2 md:bottom-3 md:left-3 md:right-3 font-marker text-xs md:text-sm text-ink-soft bg-paper/80 px-2 py-1 rounded">
-            ↑ tap any glowing pin
+            ↑ open any glowing pin
           </div>
         </div>
 
@@ -1267,7 +1245,7 @@ export function SlideRewards() {
               transition={{ duration: 1.4, repeat: Infinity }}
               className="px-3 py-2 md:px-5 md:py-2.5 bg-pin text-paper border-2 border-ink sticker font-marker text-sm md:text-lg disabled:opacity-40 flex items-center gap-2"
             >
-              👆 tap to contribute
+              contribute
               <motion.span animate={{ y: [0, -3, 0] }} transition={{ duration: 0.8, repeat: Infinity }}>🎁</motion.span>
             </motion.button>
             <button
