@@ -41,12 +41,12 @@ export function SlideCover() {
 
 /* 2. Personas */
 const personaQuotes = [
-  { name: "Mai, Saigon", q: "Where do locals buy affordable clothes? Google Maps has no idea." },
-  { name: "Dijana, chef", q: "I scroll IG to see which places my chef friends actually follow." },
-  { name: "Sasha, NYC", q: "Where can a musician just walk in and jam tonight?" },
-  { name: "Tourist", q: "4.8 stars from 12,000 strangers. Do I trust this?" },
-  { name: "Julian", q: "I want to see where my friends have been. Not influencers." },
-  { name: "Berlin newbie", q: "I keep asking friends for tips. They keep digging up old WhatsApp links." },
+  { name: "Mai, Saigon", ctx: "hunting affordable local clothes", q: "Where do locals actually shop? Google Maps has no idea." },
+  { name: "Dijana, chef", ctx: "scouting where her chef friends eat", q: "I scroll IG to see which places my chef friends actually follow." },
+  { name: "Sasha, NYC", ctx: "musician looking for a jam tonight", q: "Where can I just walk in and play?" },
+  { name: "Wei, tourist in Rome", ctx: "Chinese traveler craving real Chinese food", q: "Every review is by someone who doesn't know the cuisine." },
+  { name: "Julian, Guatemala", ctx: "just landed, wants to retrace his friends", q: "Show me where my friends have been. Not influencers." },
+  { name: "Lena, Berlin newbie", ctx: "moved last month, drowning in old WhatsApp tips", q: "My friends keep digging up old links. There has to be a better way." },
 ];
 export function SlidePersonas() {
   const [hover, setHover] = useState<number | null>(null);
@@ -96,7 +96,8 @@ export function SlidePersonas() {
                 backgroundPosition: `${(i % 3) * 50}% ${Math.floor(i / 3) * 100}%`,
               }}
             />
-            <div className="mt-1 md:mt-2 font-marker text-sm md:text-lg text-ink-soft">{p.name}</div>
+            <div className="mt-1 md:mt-2 font-marker text-sm md:text-lg text-ink-soft leading-tight">{p.name}</div>
+            <div className="font-display text-[11px] md:text-sm text-ink-soft/80 italic leading-snug">{p.ctx}</div>
             <AnimatePresence>
               {hover === i && (
                 <motion.div
