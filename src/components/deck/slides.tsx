@@ -1253,10 +1253,10 @@ const spots: PinSpot[] = [
   },
 ];
 
-const verdictStyle: Record<Verdict, { bg: string; label: string; tone: string }> = {
-  love:  { bg: "bg-sage/30",       label: "LOVE",  tone: "text-sage" },
-  avoid: { bg: "bg-terracotta/25", label: "AVOID", tone: "text-terracotta" },
-  mixed: { bg: "bg-mustard/40",    label: "MIXED", tone: "text-ink-soft" },
+const verdictStyle: Record<Verdict, { bg: string; label: string; tone: string; Icon: React.ComponentType<{ className?: string; strokeWidth?: number }>; iconColor: string }> = {
+  love:  { bg: "bg-sage/30",       label: "LOVE",  tone: "text-sage",       Icon: Heart,  iconColor: "text-sage" },
+  avoid: { bg: "bg-terracotta/25", label: "AVOID", tone: "text-terracotta", Icon: XIcon,  iconColor: "text-terracotta" },
+  mixed: { bg: "bg-mustard/40",    label: "MIXED", tone: "text-ink-soft",   Icon: Scale,  iconColor: "text-ink-soft" },
 };
 
 function GlowPin({ spot, active, onClick }: { spot: PinSpot; active: boolean; onClick: () => void }) {
