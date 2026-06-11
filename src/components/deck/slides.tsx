@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SlideShell, Eyebrow, H1, Pin, PaperCard } from "./primitives";
 import { StylizedMap } from "./StylizedMap";
@@ -641,77 +641,284 @@ export function SlideAsk() {
 }
 
 /* 11. Pin context */
-const pinDemos: Record<string, { photos: string[]; threads: string[]; highlight: string }> = {
-  "gym": {
-    photos: ["🏋️ squat rack", "🚿 clean showers", "💧 water fountain", "🧘 yoga corner"],
-    threads: ["Is it safe for women at night?", "Air quality / ventilation?", "Bumper plates?"],
-    highlight: "Best for: serious lifters · open 24h"
-  },
-  "cool café": {
-    photos: ["☕ pour-over bar", "🌿 plant wall", "🪟 corner seat", "📚 reading nook"],
-    threads: ["Wi-Fi speed?", "Quiet for calls?", "Outlet density?"],
-    highlight: "Best for: long sessions · matcha"
-  },
-  "vegan spot": {
-    photos: ["🥗 bowls", "🌱 tofu mapo", "🍵 menu", "🥑 brunch"],
-    threads: ["GF options?", "Soy-free?", "Owner vegan or just vegan-friendly?"],
-    highlight: "Best for: strict vegans · GF marked"
-  },
+type PinPhoto = { label: string; draw: (c: string) => React.ReactNode };
+type PinThread = { q: string; replies: number; hot?: boolean };
+type PinSpot = {
+  name: string;
+  kind: string;
+  x: number; y: number;
+  color: string;
+  highlights: string[];
+  bestFor: string;
+  photos: PinPhoto[];
+  threads: PinThread[];
+  aiSummary: string;
+  threadCount: number;
+  friends: number;
 };
+
+// tiny SVG "drawings" used as mock photos
+const draw = {
+  rack: (c: string) => (
+    <svg viewBox="0 0 60 60" className="w-full h-full">
+      <rect x="6" y="10" width="3" height="40" fill={c}/>
+      <rect x="51" y="10" width="3" height="40" fill={c}/>
+      <rect x="6" y="22" width="48" height="2" fill={c}/>
+      <circle cx="18" cy="40" r="6" fill="none" stroke={c} strokeWidth="2"/>
+      <circle cx="42" cy="40" r="6" fill="none" stroke={c} strokeWidth="2"/>
+      <rect x="14" y="39" width="32" height="2" fill={c}/>
+    </svg>
+  ),
+  shower: (c: string) => (
+    <svg viewBox="0 0 60 60" className="w-full h-full">
+      <rect x="28" y="6" width="2" height="14" fill={c}/>
+      <path d="M18 20 Q30 14 42 20 Z" fill={c}/>
+      <g stroke={c} strokeWidth="1.4" strokeLinecap="round">
+        <line x1="22" y1="26" x2="20" y2="46"/>
+        <line x1="30" y1="26" x2="30" y2="48"/>
+        <line x1="38" y1="26" x2="40" y2="46"/>
+      </g>
+    </svg>
+  ),
+  yoga: (c: string) => (
+    <svg viewBox="0 0 60 60" className="w-full h-full">
+      <rect x="6" y="44" width="48" height="6" rx="2" fill={c} opacity="0.4"/>
+      <circle cx="30" cy="22" r="5" fill={c}/>
+      <path d="M30 27 L30 40 M30 30 L20 36 M30 30 L40 36 M30 40 L22 48 M30 40 L38 48" stroke={c} strokeWidth="2" fill="none" strokeLinecap="round"/>
+    </svg>
+  ),
+  cup: (c: string) => (
+    <svg viewBox="0 0 60 60" className="w-full h-full">
+      <path d="M14 22 L46 22 L42 48 L18 48 Z" fill="none" stroke={c} strokeWidth="2"/>
+      <path d="M46 26 Q56 28 50 40" fill="none" stroke={c} strokeWidth="2"/>
+      <path d="M22 14 Q24 18 22 22 M30 14 Q32 18 30 22 M38 14 Q40 18 38 22" stroke={c} strokeWidth="1.5" fill="none"/>
+    </svg>
+  ),
+  plants: (c: string) => (
+    <svg viewBox="0 0 60 60" className="w-full h-full">
+      <path d="M30 50 L30 30" stroke={c} strokeWidth="2"/>
+      <path d="M30 36 Q18 30 16 18 Q26 22 30 32" fill={c} opacity="0.7"/>
+      <path d="M30 32 Q42 26 46 14 Q34 18 30 28" fill={c} opacity="0.7"/>
+      <rect x="22" y="48" width="16" height="8" fill={c}/>
+    </svg>
+  ),
+  seat: (c: string) => (
+    <svg viewBox="0 0 60 60" className="w-full h-full">
+      <path d="M8 36 L52 36 L48 50 L12 50 Z" fill={c} opacity="0.5"/>
+      <rect x="10" y="20" width="20" height="18" fill="none" stroke={c} strokeWidth="2"/>
+      <rect x="34" y="14" width="18" height="24" fill="none" stroke={c} strokeWidth="2"/>
+    </svg>
+  ),
+  bowl: (c: string) => (
+    <svg viewBox="0 0 60 60" className="w-full h-full">
+      <path d="M8 28 Q30 50 52 28 Z" fill={c} opacity="0.55"/>
+      <circle cx="22" cy="30" r="3" fill={c}/>
+      <circle cx="32" cy="32" r="4" fill={c}/>
+      <circle cx="40" cy="29" r="2.5" fill={c}/>
+      <path d="M6 28 L54 28" stroke={c} strokeWidth="1.5"/>
+    </svg>
+  ),
+  leaf: (c: string) => (
+    <svg viewBox="0 0 60 60" className="w-full h-full">
+      <path d="M30 8 Q50 20 30 52 Q10 20 30 8 Z" fill={c} opacity="0.7"/>
+      <path d="M30 10 L30 50" stroke={c} strokeWidth="1.5"/>
+    </svg>
+  ),
+  menu: (c: string) => (
+    <svg viewBox="0 0 60 60" className="w-full h-full">
+      <rect x="14" y="8" width="32" height="44" fill="none" stroke={c} strokeWidth="2"/>
+      <line x1="18" y1="18" x2="42" y2="18" stroke={c} strokeWidth="1.4"/>
+      <line x1="18" y1="26" x2="42" y2="26" stroke={c} strokeWidth="1.4"/>
+      <line x1="18" y1="34" x2="36" y2="34" stroke={c} strokeWidth="1.4"/>
+      <line x1="18" y1="42" x2="38" y2="42" stroke={c} strokeWidth="1.4"/>
+    </svg>
+  ),
+};
+
+const spots: PinSpot[] = [
+  {
+    name: "Iron + Oak Gym", kind: "gym", x: 30, y: 32, color: "var(--pin)",
+    highlights: ["Open 24h", "Bumper plates", "Women-only hour 7-9pm"],
+    bestFor: "serious lifters who hate waiting for a rack",
+    photos: [
+      { label: "squat rack", draw: draw.rack },
+      { label: "showers", draw: draw.shower },
+      { label: "yoga corner", draw: draw.yoga },
+    ],
+    threads: [
+      { q: "Is it safe for women at night?", replies: 47, hot: true },
+      { q: "Air quality / ventilation?", replies: 22 },
+      { q: "Do they have deadlift platforms?", replies: 14 },
+    ],
+    threadCount: 83,
+    aiSummary: "Locals say it's the cleanest rack-heavy gym in D3. Women feel safe after 7pm (staffed). A/C struggles on Saturday mornings.",
+    friends: 4,
+  },
+  {
+    name: "Slow Hours Café", kind: "cool café", x: 60, y: 22, color: "var(--terracotta)",
+    highlights: ["Fast wifi", "Outlets at every table", "Quiet 'til 11am"],
+    bestFor: "long deep-work sessions and a good matcha",
+    photos: [
+      { label: "pour-over", draw: draw.cup },
+      { label: "plant wall", draw: draw.plants },
+      { label: "corner seat", draw: draw.seat },
+    ],
+    threads: [
+      { q: "Wifi speed for video calls?", replies: 31, hot: true },
+      { q: "Outlets near the window?", replies: 12 },
+      { q: "Loud after 2pm?", replies: 9 },
+    ],
+    threadCount: 52,
+    aiSummary: "Best café in the area for laptop work mornings. Wifi 200+ Mbps. Gets loud after 2pm — bring headphones or leave by then.",
+    friends: 7,
+  },
+  {
+    name: "Hum Vegan Kitchen", kind: "vegan spot", x: 48, y: 48, color: "var(--sage)",
+    highlights: ["Fully vegan", "GF marked", "Owner is vegan"],
+    bestFor: "strict vegans who also need gluten-free",
+    photos: [
+      { label: "buddha bowl", draw: draw.bowl },
+      { label: "tofu mapo", draw: draw.leaf },
+      { label: "menu", draw: draw.menu },
+    ],
+    threads: [
+      { q: "Are the noodles really GF?", replies: 28, hot: true },
+      { q: "Soy-free options?", replies: 18 },
+      { q: "Owner vegan or just vegan-friendly?", replies: 11 },
+    ],
+    threadCount: 57,
+    aiSummary: "Genuinely 100% vegan kitchen, no cross-contact. GF noodles use rice flour. Soy-free menu exists but you have to ask.",
+    friends: 3,
+  },
+];
+
+function GlowPin({ spot, active, onClick }: { spot: PinSpot; active: boolean; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="absolute"
+      style={{ left: `${spot.x}%`, top: `${spot.y}%`, transform: "translate(-50%,-100%)" }}
+    >
+      {/* glow halo */}
+      <motion.span
+        className="absolute rounded-full"
+        style={{
+          left: "50%", top: "100%",
+          width: 60, height: 60,
+          transform: "translate(-50%,-50%)",
+          background: spot.color,
+          filter: "blur(14px)",
+          opacity: active ? 0.7 : 0.35,
+        }}
+        animate={active ? { scale: [1, 1.3, 1] } : { scale: [1, 1.15, 1] }}
+        transition={{ duration: active ? 1.2 : 2.4, repeat: Infinity }}
+      />
+      <motion.div
+        animate={{ y: active ? [0, -6, 0] : [0, -3, 0] }}
+        transition={{ duration: active ? 0.8 : 1.6, repeat: Infinity }}
+        className="relative"
+      >
+        <svg width={active ? 36 : 28} height={(active ? 36 : 28) * 1.4} viewBox="0 0 22 30">
+          <path d="M11 0 C 4 0 0 5 0 11 C 0 18 11 30 11 30 C 11 30 22 18 22 11 C 22 5 18 0 11 0 Z"
+            fill={spot.color} stroke="var(--ink)" strokeWidth="1.5"/>
+          <circle cx="11" cy="11" r="4" fill="var(--paper)"/>
+        </svg>
+        <div className="absolute left-1/2 -translate-x-1/2 -top-7 font-marker text-base whitespace-nowrap bg-paper border border-ink/50 px-2 rounded sticker">
+          {active ? spot.name : "tap me"}
+        </div>
+      </motion.div>
+    </button>
+  );
+}
+
 export function SlidePin() {
-  const [q, setQ] = useState<keyof typeof pinDemos>("gym");
-  const d = pinDemos[q];
+  const [idx, setIdx] = useState(0);
+  const d = spots[idx];
   return (
     <SlideShell>
       <Eyebrow>pin context</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-3xl mb-3">
+      <H1 className="text-5xl md:text-6xl max-w-4xl mb-2">
         Tap a pin. See <span className="italic text-pin">what you actually care about.</span>
       </H1>
-      <div className="flex gap-2 mb-6">
-        {(Object.keys(pinDemos) as (keyof typeof pinDemos)[]).map(k => (
-          <button
-            key={k}
-            onClick={() => setQ(k)}
-            className={`px-4 py-2 border-2 border-ink font-marker text-lg ${q===k?"bg-ink text-paper sticker":"bg-paper hover:bg-paper-2"}`}
-          >searching: "{k}"</button>
-        ))}
-      </div>
-      <div className="flex-1 grid grid-cols-3 gap-6">
-        <PaperCard rotate={-1}>
-          <div className="font-marker text-xl text-terracotta mb-3">photos that matter</div>
-          <div className="grid grid-cols-2 gap-2">
-            <AnimatePresence mode="popLayout">
-              {d.photos.map(p => (
-                <motion.div
-                  key={p}
-                  layout
-                  initial={{opacity:0, scale:0.8}}
-                  animate={{opacity:1, scale:1}}
-                  exit={{opacity:0}}
-                  className="aspect-square bg-paper-2 border border-ink/40 flex items-center justify-center text-center p-2 font-marker"
-                >{p}</motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-        </PaperCard>
-        <PaperCard rotate={0.5}>
-          <div className="font-marker text-xl text-terracotta mb-3">community threads</div>
-          <div className="space-y-3">
-            {d.threads.map(t => (
-              <motion.div
-                key={t}
-                initial={{opacity:0,x:-10}}
-                animate={{opacity:1,x:0}}
-                className="border-l-4 border-pin pl-3 py-1 font-display"
-              >{t}</motion.div>
+      <p className="text-lg text-ink-soft max-w-2xl mb-5">
+        Photos that matter, an AI-summarized community thread, and the highlights people <em>actually</em> show up for.
+      </p>
+      <div className="flex-1 grid grid-cols-5 gap-6 min-h-0">
+        {/* map */}
+        <div className="col-span-2 border-2 border-ink sticker bg-paper relative overflow-hidden">
+          <StylizedMap tint={d.color} showLabels={false}>
+            {spots.map((s, i) => (
+              <GlowPin key={s.name} spot={s} active={i === idx} onClick={() => setIdx(i)} />
             ))}
+          </StylizedMap>
+          <div className="absolute bottom-3 left-3 right-3 font-marker text-sm text-ink-soft bg-paper/80 px-2 py-1 rounded">
+            ↑ tap any glowing pin
           </div>
-        </PaperCard>
-        <PaperCard rotate={1} className="bg-mustard">
-          <div className="font-marker text-xl text-ink-soft mb-3">highlight</div>
-          <div className="font-display text-2xl leading-snug">{d.highlight}</div>
-          <div className="mt-6 font-marker text-base">·· 4 friends have been here</div>
-        </PaperCard>
+        </div>
+
+        {/* detail panel */}
+        <div className="col-span-3 grid grid-rows-[auto_1fr_auto] gap-4 min-h-0">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={d.name}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25 }}
+              className="contents"
+            >
+              {/* photos */}
+              <PaperCard rotate={-0.5}>
+                <div className="flex items-baseline justify-between mb-2">
+                  <div className="font-marker text-lg text-terracotta">photos that matter</div>
+                  <div className="font-display text-2xl">{d.name}</div>
+                </div>
+                <div className="grid grid-cols-3 gap-3">
+                  {d.photos.map((p) => (
+                    <div key={p.label} className="border border-ink/40 bg-paper-2 p-2 flex flex-col">
+                      <div className="aspect-[4/3]">{p.draw(d.color)}</div>
+                      <div className="font-marker text-sm text-ink-soft mt-1 text-center">{p.label}</div>
+                    </div>
+                  ))}
+                </div>
+              </PaperCard>
+
+              {/* threads + AI summary */}
+              <PaperCard rotate={0.4} className="min-h-0 overflow-hidden">
+                <div className="flex items-baseline justify-between mb-2">
+                  <div className="font-marker text-lg text-terracotta">community threads</div>
+                  <div className="font-marker text-sm text-ink-soft">{d.threadCount} discussions · {d.friends} friends here</div>
+                </div>
+                <div className="bg-mustard/60 border border-ink/40 p-3 mb-3">
+                  <div className="font-marker text-xs uppercase tracking-wider text-ink-soft mb-1">✦ AI summary</div>
+                  <div className="font-display text-[15px] leading-snug">{d.aiSummary}</div>
+                </div>
+                <div className="space-y-2">
+                  {d.threads.map((t) => (
+                    <div key={t.q} className="flex items-center gap-3 border-l-4 border-pin pl-3 py-1">
+                      <div className="font-display flex-1">{t.q}</div>
+                      {t.hot && <span className="font-marker text-xs text-terracotta">🔥 hot</span>}
+                      <span className="font-marker text-sm text-ink-soft">{t.replies} replies</span>
+                    </div>
+                  ))}
+                </div>
+              </PaperCard>
+
+              {/* highlights */}
+              <PaperCard rotate={-0.3} className="bg-mustard">
+                <div className="flex items-baseline gap-4">
+                  <div className="font-marker text-lg text-ink-soft">best for →</div>
+                  <div className="font-display text-xl flex-1">{d.bestFor}</div>
+                </div>
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {d.highlights.map((h) => (
+                    <span key={h} className="px-2 py-1 bg-paper border border-ink/50 font-marker text-sm">{h}</span>
+                  ))}
+                </div>
+              </PaperCard>
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
     </SlideShell>
   );
