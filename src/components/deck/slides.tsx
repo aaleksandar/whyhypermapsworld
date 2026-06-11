@@ -222,9 +222,9 @@ export function SlideDecay() {
         Knowledge <span className="text-terracotta italic">leaks away.</span>
       </H1>
       <div className="flex-1 grid grid-cols-1 md:grid-cols-5 gap-5 md:gap-10 md:items-center mt-5 md:mt-6">
-        <div className="md:col-span-2 space-y-3 md:space-y-4 text-base md:text-lg text-ink-soft">
-          <p>Useful local recommendations are shared every day — across TikTok, Instagram, Reddit, Facebook Groups, WhatsApp, Telegram, and private conversations.</p>
-          <p>Most are impossible to find a month later.</p>
+        <div className="md:col-span-2 space-y-3 md:space-y-4 text-base md:text-lg text-ink-soft md:pl-16 lg:pl-20">
+          <p><strong className="font-semibold text-ink">Useful local recommendations</strong> are shared every day — across TikTok, Instagram, Reddit, Facebook Groups, WhatsApp, Telegram, and private conversations.</p>
+          <p>Most are <strong className="font-semibold text-ink">impossible to find a month later.</strong></p>
         </div>
         <div className="md:col-span-3 relative aspect-[4/3] md:aspect-auto md:h-full">
           <StylizedMap tint="var(--terracotta)" showLabels={false}>
