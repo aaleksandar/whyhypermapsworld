@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Deck } from "@/components/deck/Deck";
 import {
   SlideCover, SlidePersonas, SlideDecay, SlideStuck, SlideSolutionHero,
-  SlideManyWorlds, SlideLayers, SlideVibes, SlideCharacter, SlideAsk,
+  SlideManyWorlds, SlideVibes, SlideCharacter, SlideAsk,
   SlidePin, SlideRewards, SlideUX, SlideCompetition, SlideClose,
 } from "@/components/deck/slides";
 
