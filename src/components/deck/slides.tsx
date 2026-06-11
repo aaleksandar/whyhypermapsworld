@@ -4,7 +4,7 @@ import { SlideShell, Eyebrow, H1, Pin, PaperCard } from "./primitives";
 import { StylizedMap } from "./StylizedMap";
 import globe from "@/assets/deck/globe.png";
 import personas from "@/assets/deck/personas.jpg";
-import pack from "@/assets/deck/pack.png";
+
 
 /* 1. Cover */
 export function SlideCover() {
@@ -25,7 +25,7 @@ export function SlideCover() {
         hypermaps<span className="text-pin">.world</span>
       </H1>
       <p className="font-display italic text-2xl md:text-3xl text-ink-soft mt-6 max-w-2xl">
-        A map that knows who you are <br/>— and resonates with your vibe.
+        Find where you belong.
       </p>
       <div className="mt-10 font-marker text-xl text-terracotta animate-pulse">
         scroll right →
@@ -48,8 +48,8 @@ export function SlidePersonas() {
   return (
     <SlideShell>
       <Eyebrow>problem 01</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-3xl mb-10">
-        Everyone is hunting for places. <span className="text-terracotta italic">Nobody</span> has a good way.
+      <H1 className="text-5xl md:text-6xl max-w-4xl mb-10">
+        The same city means <span className="text-terracotta italic">different things</span> to different people.
       </H1>
       <div className="grid grid-cols-3 grid-rows-2 gap-6 flex-1 max-w-5xl">
         {personaQuotes.map((p, i) => (
@@ -95,13 +95,12 @@ export function SlideDecay() {
     <SlideShell>
       <Eyebrow>problem 02</Eyebrow>
       <H1 className="text-5xl md:text-6xl max-w-3xl">
-        Hidden groups. <br/>Information that <span className="text-terracotta italic">leaks away.</span>
+        Knowledge <span className="text-terracotta italic">leaks away.</span>
       </H1>
       <div className="flex-1 grid grid-cols-5 gap-10 items-center mt-6">
         <div className="col-span-2 space-y-4 text-lg text-ink-soft">
-          <p>The best tips live in WhatsApp threads, Telegram groups, and Reddit comments.</p>
-          <p>Someone asks again. Someone digs up an old link. Repeat — for years.</p>
-          <p className="font-marker text-2xl text-pin">The map forgets. So we ask again.</p>
+          <p>Useful local recommendations are shared every day — across TikTok, Instagram, Reddit, Facebook Groups, WhatsApp, Telegram, and private conversations.</p>
+          <p>Most are impossible to find a month later.</p>
         </div>
         <div className="col-span-3 h-full relative">
           <StylizedMap tint="var(--terracotta)" showLabels={false}>
@@ -378,11 +377,11 @@ export function SlideManyWorlds() {
   return (
     <SlideShell>
       <Eyebrow>solution · interactive</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-3xl mb-3">
-        Every world cares about <span className="italic text-pin">different things.</span>
+      <H1 className="text-5xl md:text-6xl max-w-4xl mb-3">
+        The map of <span className="italic text-pin">many worlds.</span>
       </H1>
-      <p className="text-lg text-ink-soft max-w-2xl mb-5">
-        Same city. Different lens. Pick a world — the filters, the pins, even the events on the map shift to what that tribe actually looks for.
+      <p className="text-lg text-ink-soft max-w-3xl mb-5">
+        Every community maps the city differently. Step into the worlds of foodies, skaters, architects, musicians, parents, and locals.
       </p>
       <div className="flex flex-wrap gap-2 mb-5">
         {worlds.map(w => (
@@ -487,12 +486,12 @@ const vibeSignals = [
 export function SlideVibes() {
   return (
     <SlideShell>
-      <Eyebrow>matching</Eyebrow>
+      <Eyebrow>how it works</Eyebrow>
       <H1 className="text-5xl md:text-6xl max-w-4xl mb-3">
-        We match you with places of <span className="italic text-pin">your vibe.</span>
+        We help you find places of <span className="italic text-pin">your vibe.</span>
       </H1>
       <p className="text-lg text-ink-soft max-w-3xl mb-10">
-        Vibe isn't magic — it's an <b>approximation</b>. We stack niche factual data, reviews from people like you, signals from your friends, and an AI estimate of who you are right now. The more you use the map, the sharper the guess.
+        Our algorithm stacks niche factual data, reviews from people like you, signals from your friends, and your inputs — to find places that match you.
       </p>
 
       <div className="grid grid-cols-5 gap-8 flex-1 items-center">
@@ -745,7 +744,7 @@ export function SlideAsk() {
         Toss a question <span className="italic text-pin">into the ether.</span>
       </H1>
       <p className="text-lg text-ink-soft max-w-2xl mb-8">
-        AI answers first. Nearby locals — auto-matched to your keywords — chime in seconds later. Uber-like, for knowing things.
+        AI answers first. Nearby locals chime in seconds later.
       </p>
       <div className="flex-1 grid grid-cols-2 gap-10">
         <div className="space-y-3">
@@ -794,9 +793,16 @@ export function SlideAsk() {
   );
 }
 
-/* 11. Pin context */
+/* 11. Pin context — what every community remembers about this place */
 type PinPhoto = { label: string; draw: (c: string) => React.ReactNode };
-type PinThread = { q: string; replies: number; hot?: boolean };
+type Verdict = "love" | "avoid" | "mixed";
+type Perspective = {
+  community: string;
+  emoji: string;
+  verdict: Verdict;
+  insight: string;
+  voices: number;
+};
 type PinSpot = {
   name: string;
   kind: string;
@@ -805,9 +811,9 @@ type PinSpot = {
   highlights: string[];
   bestFor: string;
   photos: PinPhoto[];
-  threads: PinThread[];
+  perspectives: Perspective[];
   aiSummary: string;
-  threadCount: number;
+  totalVoices: number;
   friends: number;
 };
 
@@ -891,6 +897,29 @@ const draw = {
 
 const spots: PinSpot[] = [
   {
+    name: "Slow Hours Café", kind: "cool café", x: 60, y: 22, color: "var(--terracotta)",
+    highlights: ["Fast wifi 220Mbps", "Outlets at every table", "Sugar-free menu"],
+    bestFor: "deep-work mornings and a sugar-free matcha",
+    photos: [
+      { label: "pour-over", draw: draw.cup },
+      { label: "plant wall", draw: draw.plants },
+      { label: "corner seat", draw: draw.seat },
+    ],
+    perspectives: [
+      { community: "Digital nomads", emoji: "💻", verdict: "love",
+        insight: "Big tables, outlet at every seat, wifi 220Mbps. Best deep-work spot in D3.", voices: 184 },
+      { community: "Parents",        emoji: "👶", verdict: "avoid",
+        insight: "Guests glare the moment kids make noise. Vibe shifts instantly — kids feel they're 'ruining' the room.", voices: 41 },
+      { community: "Zero-sugar",     emoji: "🚫", verdict: "love",
+        insight: "Unsweetened matcha, sugar-free syrups, sparkling water on tap. Owner gets it.", voices: 58 },
+      { community: "Vegans",         emoji: "🌱", verdict: "mixed",
+        insight: "Only one vegan pastry. Oat milk costs +20k. No real plant-based meal.", voices: 26 },
+    ],
+    totalVoices: 309,
+    aiSummary: "Loved by nomads and the zero-sugar crowd. Avoid with small kids — the room punishes noise. Vegans have one option, that's it.",
+    friends: 7,
+  },
+  {
     name: "Iron + Oak Gym", kind: "gym", x: 30, y: 32, color: "var(--pin)",
     highlights: ["Open 24h", "Bumper plates", "Women-only hour 7-9pm"],
     bestFor: "serious lifters who hate waiting for a rack",
@@ -899,52 +928,50 @@ const spots: PinSpot[] = [
       { label: "showers", draw: draw.shower },
       { label: "yoga corner", draw: draw.yoga },
     ],
-    threads: [
-      { q: "Is it safe for women at night?", replies: 47, hot: true },
-      { q: "Air quality / ventilation?", replies: 22 },
-      { q: "Do they have deadlift platforms?", replies: 14 },
+    perspectives: [
+      { community: "Lifters",   emoji: "🏋", verdict: "love",
+        insight: "8 racks, bumper plates, deadlift platforms. You never wait.", voices: 210 },
+      { community: "Women",     emoji: "♀",  verdict: "love",
+        insight: "Women-only hour 7-9pm, always staffed. Feels safe at night.", voices: 92 },
+      { community: "Beginners", emoji: "🌱", verdict: "mixed",
+        insight: "No intro classes. Regulars are intense — can feel intimidating week one.", voices: 34 },
+      { community: "Nomads",    emoji: "💻", verdict: "avoid",
+        insight: "No lounge, lockers too small for a laptop. Not a 'gym + work' spot.", voices: 18 },
     ],
-    threadCount: 83,
-    aiSummary: "Locals say it's the cleanest rack-heavy gym in D3. Women feel safe after 7pm (staffed). A/C struggles on Saturday mornings.",
+    totalVoices: 354,
+    aiSummary: "Best lifting gym in D3 and safe for women after dark. Beginners feel out of place; not built for laptop-toting nomads.",
     friends: 4,
   },
   {
-    name: "Slow Hours Café", kind: "cool café", x: 60, y: 22, color: "var(--terracotta)",
-    highlights: ["Fast wifi", "Outlets at every table", "Quiet 'til 11am"],
-    bestFor: "long deep-work sessions and a good matcha",
-    photos: [
-      { label: "pour-over", draw: draw.cup },
-      { label: "plant wall", draw: draw.plants },
-      { label: "corner seat", draw: draw.seat },
-    ],
-    threads: [
-      { q: "Wifi speed for video calls?", replies: 31, hot: true },
-      { q: "Outlets near the window?", replies: 12 },
-      { q: "Loud after 2pm?", replies: 9 },
-    ],
-    threadCount: 52,
-    aiSummary: "Best café in the area for laptop work mornings. Wifi 200+ Mbps. Gets loud after 2pm — bring headphones or leave by then.",
-    friends: 7,
-  },
-  {
     name: "Hum Vegan Kitchen", kind: "vegan spot", x: 48, y: 48, color: "var(--sage)",
-    highlights: ["Fully vegan", "GF marked", "Owner is vegan"],
+    highlights: ["100% vegan kitchen", "GF marked", "Kids menu"],
     bestFor: "strict vegans who also need gluten-free",
     photos: [
       { label: "buddha bowl", draw: draw.bowl },
       { label: "tofu mapo", draw: draw.leaf },
       { label: "menu", draw: draw.menu },
     ],
-    threads: [
-      { q: "Are the noodles really GF?", replies: 28, hot: true },
-      { q: "Soy-free options?", replies: 18 },
-      { q: "Owner vegan or just vegan-friendly?", replies: 11 },
+    perspectives: [
+      { community: "Vegans",       emoji: "🌱", verdict: "love",
+        insight: "100% vegan kitchen, owner is vegan, zero cross-contact risk.", voices: 167 },
+      { community: "Celiac / GF",  emoji: "🌾", verdict: "love",
+        insight: "GF noodles use rice flour, marked clearly on the menu.", voices: 73 },
+      { community: "Parents",      emoji: "👶", verdict: "love",
+        insight: "Kids menu, crayons, high chairs. Staff actually smile at toddlers.", voices: 49 },
+      { community: "Meat-eaters",  emoji: "🍖", verdict: "mixed",
+        insight: "Tofu mapo converts skeptics. Portions feel small if you're hungry.", voices: 22 },
     ],
-    threadCount: 57,
-    aiSummary: "Genuinely 100% vegan kitchen, no cross-contact. GF noodles use rice flour. Soy-free menu exists but you have to ask.",
+    totalVoices: 311,
+    aiSummary: "A safe yes for vegans, celiacs, and families with small kids. Big appetites should order an extra side.",
     friends: 3,
   },
 ];
+
+const verdictStyle: Record<Verdict, { bg: string; label: string; tone: string }> = {
+  love:  { bg: "bg-sage/30",       label: "LOVE",  tone: "text-sage" },
+  avoid: { bg: "bg-terracotta/25", label: "AVOID", tone: "text-terracotta" },
+  mixed: { bg: "bg-mustard/40",    label: "MIXED", tone: "text-ink-soft" },
+};
 
 function GlowPin({ spot, active, onClick }: { spot: PinSpot; active: boolean; onClick: () => void }) {
   return (
@@ -953,7 +980,6 @@ function GlowPin({ spot, active, onClick }: { spot: PinSpot; active: boolean; on
       className="absolute"
       style={{ left: `${spot.x}%`, top: `${spot.y}%`, transform: "translate(-50%,-100%)" }}
     >
-      {/* glow halo */}
       <motion.span
         className="absolute rounded-full"
         style={{
@@ -992,10 +1018,10 @@ export function SlidePin() {
     <SlideShell>
       <Eyebrow>pin context</Eyebrow>
       <H1 className="text-5xl md:text-6xl max-w-4xl mb-2">
-        Tap a pin. See <span className="italic text-pin">what you actually care about.</span>
+        Every place remembers <span className="italic text-pin">what each community said.</span>
       </H1>
-      <p className="text-lg text-ink-soft max-w-2xl mb-5">
-        Photos that matter, an AI-summarized community thread, and the highlights people <em>actually</em> show up for.
+      <p className="text-lg text-ink-soft max-w-3xl mb-5">
+        Tap a pin — see how parents, nomads, vegans, lifters and more actually experienced it. Plus the photos, the highlights, and an AI summary of the room.
       </p>
       <div className="flex-1 grid grid-cols-5 gap-6 min-h-0">
         {/* map */}
@@ -1021,38 +1047,45 @@ export function SlidePin() {
               transition={{ duration: 0.25 }}
               className="contents"
             >
+              {/* community history — the hero of this slide */}
+              <PaperCard rotate={0.4} className="min-h-0 overflow-hidden">
+                <div className="flex items-baseline justify-between mb-2">
+                  <div className="font-marker text-lg text-terracotta">community history · {d.name}</div>
+                  <div className="font-marker text-sm text-ink-soft">{d.totalVoices} voices · {d.friends} friends</div>
+                </div>
+                <div className="bg-mustard/60 border border-ink/40 p-3 mb-3">
+                  <div className="font-marker text-xs uppercase tracking-wider text-ink-soft mb-1">✦ AI summary</div>
+                  <div className="font-display text-[15px] leading-snug">{d.aiSummary}</div>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  {d.perspectives.map((p) => {
+                    const v = verdictStyle[p.verdict];
+                    return (
+                      <div key={p.community} className={`border border-ink/50 p-2.5 ${v.bg}`}>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-lg leading-none">{p.emoji}</span>
+                          <span className="font-display font-bold text-[14px] flex-1">{p.community}</span>
+                          <span className={`font-marker text-[10px] px-1.5 py-0.5 bg-paper border border-ink/60 ${v.tone}`}>{v.label}</span>
+                        </div>
+                        <div className="font-display text-[12px] leading-snug text-ink">{p.insight}</div>
+                        <div className="font-marker text-[10px] text-ink-soft mt-1">{p.voices} voices</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </PaperCard>
+
               {/* photos */}
               <PaperCard rotate={-0.5}>
                 <div className="flex items-baseline justify-between mb-2">
                   <div className="font-marker text-lg text-terracotta">photos that matter</div>
-                  <div className="font-display text-2xl">{d.name}</div>
+                  <div className="font-marker text-sm text-ink-soft">picked from community uploads</div>
                 </div>
                 <div className="grid grid-cols-3 gap-3">
                   {d.photos.map((p) => (
                     <div key={p.label} className="border border-ink/40 bg-paper-2 p-2 flex flex-col">
                       <div className="aspect-[4/3]">{p.draw(d.color)}</div>
                       <div className="font-marker text-sm text-ink-soft mt-1 text-center">{p.label}</div>
-                    </div>
-                  ))}
-                </div>
-              </PaperCard>
-
-              {/* threads + AI summary */}
-              <PaperCard rotate={0.4} className="min-h-0 overflow-hidden">
-                <div className="flex items-baseline justify-between mb-2">
-                  <div className="font-marker text-lg text-terracotta">community threads</div>
-                  <div className="font-marker text-sm text-ink-soft">{d.threadCount} discussions · {d.friends} friends here</div>
-                </div>
-                <div className="bg-mustard/60 border border-ink/40 p-3 mb-3">
-                  <div className="font-marker text-xs uppercase tracking-wider text-ink-soft mb-1">✦ AI summary</div>
-                  <div className="font-display text-[15px] leading-snug">{d.aiSummary}</div>
-                </div>
-                <div className="space-y-2">
-                  {d.threads.map((t) => (
-                    <div key={t.q} className="flex items-center gap-3 border-l-4 border-pin pl-3 py-1">
-                      <div className="font-display flex-1">{t.q}</div>
-                      {t.hot && <span className="font-marker text-xs text-terracotta">🔥 hot</span>}
-                      <span className="font-marker text-sm text-ink-soft">{t.replies} replies</span>
                     </div>
                   ))}
                 </div>
@@ -1078,55 +1111,126 @@ export function SlidePin() {
   );
 }
 
-/* 12. Rewards */
-const rewards = ["Free matcha at Shin", "20% off · Things Café", "Mystery dish · Hum Vegan", "Skip the line · The Workshop"];
+/* 12. Rewards — RPG-style contribution */
+type Rarity = "common" | "rare" | "epic" | "legendary";
+type Loot = {
+  glyph: string;
+  name: string;
+  via: string;     // action that drops it
+  rarity: Rarity;
+};
+const rarityStyle: Record<Rarity, { bg: string; ring: string; label: string }> = {
+  common:    { bg: "bg-paper-2",       ring: "border-ink/40",       label: "common" },
+  rare:      { bg: "bg-sage/30",       ring: "border-sage",         label: "rare" },
+  epic:      { bg: "bg-pin/25",        ring: "border-pin",          label: "epic" },
+  legendary: { bg: "bg-mustard",       ring: "border-terracotta",   label: "legendary" },
+};
+const loot: Loot[] = [
+  { glyph: "🌱", name: "Vegan Stamp",       via: "tagged Hum Vegan",        rarity: "common" },
+  { glyph: "📷", name: "Golden Polaroid",   via: "best photo · Slow Hours", rarity: "rare" },
+  { glyph: "🗝", name: "Hidden Door Key",   via: "added secret rooftop",    rarity: "epic" },
+  { glyph: "👶", name: "Family Charm",      via: "confirmed cradle · Hyatt",rarity: "rare" },
+  { glyph: "🎟", name: "Open Mic Ticket",   via: "covered jam · Observatory", rarity: "common" },
+  { glyph: "🌙", name: "Night-Owl Sigil",   via: "mapped 5 late-night spots", rarity: "epic" },
+  { glyph: "✦",  name: "Curator's Crown",   via: "guide hit 1k followers",  rarity: "legendary" },
+  { glyph: "🍵", name: "Matcha Token",      via: "rated 3 cafés",           rarity: "common" },
+];
+const shopExchanges = [
+  { glyph: "🍵", trade: "Matcha Token", at: "Shin Coffee", reward: "free matcha" },
+  { glyph: "👶", trade: "Family Charm", at: "Park Hyatt",  reward: "cradle on the house" },
+  { glyph: "🎟", trade: "Open Mic Ticket", at: "Observatory", reward: "skip the line" },
+  { glyph: "✦",  trade: "Curator's Crown", at: "any partner", reward: "20% off, anywhere" },
+];
+
 export function SlideRewards() {
-  const [opened, setOpened] = useState(-1);
+  const [collected, setCollected] = useState(3);
+  const slots = 8;
   return (
     <SlideShell>
       <Eyebrow>contribution</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-3xl mb-3">
-        Contributing feels like <span className="italic text-pin">opening a pack.</span>
+      <H1 className="text-5xl md:text-6xl max-w-4xl mb-3">
+        Contributing is a <span className="italic text-pin">game.</span>
       </H1>
-      <p className="text-lg text-ink-soft max-w-2xl mb-10">
-        Update a closed spot. Add a vegan tag. Curate a guide. Get a mystery reward — and competence that compounds.
+      <p className="text-lg text-ink-soft max-w-3xl mb-6">
+        Every tag, photo, or guide drops loot into your backpack. Collect, mix, and trade items at partner spots around the world — like a city-sized RPG.
       </p>
-      <div className="flex-1 grid grid-cols-2 gap-12 items-center">
-        <div className="flex flex-col items-center">
-          <motion.img
-            src={pack}
-            alt="Mystery pack"
-            width={300}
-            height={400}
-            className="w-64 cursor-pointer drop-shadow-[3px_5px_0_rgba(26,23,20,0.3)]"
-            whileHover={{ rotate: [-2, 2, -2, 0] }}
-            onClick={() => setOpened((o) => Math.min(rewards.length - 1, o + 1))}
-            animate={opened >= 0 ? { y: [0, -10, 0] } : {}}
-          />
-          <button
-            onClick={() => setOpened((o) => (o >= rewards.length - 1 ? -1 : o + 1))}
-            className="mt-6 px-6 py-3 bg-pin text-paper border-2 border-ink sticker font-marker text-xl"
-          >
-            {opened === -1 ? "tap to open" : opened >= rewards.length - 1 ? "reset" : "open next"}
-          </button>
-        </div>
-        <div className="space-y-3">
-          {rewards.map((r, i) => (
-            <AnimatePresence key={r}>
-              {i <= opened && (
+      <div className="flex-1 grid grid-cols-5 gap-6 min-h-0">
+        {/* Backpack */}
+        <div className="col-span-3 border-2 border-ink sticker bg-paper-2 p-5 flex flex-col">
+          <div className="flex items-baseline justify-between mb-3">
+            <div className="font-marker text-xl text-terracotta">🎒 your backpack</div>
+            <div className="font-marker text-sm text-ink-soft">{collected} / {slots} slots</div>
+          </div>
+          <div className="grid grid-cols-4 gap-3 flex-1">
+            {Array.from({ length: slots }).map((_, i) => {
+              const item = i < collected ? loot[i] : null;
+              if (!item) {
+                return (
+                  <div key={i} className="border-2 border-dashed border-ink/30 rounded bg-paper/40 aspect-square flex items-center justify-center">
+                    <span className="font-marker text-sm text-ink-soft/60">empty</span>
+                  </div>
+                );
+              }
+              const r = rarityStyle[item.rarity];
+              return (
                 <motion.div
-                  initial={{ rotateY: 180, opacity: 0, x: -40 }}
-                  animate={{ rotateY: 0, opacity: 1, x: 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ type: "spring", stiffness: 120 }}
-                  className="p-5 border-2 border-ink sticker bg-mustard font-display text-2xl"
+                  key={item.name}
+                  initial={{ scale: 0.4, opacity: 0, y: -30 }}
+                  animate={{ scale: 1, opacity: 1, y: 0 }}
+                  transition={{ type: "spring", stiffness: 220, damping: 14, delay: i * 0.05 }}
+                  className={`relative border-2 ${r.ring} rounded ${r.bg} aspect-square flex flex-col items-center justify-center p-1 sticker`}
                   style={{ transform: `rotate(${(i%2?1:-1)*1.5}deg)` }}
                 >
-                  🎁 {r}
+                  <div className="text-3xl leading-none">{item.glyph}</div>
+                  <div className="font-display font-bold text-[11px] text-center mt-1 leading-tight">{item.name}</div>
+                  <div className="font-marker text-[9px] text-ink-soft text-center leading-tight">{item.via}</div>
+                  <span className="absolute top-1 right-1 font-marker text-[8px] uppercase tracking-wider bg-paper px-1 border border-ink/40 rounded">{r.label}</span>
                 </motion.div>
-              )}
-            </AnimatePresence>
-          ))}
+              );
+            })}
+          </div>
+          <div className="flex gap-3 mt-4">
+            <button
+              onClick={() => setCollected((c) => Math.min(loot.length, c + 1))}
+              disabled={collected >= loot.length}
+              className="px-5 py-2.5 bg-pin text-paper border-2 border-ink sticker font-marker text-lg disabled:opacity-40"
+            >
+              + contribute → drop loot
+            </button>
+            <button
+              onClick={() => setCollected(0)}
+              className="px-4 py-2.5 bg-paper border-2 border-ink sticker font-marker text-base"
+            >
+              reset
+            </button>
+          </div>
+        </div>
+
+        {/* Shop / exchanges */}
+        <div className="col-span-2 border-2 border-ink sticker bg-paper p-5 flex flex-col">
+          <div className="font-marker text-xl text-terracotta mb-1">🏪 trade at partner spots</div>
+          <div className="font-marker text-sm text-ink-soft mb-4">items unlock real-world rewards across the world.</div>
+          <div className="space-y-3 flex-1">
+            {shopExchanges.map((s, i) => (
+              <motion.div
+                key={s.trade}
+                initial={{ x: 20, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ delay: i * 0.1 }}
+                className="flex items-center gap-3 border border-ink/40 bg-paper-2 p-3 rounded"
+                style={{ transform: `rotate(${(i%2?1:-1)*0.6}deg)` }}
+              >
+                <div className="text-3xl">{s.glyph}</div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-display font-bold text-[14px] leading-tight">{s.trade}</div>
+                  <div className="font-marker text-xs text-ink-soft">at {s.at}</div>
+                </div>
+                <div className="font-marker text-2xl text-ink-soft">→</div>
+                <div className="font-display text-[13px] text-pin font-bold text-right max-w-[120px] leading-tight">{s.reward}</div>
+              </motion.div>
+            ))}
+          </div>
+          <div className="font-marker text-xs text-ink-soft mt-3 italic">play the city. level up. unlock the world.</div>
         </div>
       </div>
     </SlideShell>
@@ -1249,10 +1353,10 @@ export function SlideClose() {
       <div className="relative z-10 max-w-4xl">
         <Eyebrow>the vision</Eyebrow>
         <H1 className="text-7xl md:text-[8rem] leading-[0.9]">
-          Multidimensional <br/><span className="italic text-pin">belonging.</span>
+          Belong <span className="italic text-pin">anywhere.</span>
         </H1>
-        <p className="font-display italic text-2xl text-ink-soft mt-8 max-w-2xl mx-auto">
-          A world where the right place, the right person, the right moment find you — naturally, playfully, often.
+        <p className="font-display italic text-2xl text-ink-soft mt-8 max-w-3xl mx-auto">
+          A world where every city reveals communities, spaces, and experiences that resonate with who you are.
         </p>
         <div className="mt-12 flex items-center justify-center gap-4 flex-wrap">
           <a href="mailto:hello@hypermaps.world" className="px-6 py-3 bg-ink text-paper border-2 border-ink sticker font-display font-bold text-lg">

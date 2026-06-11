@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Deck } from "@/components/deck/Deck";
 import {
-  SlideCover, SlidePersonas, SlideDecay, SlideStuck, SlideSolutionHero,
+  SlideCover, SlidePersonas, SlideDecay,
   SlideManyWorlds, SlideVibes, SlideCharacter, SlideAsk,
-  SlidePin, SlideRewards, SlideUX, SlideCompetition, SlideClose,
+  SlidePin, SlideRewards, SlideCompetition, SlideClose,
 } from "@/components/deck/slides";
 
 export const Route = createFileRoute("/")({
@@ -22,15 +22,12 @@ const slides = [
   { id: "cover",       title: "cover",                 render: () => <SlideCover /> },
   { id: "personas",    title: "the people",            render: () => <SlidePersonas /> },
   { id: "decay",       title: "information decay",     render: () => <SlideDecay /> },
-  { id: "stuck",       title: "the incumbent is stuck",render: () => <SlideStuck /> },
-  { id: "solution",    title: "the solution",          render: () => <SlideSolutionHero /> },
   { id: "worlds",      title: "many worlds",           render: () => <SlideManyWorlds /> },
-  { id: "vibes",       title: "matching your vibe",    render: () => <SlideVibes /> },
+  { id: "vibes",       title: "how it works",          render: () => <SlideVibes /> },
   { id: "character",   title: "you, the character",    render: () => <SlideCharacter /> },
   { id: "ask",         title: "ask the area",          render: () => <SlideAsk /> },
   { id: "pin",         title: "pin context",           render: () => <SlidePin /> },
   { id: "rewards",     title: "contribute & reward",   render: () => <SlideRewards /> },
-  { id: "ux",          title: "smart defaults",        render: () => <SlideUX /> },
   { id: "competition", title: "competition",           render: () => <SlideCompetition /> },
   { id: "close",       title: "vision",                render: () => <SlideClose /> },
 ];
