@@ -488,23 +488,23 @@ export function SlideVibes() {
   return (
     <SlideShell>
       <Eyebrow>how it works</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-4xl mb-3">
+      <H1 className="text-4xl md:text-6xl max-w-4xl mb-3">
         We help you find places of <span className="italic text-pin">your vibe.</span>
       </H1>
-      <p className="text-lg text-ink-soft max-w-3xl mb-10">
+      <p className="text-base md:text-lg text-ink-soft max-w-3xl mb-6 md:mb-10">
         Our algorithm stacks niche factual data, reviews from people like you, signals from your friends, and your inputs — to find places that match you.
       </p>
 
-      <div className="grid grid-cols-5 gap-8 flex-1 items-center">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-8 flex-1 md:items-center">
         {/* Left: 3 inputs */}
-        <div className="col-span-2 space-y-4">
-          <div className="font-marker text-xl text-terracotta mb-1">what we read</div>
+        <div className="md:col-span-2 space-y-3 md:space-y-4">
+          <div className="font-marker text-base md:text-xl text-terracotta mb-1">what we read</div>
           {["Who you are", "Where you are", "What you need"].map((t, i) => (
-            <PaperCard key={t} rotate={i === 1 ? 1 : -1.2} className="bg-paper-2 flex items-baseline gap-4">
-              <div className="font-display font-extrabold text-3xl text-pin">{i+1}</div>
-              <div>
-                <div className="font-display font-bold text-2xl leading-tight">{t}</div>
-                <div className="font-marker text-base text-ink-soft">
+            <PaperCard key={t} rotate={i === 1 ? 1 : -1.2} className="bg-paper-2 flex items-baseline gap-3 md:gap-4">
+              <div className="font-display font-extrabold text-2xl md:text-3xl text-pin shrink-0">{i+1}</div>
+              <div className="min-w-0">
+                <div className="font-display font-bold text-lg md:text-2xl leading-tight">{t}</div>
+                <div className="font-marker text-sm md:text-base text-ink-soft">
                   {i === 0 && "history, taste, the worlds you belong to"}
                   {i === 1 && "city, neighborhood, this exact corner"}
                   {i === 2 && "right now: jam, eat, hide, wander"}
@@ -515,26 +515,26 @@ export function SlideVibes() {
         </div>
 
         {/* Middle: signals stack */}
-        <div className="col-span-2 space-y-3">
-          <div className="font-marker text-xl text-terracotta mb-1">what we stack</div>
+        <div className="md:col-span-2 space-y-2 md:space-y-3">
+          <div className="font-marker text-base md:text-xl text-terracotta mb-1">what we stack</div>
           {vibeSignals.map((s, i) => (
             <motion.div
               key={s.name}
               initial={{ x: -20, opacity: 0 }}
               whileInView={{ x: 0, opacity: 1 }}
               transition={{ delay: i * 0.08 }}
-              className="border-2 border-ink sticker p-3 px-4"
+              className="border-2 border-ink sticker p-2.5 md:p-3 md:px-4"
               style={{ background: s.color, transform: `rotate(${-1.5 + i * 0.8}deg)` }}
             >
-              <div className="font-display font-bold text-lg leading-tight">{s.name}</div>
-              <div className="font-marker text-base text-ink-soft leading-tight">{s.desc}</div>
+              <div className="font-display font-bold text-base md:text-lg leading-tight">{s.name}</div>
+              <div className="font-marker text-sm md:text-base text-ink-soft leading-tight">{s.desc}</div>
             </motion.div>
           ))}
         </div>
 
         {/* Right: synchronicity dial */}
-        <div className="col-span-1 flex flex-col items-center">
-          <svg width="140" height="140" viewBox="0 0 120 120">
+        <div className="md:col-span-1 flex flex-col items-center">
+          <svg width="120" height="120" viewBox="0 0 120 120" className="md:w-[140px] md:h-[140px]">
             <circle cx="60" cy="60" r="50" fill="var(--pin)" stroke="var(--ink)" strokeWidth="2" />
             <motion.g
               animate={{ rotate: 360 }}
@@ -548,7 +548,7 @@ export function SlideVibes() {
             </motion.g>
             <text x="60" y="65" textAnchor="middle" fontFamily="Caveat" fontSize="18" fill="var(--paper)">match</text>
           </svg>
-          <div className="font-marker text-xl mt-3 text-ink-soft text-center leading-tight">synchronicity,<br/>on tap</div>
+          <div className="font-marker text-base md:text-xl mt-2 md:mt-3 text-ink-soft text-center leading-tight">synchronicity,<br/>on tap</div>
         </div>
       </div>
     </SlideShell>
