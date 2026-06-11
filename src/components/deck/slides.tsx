@@ -1598,7 +1598,7 @@ export function SlideClose() {
             hypermaps.world
           </a>
         </div>
-        <div className="mt-8 md:mt-10 font-marker text-base md:text-xl text-terracotta">thanks for scrolling →</div>
+        <div className="mt-8 md:mt-10 font-marker text-base md:text-xl text-terracotta">thanks for scrolling</div>
       </div>
     </SlideShell>
   );
