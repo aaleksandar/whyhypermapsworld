@@ -649,31 +649,31 @@ export function SlideCharacter() {
   return (
     <SlideShell>
       <Eyebrow>identity</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-4xl mb-3">
+      <H1 className="text-3xl md:text-6xl max-w-4xl mb-3">
         Everyone gets a <span className="italic text-pin">profile.</span> Even places, brands and lists.
       </H1>
-      <p className="text-lg text-ink-soft max-w-3xl mb-6">
+      <p className="text-base md:text-lg text-ink-soft max-w-3xl mb-5 md:mb-6">
         A profile is a person, a brand, a curated list or a guide — each with its own map and a live feed of what they're doing on it.
       </p>
-      <div className="grid grid-cols-4 gap-5 flex-1">
+      <div className="flex md:grid md:grid-cols-4 gap-4 md:gap-5 flex-1 overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none -mx-5 px-5 md:mx-0 md:px-0 pb-2">
         {profiles.map((p, i) => (
           <motion.div
             key={p.name}
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ delay: i * 0.08 }}
-            className="bg-paper border-2 border-ink sticker p-4 flex flex-col"
+            className="bg-paper border-2 border-ink sticker p-4 flex flex-col shrink-0 w-[78vw] md:w-auto snap-center"
             style={{ transform: `rotate(${(i % 2 ? 1 : -1) * 1.2}deg)` }}
           >
             <div className="flex items-center gap-3 mb-2">
               <div
-                className="w-12 h-12 rounded-full border-2 border-ink flex items-center justify-center font-display text-xl text-paper shrink-0"
+                className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-ink flex items-center justify-center font-display text-lg md:text-xl text-paper shrink-0"
                 style={{ background: p.color }}
               >
                 {p.glyph}
               </div>
               <div className="min-w-0">
-                <div className="font-display font-bold text-lg leading-tight truncate">{p.name}</div>
+                <div className="font-display font-bold text-base md:text-lg leading-tight truncate">{p.name}</div>
                 <div className="font-marker text-xs text-ink-soft">
                   <span className="px-1.5 py-0.5 bg-paper-2 border border-ink/40 mr-1">{kindBadge[p.kind]}</span>
                   {p.tagline.replace(/^[^·]+·\s*/, "")}
