@@ -1027,18 +1027,20 @@ function GlowPin({ spot, active, onClick }: { spot: PinSpot; active: boolean; on
       className="absolute group"
       style={{ left: `${spot.x}%`, top: `${spot.y}%`, transform: "translate(-50%,-100%)" }}
     >
-      {/* halo ring to flag inactive pins as tappable */}
+      {/* soft pink interactive halo for inactive pins */}
       {!active && (
         <motion.span
-          className="absolute rounded-full border-2"
+          aria-hidden
+          className="absolute rounded-full pointer-events-none"
           style={{
             left: "50%", top: "100%",
-            width: 44, height: 44,
+            width: 64, height: 64,
             transform: "translate(-50%,-50%)",
-            borderColor: spot.color,
+            background: "var(--pin)",
+            filter: "blur(10px)",
           }}
-          animate={{ scale: [1, 1.8, 1], opacity: [0.9, 0, 0.9] }}
-          transition={{ duration: 1.8, repeat: Infinity }}
+          animate={{ scale: [1, 1.35, 1], opacity: [0.35, 0.85, 0.35] }}
+          transition={{ duration: 1.6, repeat: Infinity }}
         />
       )}
       <motion.span
