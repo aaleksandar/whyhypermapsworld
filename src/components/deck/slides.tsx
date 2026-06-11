@@ -449,73 +449,65 @@ export function SlideManyWorlds() {
   );
 }
 
-/* 7. Layers */
-const layers = [
-  { name: "Facts", desc: "Has Wi-Fi. Has a sauna. Open now.", color: "var(--water)" },
-  { name: "Reviews", desc: "Vibe, service, taste. From people like you.", color: "var(--sage)" },
-  { name: "Friends", desc: "Where your taste-graph has been.", color: "var(--mustard)" },
-  { name: "Neuro (soon)", desc: "Match places to your nervous system.", color: "var(--pin)" },
+/* 7. Vibes (merged: matching + layers of understanding) */
+const vibeSignals = [
+  { name: "Niche facts", desc: "Has a cradle. Late kitchen. Sauna. Open now.", color: "var(--water)" },
+  { name: "Reviews from people like you", desc: "Not the loudest voices — the closest ones.", color: "var(--sage)" },
+  { name: "Friends & taste-graph", desc: "Where the people you trust already are.", color: "var(--mustard)" },
+  { name: "AI vibe estimate", desc: "We approximate the feeling of a place — and of you.", color: "var(--pin)" },
 ];
-export function SlideLayers() {
-  const [hover, setHover] = useState(1);
-  return (
-    <SlideShell>
-      <Eyebrow>how it works</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-3xl mb-10">
-        Layers of <span className="italic text-pin">understanding.</span>
-      </H1>
-      <div className="grid grid-cols-2 gap-12 flex-1 items-center">
-        <div className="relative h-[60vh]">
-          {layers.map((l, i) => (
-            <motion.div
-              key={l.name}
-              onMouseEnter={() => setHover(i)}
-              animate={{
-                x: hover === i ? 40 : i * 30,
-                y: i * 50,
-                scale: hover === i ? 1.05 : 1,
-                rotate: -6 + i * 2,
-              }}
-              transition={{ type: "spring", stiffness: 150, damping: 20 }}
-              className="absolute inset-x-0 h-48 border-2 border-ink sticker p-5 cursor-pointer"
-              style={{ background: l.color, zIndex: hover === i ? 10 : i }}
-            >
-              <div className="font-display text-3xl font-bold">{l.name}</div>
-              <div className="font-marker text-xl mt-2 text-ink-soft">{l.desc}</div>
-            </motion.div>
-          ))}
-        </div>
-        <div className="text-lg text-ink-soft space-y-4">
-          <p>
-            The world has <b>facts</b>. People have <b>opinions</b>. Communities have <b>taste</b>.
-          </p>
-          <p>
-            HyperMaps stacks them as transparent layers — you choose which lens to look through.
-          </p>
-          <p className="font-marker text-2xl text-pin">Tomorrow: your wearable joins the stack.</p>
-        </div>
-      </div>
-    </SlideShell>
-  );
-}
 
-/* 8. Vibes */
 export function SlideVibes() {
   return (
     <SlideShell>
       <Eyebrow>matching</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-3xl mb-12">
+      <H1 className="text-5xl md:text-6xl max-w-4xl mb-3">
         We match you with places of <span className="italic text-pin">your vibe.</span>
       </H1>
-      <div className="flex-1 grid grid-cols-4 items-center gap-6">
-        {["Who you are", "Where you are", "What you need"].map((t, i) => (
-          <PaperCard key={t} rotate={i === 1 ? 1 : -1} className="text-center bg-paper-2">
-            <div className="font-marker text-xl text-terracotta mb-2">input {i+1}</div>
-            <div className="font-display font-bold text-2xl">{t}</div>
-          </PaperCard>
-        ))}
-        <div className="flex flex-col items-center">
-          <svg width="120" height="120" viewBox="0 0 120 120">
+      <p className="text-lg text-ink-soft max-w-3xl mb-10">
+        Vibe isn't magic — it's an <b>approximation</b>. We stack niche factual data, reviews from people like you, signals from your friends, and an AI estimate of who you are right now. The more you use the map, the sharper the guess.
+      </p>
+
+      <div className="grid grid-cols-5 gap-8 flex-1 items-center">
+        {/* Left: 3 inputs */}
+        <div className="col-span-2 space-y-4">
+          <div className="font-marker text-xl text-terracotta mb-1">what we read</div>
+          {["Who you are", "Where you are", "What you need"].map((t, i) => (
+            <PaperCard key={t} rotate={i === 1 ? 1 : -1.2} className="bg-paper-2 flex items-baseline gap-4">
+              <div className="font-display font-extrabold text-3xl text-pin">{i+1}</div>
+              <div>
+                <div className="font-display font-bold text-2xl leading-tight">{t}</div>
+                <div className="font-marker text-base text-ink-soft">
+                  {i === 0 && "history, taste, the worlds you belong to"}
+                  {i === 1 && "city, neighborhood, this exact corner"}
+                  {i === 2 && "right now: jam, eat, hide, wander"}
+                </div>
+              </div>
+            </PaperCard>
+          ))}
+        </div>
+
+        {/* Middle: signals stack */}
+        <div className="col-span-2 space-y-3">
+          <div className="font-marker text-xl text-terracotta mb-1">what we stack</div>
+          {vibeSignals.map((s, i) => (
+            <motion.div
+              key={s.name}
+              initial={{ x: -20, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ delay: i * 0.08 }}
+              className="border-2 border-ink sticker p-3 px-4"
+              style={{ background: s.color, transform: `rotate(${-1.5 + i * 0.8}deg)` }}
+            >
+              <div className="font-display font-bold text-lg leading-tight">{s.name}</div>
+              <div className="font-marker text-base text-ink-soft leading-tight">{s.desc}</div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Right: synchronicity dial */}
+        <div className="col-span-1 flex flex-col items-center">
+          <svg width="140" height="140" viewBox="0 0 120 120">
             <circle cx="60" cy="60" r="50" fill="var(--pin)" stroke="var(--ink)" strokeWidth="2" />
             <motion.g
               animate={{ rotate: 360 }}
@@ -529,12 +521,15 @@ export function SlideVibes() {
             </motion.g>
             <text x="60" y="65" textAnchor="middle" fontFamily="Caveat" fontSize="18" fill="var(--paper)">match</text>
           </svg>
-          <div className="font-marker text-xl mt-3 text-ink-soft">synchronicity, on tap</div>
+          <div className="font-marker text-xl mt-3 text-ink-soft text-center leading-tight">synchronicity,<br/>on tap</div>
         </div>
       </div>
     </SlideShell>
   );
 }
+
+// Back-compat shim so any stale import doesn't break the build.
+export const SlideLayers = SlideVibes;
 
 /* 9. Character profiles */
 const profiles = [
