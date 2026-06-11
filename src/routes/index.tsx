@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Deck } from "@/components/deck/Deck";
 import {
-  SlideCover, SlidePersonas, SlideDecay, SlideStuck, SlideSolutionHero,
+  SlideCover, SlidePersonas, SlideDecay,
   SlideManyWorlds, SlideVibes, SlideCharacter, SlideAsk,
-  SlidePin, SlideRewards, SlideUX, SlideCompetition, SlideClose,
+  SlidePin, SlideRewards, SlideCompetition, SlideClose,
 } from "@/components/deck/slides";
 
 export const Route = createFileRoute("/")({
