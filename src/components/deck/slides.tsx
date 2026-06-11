@@ -796,7 +796,7 @@ export function SlideAsk() {
           >
             {step >= chatScript.length ? "replay ↻" : (
               <>
-                tap for next reply
+                next reply
                 <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 0.9, repeat: Infinity }}>→</motion.span>
               </>
             )}
