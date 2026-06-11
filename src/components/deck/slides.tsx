@@ -6,7 +6,7 @@ import {
   SiWhatsapp, SiTelegram, SiReddit, SiInstagram, SiTiktok, SiFacebook,
   SiDiscord, SiGmail,
 } from "react-icons/si";
-import { MessageCircle, Users, StickyNote } from "lucide-react";
+import { MessageCircle, Users, StickyNote, Heart, X as XIcon, Scale } from "lucide-react";
 import globe from "@/assets/deck/globe.png";
 import personas from "@/assets/deck/personas.jpg";
 import profileJulian from "@/assets/profile-julian.jpg";
