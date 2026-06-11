@@ -741,39 +741,39 @@ export function SlideAsk() {
   return (
     <SlideShell>
       <Eyebrow>ask the area · interactive</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-3xl mb-3">
+      <H1 className="text-4xl md:text-6xl max-w-3xl mb-3">
         Toss a question <span className="italic text-pin">into the ether.</span>
       </H1>
-      <p className="text-lg text-ink-soft max-w-2xl mb-8">
+      <p className="text-base md:text-lg text-ink-soft max-w-2xl mb-6 md:mb-8">
         AI answers first. Nearby locals chime in seconds later.
       </p>
-      <div className="flex-1 grid grid-cols-2 gap-10">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
         <div className="space-y-3">
           {visible.map((m, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`p-4 max-w-md border-2 border-ink sticker ${
+              className={`p-3 md:p-4 max-w-md border-2 border-ink sticker ${
                 m.who === "you" ? "ml-auto bg-pin text-paper" :
                 m.who === "ai" ? "bg-mustard" : "bg-paper"
               }`}
             >
               {m.who === "local" && (
-                <div className="font-marker text-sm text-terracotta mb-1">{("name" in m && m.name) || "local"}</div>
+                <div className="font-marker text-xs md:text-sm text-terracotta mb-1">{("name" in m && m.name) || "local"}</div>
               )}
-              {m.who === "ai" && <div className="font-marker text-sm text-ink-soft mb-1">🤖 local AI</div>}
-              <div className="font-display">{m.text}</div>
+              {m.who === "ai" && <div className="font-marker text-xs md:text-sm text-ink-soft mb-1">🤖 local AI</div>}
+              <div className="font-display text-sm md:text-base">{m.text}</div>
             </motion.div>
           ))}
           <button
             onClick={() => setStep(s => s >= chatScript.length ? 1 : s + 1)}
-            className="mt-4 px-4 py-2 border-2 border-ink sticker bg-paper hover:bg-mustard font-marker text-lg"
+            className="mt-3 md:mt-4 px-4 py-2 border-2 border-ink sticker bg-paper hover:bg-mustard font-marker text-base md:text-lg"
           >
             {step >= chatScript.length ? "replay ↻" : "next reply →"}
           </button>
         </div>
-        <div className="relative border-2 border-ink sticker bg-paper-2">
+        <div className="relative border-2 border-ink sticker bg-paper-2 aspect-square md:aspect-auto">
           <StylizedMap tint="var(--pin)" showLabels={false}>
             <Pin x={50} y={50} color="var(--pin)" size={32} label="you" />
             {[{x:30,y:25,d:0.5},{x:72,y:30,d:1},{x:65,y:55,d:1.5},{x:25,y:55,d:2}].map((p,i)=>(
