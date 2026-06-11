@@ -56,7 +56,7 @@ export function Deck({ slides }: DeckProps) {
   }, []);
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden bg-paper text-ink font-body">
+    <div className="relative h-[100svh] w-screen overflow-hidden bg-paper text-ink font-body">
       <div
         ref={ref}
         className="h-full w-full overflow-x-auto overflow-y-hidden snap-x snap-mandatory scroll-smooth flex no-scrollbar"
@@ -65,7 +65,7 @@ export function Deck({ slides }: DeckProps) {
         {slides.map((s) => (
           <section
             key={s.id}
-            className="snap-start shrink-0 w-screen h-screen relative paper-grain overflow-y-auto overflow-x-hidden md:overflow-hidden"
+            className="snap-start shrink-0 w-screen h-[100svh] relative paper-grain overflow-y-auto overflow-x-hidden md:overflow-hidden"
             aria-label={s.title}
           >
             {s.render()}
