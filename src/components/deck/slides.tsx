@@ -664,18 +664,18 @@ export function SlideVibes() {
 
         {/* Middle: signals stack */}
         <div className="md:col-span-2 space-y-2 md:space-y-3">
-          <div className="font-marker text-base md:text-xl text-terracotta mb-1">what we stack</div>
+          <div className="font-marker text-lg md:text-2xl text-terracotta mb-1">what we stack</div>
           {vibeSignals.map((s, i) => (
             <motion.div
               key={s.name}
               initial={{ x: -20, opacity: 0 }}
               whileInView={{ x: 0, opacity: 1 }}
               transition={{ delay: i * 0.08 }}
-              className="border-2 border-ink sticker p-2.5 md:p-3 md:px-4"
+              className="border-2 border-ink sticker p-3 md:p-4"
               style={{ background: s.color, transform: `rotate(${-1.5 + i * 0.8}deg)` }}
             >
-              <div className="font-display font-bold text-base md:text-lg leading-tight">{s.name}</div>
-              <div className="font-marker text-sm md:text-base text-ink-soft leading-tight">{s.desc}</div>
+              <div className="font-display font-bold text-lg md:text-xl leading-tight">{s.name}</div>
+              <div className="font-marker text-base md:text-lg text-ink-soft leading-snug">{s.desc}</div>
             </motion.div>
           ))}
         </div>
