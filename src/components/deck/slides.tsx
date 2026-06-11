@@ -95,13 +95,12 @@ export function SlideDecay() {
     <SlideShell>
       <Eyebrow>problem 02</Eyebrow>
       <H1 className="text-5xl md:text-6xl max-w-3xl">
-        Hidden groups. <br/>Information that <span className="text-terracotta italic">leaks away.</span>
+        Knowledge <span className="text-terracotta italic">leaks away.</span>
       </H1>
       <div className="flex-1 grid grid-cols-5 gap-10 items-center mt-6">
         <div className="col-span-2 space-y-4 text-lg text-ink-soft">
-          <p>The best tips live in WhatsApp threads, Telegram groups, and Reddit comments.</p>
-          <p>Someone asks again. Someone digs up an old link. Repeat — for years.</p>
-          <p className="font-marker text-2xl text-pin">The map forgets. So we ask again.</p>
+          <p>Useful local recommendations are shared every day — across TikTok, Instagram, Reddit, Facebook Groups, WhatsApp, Telegram, and private conversations.</p>
+          <p>Most are impossible to find a month later.</p>
         </div>
         <div className="col-span-3 h-full relative">
           <StylizedMap tint="var(--terracotta)" showLabels={false}>
