@@ -532,41 +532,114 @@ export function SlideVibes() {
 export const SlideLayers = SlideVibes;
 
 /* 9. Character profiles */
-const profiles = [
-  { name: "Julian", role: "explorer · 312 places", color: "var(--sage)", note: "138 hidden cafés mapped" },
-  { name: "Tre Vineyard", role: "winery", color: "var(--terracotta)", note: "now poured in 47 places" },
-  { name: "Resident Advisor", role: "events", color: "var(--ink)", note: "live tonight: 23 venues" },
-  { name: "Michelin", role: "guide", color: "var(--pin)", note: "2026 picks · Saigon" },
+type Profile = {
+  name: string;
+  kind: "person" | "brand" | "guide" | "list";
+  tagline: string;
+  color: string;
+  glyph: string;            // single character / emoji shown in avatar
+  mapLabel: string;         // what the pins on the map represent
+  pins: { x: number; y: number }[];
+  stat: string;
+};
+const profiles: Profile[] = [
+  {
+    name: "Julian", kind: "person", glyph: "J", color: "var(--sage)",
+    tagline: "explorer · hunts hidden cafés",
+    mapLabel: "places he's been",
+    pins: [
+      { x: 20, y: 30 }, { x: 35, y: 18 }, { x: 60, y: 22 }, { x: 75, y: 35 },
+      { x: 45, y: 40 }, { x: 28, y: 50 }, { x: 65, y: 48 },
+    ],
+    stat: "312 places · 138 cafés mapped",
+  },
+  {
+    name: "Michelin", kind: "guide", glyph: "★", color: "var(--pin)",
+    tagline: "the guide · scores restaurants",
+    mapLabel: "rated this year",
+    pins: [
+      { x: 25, y: 25 }, { x: 50, y: 20 }, { x: 70, y: 30 },
+      { x: 40, y: 45 }, { x: 60, y: 50 },
+    ],
+    stat: "2026 picks · 38 restaurants in Saigon",
+  },
+  {
+    name: "Resident Advisor", kind: "list", glyph: "♪", color: "var(--ink)",
+    tagline: "the list · electronic events",
+    mapLabel: "live tonight",
+    pins: [
+      { x: 22, y: 22 }, { x: 38, y: 30 }, { x: 55, y: 25 },
+      { x: 70, y: 40 }, { x: 48, y: 48 }, { x: 30, y: 45 }, { x: 78, y: 22 },
+    ],
+    stat: "23 venues open tonight",
+  },
+  {
+    name: "Tre Vineyard", kind: "brand", glyph: "❦", color: "var(--terracotta)",
+    tagline: "the brand · a winery in Đà Lạt",
+    mapLabel: "where their wine is poured",
+    pins: [
+      { x: 30, y: 28 }, { x: 45, y: 22 }, { x: 58, y: 30 },
+      { x: 68, y: 42 }, { x: 35, y: 45 },
+    ],
+    stat: "now poured at 47 places",
+  },
 ];
+
+const kindBadge: Record<Profile["kind"], string> = {
+  person: "person",
+  brand: "brand",
+  guide: "guide",
+  list: "list",
+};
+
 export function SlideCharacter() {
   return (
     <SlideShell>
       <Eyebrow>identity</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-3xl mb-3">
-        You are a <span className="italic text-pin">character</span> in these worlds.
+      <H1 className="text-5xl md:text-6xl max-w-4xl mb-3">
+        Everyone gets a <span className="italic text-pin">profile.</span> Even places, brands and lists.
       </H1>
-      <p className="text-lg text-ink-soft max-w-2xl mb-10">
-        A photo journal of where you've been. Lists. Guides. Reputation that compounds across worlds.
+      <p className="text-lg text-ink-soft max-w-3xl mb-8">
+        A profile is a person, a brand, a curated list or a guide — and every profile has its own map of the world.
       </p>
-      <div className="grid grid-cols-4 gap-6 flex-1">
+      <div className="grid grid-cols-4 gap-5 flex-1">
         {profiles.map((p, i) => (
           <motion.div
             key={p.name}
-            initial={{ y: 30, opacity: 0 }}
+            initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
-            transition={{ delay: i * 0.1 }}
-            className="bg-paper border-2 border-ink sticker p-5 flex flex-col"
-            style={{ transform: `rotate(${(i % 2 ? 1 : -1) * 1.5}deg)` }}
+            transition={{ delay: i * 0.08 }}
+            className="bg-paper border-2 border-ink sticker p-4 flex flex-col"
+            style={{ transform: `rotate(${(i % 2 ? 1 : -1) * 1.2}deg)` }}
           >
-            <div className="w-20 h-20 rounded-full border-2 border-ink mb-3" style={{ background: p.color }} />
-            <div className="font-display font-bold text-2xl">{p.name}</div>
-            <div className="font-marker text-lg text-ink-soft">{p.role}</div>
-            <div className="mt-auto pt-4 grid grid-cols-3 gap-1">
-              {Array.from({ length: 6 }).map((_, j) => (
-                <div key={j} className="aspect-square border border-ink/40" style={{ background: `color-mix(in oklab, ${p.color} ${30 + j*10}%, var(--paper))` }} />
-              ))}
+            <div className="flex items-center gap-3 mb-2">
+              <div
+                className="w-14 h-14 rounded-full border-2 border-ink flex items-center justify-center font-display text-2xl text-paper"
+                style={{ background: p.color }}
+              >
+                {p.glyph}
+              </div>
+              <div className="min-w-0">
+                <div className="font-display font-bold text-xl leading-tight truncate">{p.name}</div>
+                <div className="font-marker text-sm text-ink-soft">
+                  <span className="px-1.5 py-0.5 bg-paper-2 border border-ink/40 mr-1">{kindBadge[p.kind]}</span>
+                  {p.tagline.replace(/^[^·]+·\s*/, "")}
+                </div>
+              </div>
             </div>
-            <div className="font-marker text-base text-pin mt-3">{p.note}</div>
+
+            <div className="font-marker text-xs text-terracotta uppercase tracking-wider mb-1">
+              {p.mapLabel}
+            </div>
+            <div className="relative border border-ink/40 bg-paper-2 aspect-[4/3] overflow-hidden">
+              <StylizedMap tint={p.color} showLabels={false}>
+                {p.pins.map((pin, j) => (
+                  <Pin key={j} x={pin.x} y={pin.y} color={p.color} size={14} delay={i * 0.08 + j * 0.05} />
+                ))}
+              </StylizedMap>
+            </div>
+
+            <div className="font-marker text-sm text-pin mt-3">{p.stat}</div>
           </motion.div>
         ))}
       </div>
