@@ -1048,18 +1048,10 @@ function GlowPin({ spot, active, onClick }: { spot: PinSpot; active: boolean; on
             fill={spot.color} stroke="var(--ink)" strokeWidth="1.5"/>
           <circle cx="11" cy="11" r="4" fill="var(--paper)"/>
         </svg>
-        {active ? (
+        {active && (
           <div className="absolute left-1/2 -translate-x-1/2 -top-7 font-marker text-base whitespace-nowrap bg-paper border border-ink/50 px-2 rounded sticker">
             {spot.name}
           </div>
-        ) : (
-          <motion.div
-            className="absolute left-1/2 -translate-x-1/2 -top-8 font-marker text-[11px] whitespace-nowrap bg-pin text-paper border-2 border-ink px-1.5 py-0.5 rounded sticker shadow-[2px_2px_0_var(--ink)]"
-            animate={{ y: [0, -2, 0] }}
-            transition={{ duration: 1, repeat: Infinity }}
-          >
-            👆 tap
-          </motion.div>
         )}
       </motion.div>
     </button>
