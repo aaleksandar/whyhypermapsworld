@@ -1259,13 +1259,17 @@ export function SlideRewards() {
             })}
           </div>
           <div className="flex gap-2 md:gap-3 mt-3 md:mt-4 flex-wrap">
-            <button
+            <motion.button
               onClick={() => setCollected((c) => Math.min(loot.length, c + 1))}
               disabled={collected >= loot.length}
-              className="px-3 py-2 md:px-5 md:py-2.5 bg-pin text-paper border-2 border-ink sticker font-marker text-sm md:text-lg disabled:opacity-40"
+              whileTap={{ scale: 0.95 }}
+              animate={collected < loot.length ? { scale: [1, 1.05, 1], boxShadow: ["3px 3px 0 var(--ink)", "5px 5px 0 var(--ink)", "3px 3px 0 var(--ink)"] } : {}}
+              transition={{ duration: 1.4, repeat: Infinity }}
+              className="px-3 py-2 md:px-5 md:py-2.5 bg-pin text-paper border-2 border-ink sticker font-marker text-sm md:text-lg disabled:opacity-40 flex items-center gap-2"
             >
-              + contribute → drop loot
-            </button>
+              👆 tap to contribute
+              <motion.span animate={{ y: [0, -3, 0] }} transition={{ duration: 0.8, repeat: Infinity }}>🎁</motion.span>
+            </motion.button>
             <button
               onClick={() => setCollected(0)}
               className="px-3 py-2 md:px-4 md:py-2.5 bg-paper border-2 border-ink sticker font-marker text-sm md:text-base"
