@@ -1245,7 +1245,7 @@ export function SlideRewards() {
               transition={{ duration: 1.4, repeat: Infinity }}
               className="px-3 py-2 md:px-5 md:py-2.5 bg-pin text-paper border-2 border-ink sticker font-marker text-sm md:text-lg disabled:opacity-40 flex items-center gap-2"
             >
-              👆 tap to contribute
+              contribute
               <motion.span animate={{ y: [0, -3, 0] }} transition={{ duration: 0.8, repeat: Infinity }}>🎁</motion.span>
             </motion.button>
             <button
