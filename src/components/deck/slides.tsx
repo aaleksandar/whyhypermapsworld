@@ -517,7 +517,7 @@ export function SlideManyWorlds() {
                       initial={{ opacity: 0, y: 4 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.25 + i * 0.08 }}
-                      className="absolute font-marker text-[10px] md:text-[13px] text-ink bg-paper/85 px-1 md:px-1.5 py-0.5 rounded border border-ink/30 whitespace-nowrap"
+                      className="absolute font-marker text-xs md:text-base text-ink bg-paper/85 px-1.5 md:px-2 py-0.5 rounded border border-ink/30 whitespace-nowrap"
                       style={{ left: `${p.x}%`, top: `${p.y + 4}%`, transform: "translate(-50%, 0)" }}
                     >
                       {p.note}
