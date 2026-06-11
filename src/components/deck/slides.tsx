@@ -9,6 +9,10 @@ import {
 import { MessageCircle, Users, StickyNote } from "lucide-react";
 import globe from "@/assets/deck/globe.png";
 import personas from "@/assets/deck/personas.jpg";
+import profileJulian from "@/assets/profile-julian.jpg";
+import profileMichelin from "@/assets/profile-michelin.jpg";
+import profileRA from "@/assets/profile-ra.jpg";
+import profileTre from "@/assets/profile-tre.jpg";
 
 
 /* 1. Cover */
@@ -666,6 +670,9 @@ type Profile = {
   tagline: string;
   color: string;
   glyph: string;
+  avatar?: string;
+  avatarFit?: "cover" | "contain";
+  avatarBg?: string;
   mapLabel: string;
   pins: { x: number; y: number }[];
   stat: string;
@@ -675,6 +682,7 @@ type Profile = {
 const profiles: Profile[] = [
   {
     name: "Julian", kind: "person", glyph: "J", color: "var(--sage)",
+    avatar: profileJulian, avatarFit: "cover",
     tagline: "explorer · hunts hidden cafés",
     mapLabel: "places he's been",
     pins: [
@@ -690,6 +698,7 @@ const profiles: Profile[] = [
   },
   {
     name: "Michelin", kind: "guide", glyph: "★", color: "var(--pin)",
+    avatar: profileMichelin, avatarFit: "cover",
     tagline: "the guide · scores restaurants",
     mapLabel: "rated this year",
     pins: [
@@ -705,6 +714,7 @@ const profiles: Profile[] = [
   },
   {
     name: "Resident Advisor", kind: "list", glyph: "♪", color: "var(--ink)",
+    avatar: profileRA, avatarFit: "contain", avatarBg: "#fff",
     tagline: "the list · electronic events",
     mapLabel: "live tonight",
     pins: [
@@ -720,6 +730,7 @@ const profiles: Profile[] = [
   },
   {
     name: "Tre Vineyard", kind: "brand", glyph: "❦", color: "var(--terracotta)",
+    avatar: profileTre, avatarFit: "cover",
     tagline: "the brand · a winery in Đà Lạt",
     mapLabel: "where their wine is poured",
     pins: [
@@ -767,10 +778,19 @@ export function SlideCharacter() {
           >
             <div className="flex items-center gap-3 mb-2">
               <div
-                className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-ink flex items-center justify-center font-display text-lg md:text-xl text-paper shrink-0"
-                style={{ background: p.color }}
+                className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-ink flex items-center justify-center font-display text-lg md:text-xl text-paper shrink-0 overflow-hidden"
+                style={{ background: p.avatarBg ?? p.color }}
               >
-                {p.glyph}
+                {p.avatar ? (
+                  <img
+                    src={p.avatar}
+                    alt={p.name}
+                    loading="lazy"
+                    className={`w-full h-full ${p.avatarFit === "contain" ? "object-contain p-1" : "object-cover"}`}
+                  />
+                ) : (
+                  p.glyph
+                )}
               </div>
               <div className="min-w-0">
                 <div className="font-display font-bold text-base md:text-lg leading-tight truncate">{p.name}</div>
