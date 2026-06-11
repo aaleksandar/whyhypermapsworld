@@ -1208,34 +1208,6 @@ export function SlidePin() {
                 </div>
               </PaperCard>
 
-              {/* photos */}
-              <PaperCard rotate={-0.5}>
-                <div className="flex items-baseline justify-between mb-2 gap-2">
-                  <div className="font-marker text-sm md:text-lg text-terracotta">photos that matter</div>
-                  <div className="font-marker text-xs md:text-sm text-ink-soft shrink-0 hidden sm:block">picked from community uploads</div>
-                </div>
-                <div className="grid grid-cols-3 gap-2 md:gap-3">
-                  {d.photos.map((p) => (
-                    <div key={p.label} className="border border-ink/40 bg-paper-2 p-1.5 md:p-2 flex flex-col">
-                      <div className="aspect-[4/3]">{p.draw(d.color)}</div>
-                      <div className="font-marker text-xs md:text-sm text-ink-soft mt-1 text-center">{p.label}</div>
-                    </div>
-                  ))}
-                </div>
-              </PaperCard>
-
-              {/* highlights */}
-              <PaperCard rotate={-0.3} className="bg-mustard">
-                <div className="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4">
-                  <div className="font-marker text-sm md:text-lg text-ink-soft shrink-0">best for →</div>
-                  <div className="font-display text-base md:text-xl flex-1">{d.bestFor}</div>
-                </div>
-                <div className="flex flex-wrap gap-1.5 md:gap-2 mt-2 md:mt-3">
-                  {d.highlights.map((h) => (
-                    <span key={h} className="px-2 py-0.5 md:py-1 bg-paper border border-ink/50 font-marker text-xs md:text-sm">{h}</span>
-                  ))}
-                </div>
-              </PaperCard>
             </motion.div>
           </AnimatePresence>
         </div>
