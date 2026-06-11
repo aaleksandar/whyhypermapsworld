@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 export function SlideShell({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
-    <div className={`h-full w-full px-16 py-20 flex flex-col contour-bg ${className}`}>
+    <div className={`min-h-full w-full px-5 pt-14 pb-24 md:px-16 md:py-20 flex flex-col contour-bg ${className}`}>
       {children}
     </div>
   );
@@ -19,7 +19,7 @@ export function Eyebrow({ children }: { children: ReactNode }) {
 
 export function H1({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
-    <h1 className={`font-display font-extrabold text-ink leading-[0.95] tracking-tight ${className}`}>
+    <h1 className={`font-display font-extrabold text-ink leading-[0.95] tracking-tight break-words hyphens-auto ${className}`}>
       {children}
     </h1>
   );

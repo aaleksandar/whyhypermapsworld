@@ -65,7 +65,7 @@ export function Deck({ slides }: DeckProps) {
         {slides.map((s) => (
           <section
             key={s.id}
-            className="snap-start shrink-0 w-screen h-screen relative paper-grain"
+            className="snap-start shrink-0 w-screen h-screen relative paper-grain overflow-y-auto overflow-x-hidden md:overflow-hidden"
             aria-label={s.title}
           >
             {s.render()}
@@ -74,15 +74,15 @@ export function Deck({ slides }: DeckProps) {
       </div>
 
       {/* Top brand */}
-      <div className="pointer-events-none absolute top-6 left-8 z-30 flex items-center gap-2">
-        <div className="h-6 w-6 rounded-full bg-pin shadow-[2px_2px_0_var(--ink)]" />
-        <span className="font-display font-extrabold tracking-tight text-ink text-lg">
+      <div className="pointer-events-none absolute top-3 left-4 md:top-6 md:left-8 z-30 flex items-center gap-2">
+        <div className="h-4 w-4 md:h-6 md:w-6 rounded-full bg-pin shadow-[2px_2px_0_var(--ink)]" />
+        <span className="font-display font-extrabold tracking-tight text-ink text-sm md:text-lg">
           hypermaps<span className="text-pin">.world</span>
         </span>
       </div>
 
       {/* Slide counter */}
-      <div className="absolute top-6 right-8 z-30 font-marker text-2xl text-ink-soft">
+      <div className="absolute top-3 right-4 md:top-6 md:right-8 z-30 font-marker text-base md:text-2xl text-ink-soft">
         {String(active + 1).padStart(2, "0")}
         <span className="opacity-50"> / {String(slides.length).padStart(2, "0")}</span>
       </div>
@@ -95,15 +95,21 @@ export function Deck({ slides }: DeckProps) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -6 }}
           transition={{ duration: 0.25 }}
-          className="absolute bottom-16 left-1/2 -translate-x-1/2 z-30 font-marker text-xl text-ink-soft pointer-events-none"
+          className="absolute bottom-12 md:bottom-16 left-1/2 -translate-x-1/2 z-30 font-marker text-sm md:text-xl text-ink-soft pointer-events-none whitespace-nowrap"
         >
           {slides[active]?.title}
         </motion.div>
       </AnimatePresence>
 
       {/* Progress route */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1">
-        <svg width={slides.length * 28 + 40} height="20" viewBox={`0 0 ${slides.length * 28 + 40} 20`}>
+      <div className="absolute bottom-3 md:bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1 max-w-[90vw]">
+        <svg
+          className="w-[min(90vw,500px)] md:w-auto"
+          width={slides.length * 28 + 40}
+          height="20"
+          viewBox={`0 0 ${slides.length * 28 + 40} 20`}
+          preserveAspectRatio="xMidYMid meet"
+        >
           <path
             d={`M 10 10 L ${slides.length * 28 + 30} 10`}
             stroke="var(--ink)"
@@ -126,22 +132,22 @@ export function Deck({ slides }: DeckProps) {
         </svg>
       </div>
 
-      {/* Prev/Next */}
+      {/* Prev/Next — bottom corners on mobile, side-centered on desktop */}
       <button
         onClick={() => goTo(active - 1)}
         disabled={active === 0}
         aria-label="Previous slide"
-        className="absolute left-6 top-1/2 -translate-y-1/2 z-30 h-12 w-12 rounded-full bg-paper border-2 border-ink sticker grid place-items-center disabled:opacity-30 hover:bg-mustard transition-colors"
+        className="absolute left-3 bottom-16 md:left-6 md:top-1/2 md:bottom-auto md:-translate-y-1/2 z-30 h-10 w-10 md:h-12 md:w-12 rounded-full bg-paper border-2 border-ink sticker grid place-items-center disabled:opacity-30 hover:bg-mustard transition-colors"
       >
-        <span className="font-display text-xl">←</span>
+        <span className="font-display text-lg md:text-xl">←</span>
       </button>
       <button
         onClick={() => goTo(active + 1)}
         disabled={active === slides.length - 1}
         aria-label="Next slide"
-        className="absolute right-6 top-1/2 -translate-y-1/2 z-30 h-12 w-12 rounded-full bg-pin border-2 border-ink sticker grid place-items-center disabled:opacity-30 hover:scale-110 transition-transform"
+        className="absolute right-3 bottom-16 md:right-6 md:top-1/2 md:bottom-auto md:-translate-y-1/2 z-30 h-10 w-10 md:h-12 md:w-12 rounded-full bg-pin border-2 border-ink sticker grid place-items-center disabled:opacity-30 hover:scale-110 transition-transform"
       >
-        <span className="font-display text-xl text-paper">→</span>
+        <span className="font-display text-lg md:text-xl text-paper">→</span>
       </button>
 
       <style>{`.no-scrollbar::-webkit-scrollbar{display:none}`}</style>

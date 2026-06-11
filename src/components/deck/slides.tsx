@@ -15,19 +15,19 @@ export function SlideCover() {
         alt="Hand-drawn globe with pins"
         width={520}
         height={520}
-        className="w-[36vh] max-w-[420px] mb-6 drop-shadow-[3px_5px_0_rgba(26,23,20,0.2)]"
+        className="w-[55vw] max-w-[420px] mb-6 drop-shadow-[3px_5px_0_rgba(26,23,20,0.2)]"
         initial={{ rotate: -8, opacity: 0 }}
         animate={{ rotate: 0, opacity: 1 }}
         transition={{ duration: 0.8, type: "spring" }}
       />
       <Eyebrow>a pitch deck · 2026</Eyebrow>
-      <H1 className="text-7xl md:text-8xl">
+      <H1 className="text-5xl md:text-8xl">
         hypermaps<span className="text-pin">.world</span>
       </H1>
-      <p className="font-display italic text-2xl md:text-3xl text-ink-soft mt-6 max-w-2xl">
+      <p className="font-display italic text-xl md:text-3xl text-ink-soft mt-6 max-w-2xl">
         Find where you belong.
       </p>
-      <div className="mt-10 font-marker text-xl text-terracotta animate-pulse">
+      <div className="mt-8 md:mt-10 font-marker text-base md:text-xl text-terracotta animate-pulse">
         scroll right →
       </div>
     </SlideShell>
@@ -48,16 +48,17 @@ export function SlidePersonas() {
   return (
     <SlideShell>
       <Eyebrow>problem 01</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-4xl mb-10">
+      <H1 className="text-3xl md:text-6xl max-w-4xl mb-6 md:mb-10">
         The same city means <span className="text-terracotta italic">different things</span> to different people.
       </H1>
-      <div className="grid grid-cols-3 grid-rows-2 gap-6 flex-1 max-w-5xl">
+      <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-3 md:grid-rows-2 gap-3 md:gap-6 flex-1 max-w-5xl">
         {personaQuotes.map((p, i) => (
           <motion.div
             key={i}
             onMouseEnter={() => setHover(i)}
             onMouseLeave={() => setHover(null)}
-            className="relative bg-paper border-2 border-ink sticker p-4 overflow-hidden cursor-pointer"
+            onClick={() => setHover(hover === i ? null : i)}
+            className="relative bg-paper border-2 border-ink sticker p-2 md:p-4 overflow-hidden cursor-pointer"
             style={{ transform: `rotate(${[-1.5, 1, -0.5, 1.5, -1, 0.8][i]}deg)` }}
             whileHover={{ scale: 1.04, zIndex: 5 }}
           >
@@ -69,14 +70,14 @@ export function SlidePersonas() {
                 backgroundPosition: `${(i % 3) * 50}% ${Math.floor(i / 3) * 100}%`,
               }}
             />
-            <div className="mt-2 font-marker text-lg text-ink-soft">{p.name}</div>
+            <div className="mt-1 md:mt-2 font-marker text-sm md:text-lg text-ink-soft">{p.name}</div>
             <AnimatePresence>
               {hover === i && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
-                  className="absolute inset-0 bg-ink/95 text-paper p-5 flex items-center font-display italic text-lg"
+                  className="absolute inset-0 bg-ink/95 text-paper p-3 md:p-5 flex items-center font-display italic text-xs md:text-lg"
                 >
                   "{p.q}"
                 </motion.div>
@@ -94,15 +95,15 @@ export function SlideDecay() {
   return (
     <SlideShell>
       <Eyebrow>problem 02</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-3xl">
+      <H1 className="text-4xl md:text-6xl max-w-3xl">
         Knowledge <span className="text-terracotta italic">leaks away.</span>
       </H1>
-      <div className="flex-1 grid grid-cols-5 gap-10 items-center mt-6">
-        <div className="col-span-2 space-y-4 text-lg text-ink-soft">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-5 gap-5 md:gap-10 md:items-center mt-5 md:mt-6">
+        <div className="md:col-span-2 space-y-3 md:space-y-4 text-base md:text-lg text-ink-soft">
           <p>Useful local recommendations are shared every day — across TikTok, Instagram, Reddit, Facebook Groups, WhatsApp, Telegram, and private conversations.</p>
           <p>Most are impossible to find a month later.</p>
         </div>
-        <div className="col-span-3 h-full relative">
+        <div className="md:col-span-3 relative aspect-[4/3] md:aspect-auto md:h-full">
           <StylizedMap tint="var(--terracotta)" showLabels={false}>
             {[
               { x: 14, y: 12, c: "var(--pin)",       tip: "best bún bò — auntie at 6am",    src: "WhatsApp · 2021" },
@@ -125,9 +126,9 @@ export function SlideDecay() {
                 animate={{ opacity: [1, 1, 0.05, 0.05, 1] }}
                 transition={{ duration: 7, repeat: Infinity, delay: i * 0.35, times: [0, 0.35, 0.55, 0.85, 1] }}
               >
-                <Pin x={0} y={0} delay={0} size={16} color={p.c} />
+                <Pin x={0} y={0} delay={0} size={14} color={p.c} />
                 <motion.div
-                  className="absolute left-3 top-1 whitespace-nowrap bg-paper border border-ink/60 sticker px-2 py-1 shadow-[2px_2px_0_rgba(26,23,20,0.15)]"
+                  className="absolute left-3 top-1 bg-paper border border-ink/60 sticker px-1.5 py-0.5 md:px-2 md:py-1 shadow-[2px_2px_0_rgba(26,23,20,0.15)]"
                   style={{ transform: `rotate(${(i % 2 ? 1 : -1) * (1 + (i % 3))}deg)` }}
                   animate={{
                     opacity: [1, 0.4, 0, 0, 1],
@@ -136,14 +137,14 @@ export function SlideDecay() {
                   }}
                   transition={{ duration: 7, repeat: Infinity, delay: i * 0.35 + 0.2, times: [0, 0.3, 0.5, 0.85, 1] }}
                 >
-                  <div className="font-marker text-[11px] leading-tight text-ink max-w-[150px] whitespace-normal">
+                  <div className="font-marker text-[9px] md:text-[11px] leading-tight text-ink max-w-[90px] md:max-w-[150px] whitespace-normal">
                     "{p.tip}"
                   </div>
-                  <div className="text-[9px] text-ink-soft italic mt-0.5">{p.src}</div>
+                  <div className="text-[8px] md:text-[9px] text-ink-soft italic mt-0.5">{p.src}</div>
                 </motion.div>
               </motion.div>
             ))}
-            <div className="absolute bottom-2 right-2 font-marker text-xs text-terracotta bg-paper/80 px-2 py-0.5 rounded">
+            <div className="absolute bottom-2 right-2 font-marker text-[10px] md:text-xs text-terracotta bg-paper/80 px-2 py-0.5 rounded">
               tips evaporate →
             </div>
           </StylizedMap>
@@ -377,18 +378,18 @@ export function SlideManyWorlds() {
   return (
     <SlideShell>
       <Eyebrow>solution · interactive</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-4xl mb-3">
+      <H1 className="text-4xl md:text-6xl max-w-4xl mb-3">
         The map of <span className="italic text-pin">many worlds.</span>
       </H1>
-      <p className="text-lg text-ink-soft max-w-3xl mb-5">
+      <p className="text-base md:text-lg text-ink-soft max-w-3xl mb-4 md:mb-5">
         Every community maps the city differently. Step into the worlds of foodies, skaters, architects, musicians, parents, and locals.
       </p>
-      <div className="flex flex-wrap gap-2 mb-5">
+      <div className="flex flex-wrap gap-1.5 md:gap-2 mb-4 md:mb-5">
         {worlds.map(w => (
           <button
             key={w.id}
             onClick={() => setActive(w.id)}
-            className={`px-4 py-2 rounded-full border-2 border-ink font-marker text-lg transition-all ${
+            className={`px-3 py-1.5 md:px-4 md:py-2 rounded-full border-2 border-ink font-marker text-sm md:text-lg transition-all ${
               active === w.id ? "bg-ink text-paper sticker" : "bg-paper hover:bg-paper-2"
             }`}
           >
@@ -396,10 +397,10 @@ export function SlideManyWorlds() {
           </button>
         ))}
       </div>
-      <div className="flex-1 grid grid-cols-3 gap-4 min-h-0">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 min-h-0">
         {/* Map */}
-        <div className="col-span-2 relative border-2 border-ink sticker bg-paper-2 overflow-hidden">
-          <div className="absolute top-3 left-4 font-marker text-xl z-10 text-ink-soft">Saigon · {world.tagline}</div>
+        <div className="md:col-span-2 relative border-2 border-ink sticker bg-paper-2 overflow-hidden aspect-[4/3] md:aspect-auto">
+          <div className="absolute top-2 left-3 md:top-3 md:left-4 font-marker text-sm md:text-xl z-10 text-ink-soft">Saigon · {world.tagline}</div>
           <AnimatePresence mode="wait">
             <motion.div
               key={world.id}
@@ -412,12 +413,12 @@ export function SlideManyWorlds() {
               <StylizedMap tint={world.tint}>
                 {world.pins.map((p, i) => (
                   <div key={p.label}>
-                    <Pin x={p.x} y={p.y} label={p.label} delay={0.1 + i * 0.08} color={world.tint} size={26} />
+                    <Pin x={p.x} y={p.y} label={p.label} delay={0.1 + i * 0.08} color={world.tint} size={20} />
                     <motion.div
                       initial={{ opacity: 0, y: 4 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.25 + i * 0.08 }}
-                      className="absolute font-marker text-[13px] text-ink bg-paper/85 px-1.5 py-0.5 rounded border border-ink/30 whitespace-nowrap"
+                      className="absolute font-marker text-[10px] md:text-[13px] text-ink bg-paper/85 px-1 md:px-1.5 py-0.5 rounded border border-ink/30 whitespace-nowrap"
                       style={{ left: `${p.x}%`, top: `${p.y + 4}%`, transform: "translate(-50%, 0)" }}
                     >
                       {p.note}
@@ -436,15 +437,15 @@ export function SlideManyWorlds() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -8 }}
             transition={{ duration: 0.3 }}
-            className="flex flex-col gap-4 min-h-0"
+            className="flex flex-col gap-3 md:gap-4 min-h-0"
           >
-            <div className="border-2 border-ink sticker bg-paper p-4">
-              <div className="font-marker text-base text-ink-soft mb-2">filters this world cares about</div>
+            <div className="border-2 border-ink sticker bg-paper p-3 md:p-4">
+              <div className="font-marker text-sm md:text-base text-ink-soft mb-2">filters this world cares about</div>
               <div className="flex flex-wrap gap-1.5">
                 {world.filters.map(f => (
                   <span
                     key={f}
-                    className="px-2.5 py-1 rounded-full border-2 border-ink text-sm bg-paper-2"
+                    className="px-2 py-0.5 md:px-2.5 md:py-1 rounded-full border-2 border-ink text-xs md:text-sm bg-paper-2"
                     style={{ background: world.tint, color: "var(--paper)" }}
                   >
                     {f}
@@ -452,18 +453,18 @@ export function SlideManyWorlds() {
                 ))}
               </div>
             </div>
-            <div className="border-2 border-ink sticker bg-paper p-4 flex-1 min-h-0 overflow-auto">
-              <div className="font-marker text-base text-ink-soft mb-2">happening · for this world</div>
+            <div className="border-2 border-ink sticker bg-paper p-3 md:p-4 flex-1 min-h-0 overflow-auto">
+              <div className="font-marker text-sm md:text-base text-ink-soft mb-2">happening · for this world</div>
               <ul className="space-y-2">
                 {world.events.map(e => (
                   <li key={e.title} className="flex gap-2 items-start">
                     <span
-                      className="font-marker text-sm px-2 py-0.5 rounded border-2 border-ink whitespace-nowrap"
+                      className="font-marker text-xs md:text-sm px-2 py-0.5 rounded border-2 border-ink whitespace-nowrap"
                       style={{ background: world.tint, color: "var(--paper)" }}
                     >
                       {e.when}
                     </span>
-                    <span className="text-sm text-ink leading-snug">{e.title}</span>
+                    <span className="text-xs md:text-sm text-ink leading-snug">{e.title}</span>
                   </li>
                 ))}
               </ul>
@@ -487,23 +488,23 @@ export function SlideVibes() {
   return (
     <SlideShell>
       <Eyebrow>how it works</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-4xl mb-3">
+      <H1 className="text-4xl md:text-6xl max-w-4xl mb-3">
         We help you find places of <span className="italic text-pin">your vibe.</span>
       </H1>
-      <p className="text-lg text-ink-soft max-w-3xl mb-10">
+      <p className="text-base md:text-lg text-ink-soft max-w-3xl mb-6 md:mb-10">
         Our algorithm stacks niche factual data, reviews from people like you, signals from your friends, and your inputs — to find places that match you.
       </p>
 
-      <div className="grid grid-cols-5 gap-8 flex-1 items-center">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-8 flex-1 md:items-center">
         {/* Left: 3 inputs */}
-        <div className="col-span-2 space-y-4">
-          <div className="font-marker text-xl text-terracotta mb-1">what we read</div>
+        <div className="md:col-span-2 space-y-3 md:space-y-4">
+          <div className="font-marker text-base md:text-xl text-terracotta mb-1">what we read</div>
           {["Who you are", "Where you are", "What you need"].map((t, i) => (
-            <PaperCard key={t} rotate={i === 1 ? 1 : -1.2} className="bg-paper-2 flex items-baseline gap-4">
-              <div className="font-display font-extrabold text-3xl text-pin">{i+1}</div>
-              <div>
-                <div className="font-display font-bold text-2xl leading-tight">{t}</div>
-                <div className="font-marker text-base text-ink-soft">
+            <PaperCard key={t} rotate={i === 1 ? 1 : -1.2} className="bg-paper-2 flex items-baseline gap-3 md:gap-4">
+              <div className="font-display font-extrabold text-2xl md:text-3xl text-pin shrink-0">{i+1}</div>
+              <div className="min-w-0">
+                <div className="font-display font-bold text-lg md:text-2xl leading-tight">{t}</div>
+                <div className="font-marker text-sm md:text-base text-ink-soft">
                   {i === 0 && "history, taste, the worlds you belong to"}
                   {i === 1 && "city, neighborhood, this exact corner"}
                   {i === 2 && "right now: jam, eat, hide, wander"}
@@ -514,26 +515,26 @@ export function SlideVibes() {
         </div>
 
         {/* Middle: signals stack */}
-        <div className="col-span-2 space-y-3">
-          <div className="font-marker text-xl text-terracotta mb-1">what we stack</div>
+        <div className="md:col-span-2 space-y-2 md:space-y-3">
+          <div className="font-marker text-base md:text-xl text-terracotta mb-1">what we stack</div>
           {vibeSignals.map((s, i) => (
             <motion.div
               key={s.name}
               initial={{ x: -20, opacity: 0 }}
               whileInView={{ x: 0, opacity: 1 }}
               transition={{ delay: i * 0.08 }}
-              className="border-2 border-ink sticker p-3 px-4"
+              className="border-2 border-ink sticker p-2.5 md:p-3 md:px-4"
               style={{ background: s.color, transform: `rotate(${-1.5 + i * 0.8}deg)` }}
             >
-              <div className="font-display font-bold text-lg leading-tight">{s.name}</div>
-              <div className="font-marker text-base text-ink-soft leading-tight">{s.desc}</div>
+              <div className="font-display font-bold text-base md:text-lg leading-tight">{s.name}</div>
+              <div className="font-marker text-sm md:text-base text-ink-soft leading-tight">{s.desc}</div>
             </motion.div>
           ))}
         </div>
 
         {/* Right: synchronicity dial */}
-        <div className="col-span-1 flex flex-col items-center">
-          <svg width="140" height="140" viewBox="0 0 120 120">
+        <div className="md:col-span-1 flex flex-col items-center">
+          <svg width="120" height="120" viewBox="0 0 120 120" className="md:w-[140px] md:h-[140px]">
             <circle cx="60" cy="60" r="50" fill="var(--pin)" stroke="var(--ink)" strokeWidth="2" />
             <motion.g
               animate={{ rotate: 360 }}
@@ -547,7 +548,7 @@ export function SlideVibes() {
             </motion.g>
             <text x="60" y="65" textAnchor="middle" fontFamily="Caveat" fontSize="18" fill="var(--paper)">match</text>
           </svg>
-          <div className="font-marker text-xl mt-3 text-ink-soft text-center leading-tight">synchronicity,<br/>on tap</div>
+          <div className="font-marker text-base md:text-xl mt-2 md:mt-3 text-ink-soft text-center leading-tight">synchronicity,<br/>on tap</div>
         </div>
       </div>
     </SlideShell>
@@ -648,31 +649,31 @@ export function SlideCharacter() {
   return (
     <SlideShell>
       <Eyebrow>identity</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-4xl mb-3">
+      <H1 className="text-3xl md:text-6xl max-w-4xl mb-3">
         Everyone gets a <span className="italic text-pin">profile.</span> Even places, brands and lists.
       </H1>
-      <p className="text-lg text-ink-soft max-w-3xl mb-6">
+      <p className="text-base md:text-lg text-ink-soft max-w-3xl mb-5 md:mb-6">
         A profile is a person, a brand, a curated list or a guide — each with its own map and a live feed of what they're doing on it.
       </p>
-      <div className="grid grid-cols-4 gap-5 flex-1">
+      <div className="flex md:grid md:grid-cols-4 gap-4 md:gap-5 flex-1 overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none -mx-5 px-5 md:mx-0 md:px-0 pb-2">
         {profiles.map((p, i) => (
           <motion.div
             key={p.name}
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ delay: i * 0.08 }}
-            className="bg-paper border-2 border-ink sticker p-4 flex flex-col"
+            className="bg-paper border-2 border-ink sticker p-4 flex flex-col shrink-0 w-[78vw] md:w-auto snap-center"
             style={{ transform: `rotate(${(i % 2 ? 1 : -1) * 1.2}deg)` }}
           >
             <div className="flex items-center gap-3 mb-2">
               <div
-                className="w-12 h-12 rounded-full border-2 border-ink flex items-center justify-center font-display text-xl text-paper shrink-0"
+                className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-ink flex items-center justify-center font-display text-lg md:text-xl text-paper shrink-0"
                 style={{ background: p.color }}
               >
                 {p.glyph}
               </div>
               <div className="min-w-0">
-                <div className="font-display font-bold text-lg leading-tight truncate">{p.name}</div>
+                <div className="font-display font-bold text-base md:text-lg leading-tight truncate">{p.name}</div>
                 <div className="font-marker text-xs text-ink-soft">
                   <span className="px-1.5 py-0.5 bg-paper-2 border border-ink/40 mr-1">{kindBadge[p.kind]}</span>
                   {p.tagline.replace(/^[^·]+·\s*/, "")}
@@ -740,39 +741,39 @@ export function SlideAsk() {
   return (
     <SlideShell>
       <Eyebrow>ask the area · interactive</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-3xl mb-3">
+      <H1 className="text-4xl md:text-6xl max-w-3xl mb-3">
         Toss a question <span className="italic text-pin">into the ether.</span>
       </H1>
-      <p className="text-lg text-ink-soft max-w-2xl mb-8">
+      <p className="text-base md:text-lg text-ink-soft max-w-2xl mb-6 md:mb-8">
         AI answers first. Nearby locals chime in seconds later.
       </p>
-      <div className="flex-1 grid grid-cols-2 gap-10">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
         <div className="space-y-3">
           {visible.map((m, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`p-4 max-w-md border-2 border-ink sticker ${
+              className={`p-3 md:p-4 max-w-md border-2 border-ink sticker ${
                 m.who === "you" ? "ml-auto bg-pin text-paper" :
                 m.who === "ai" ? "bg-mustard" : "bg-paper"
               }`}
             >
               {m.who === "local" && (
-                <div className="font-marker text-sm text-terracotta mb-1">{("name" in m && m.name) || "local"}</div>
+                <div className="font-marker text-xs md:text-sm text-terracotta mb-1">{("name" in m && m.name) || "local"}</div>
               )}
-              {m.who === "ai" && <div className="font-marker text-sm text-ink-soft mb-1">🤖 local AI</div>}
-              <div className="font-display">{m.text}</div>
+              {m.who === "ai" && <div className="font-marker text-xs md:text-sm text-ink-soft mb-1">🤖 local AI</div>}
+              <div className="font-display text-sm md:text-base">{m.text}</div>
             </motion.div>
           ))}
           <button
             onClick={() => setStep(s => s >= chatScript.length ? 1 : s + 1)}
-            className="mt-4 px-4 py-2 border-2 border-ink sticker bg-paper hover:bg-mustard font-marker text-lg"
+            className="mt-3 md:mt-4 px-4 py-2 border-2 border-ink sticker bg-paper hover:bg-mustard font-marker text-base md:text-lg"
           >
             {step >= chatScript.length ? "replay ↻" : "next reply →"}
           </button>
         </div>
-        <div className="relative border-2 border-ink sticker bg-paper-2">
+        <div className="relative border-2 border-ink sticker bg-paper-2 aspect-square md:aspect-auto">
           <StylizedMap tint="var(--pin)" showLabels={false}>
             <Pin x={50} y={50} color="var(--pin)" size={32} label="you" />
             {[{x:30,y:25,d:0.5},{x:72,y:30,d:1},{x:65,y:55,d:1.5},{x:25,y:55,d:2}].map((p,i)=>(
@@ -1017,27 +1018,27 @@ export function SlidePin() {
   return (
     <SlideShell>
       <Eyebrow>pin context</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-4xl mb-2">
+      <H1 className="text-3xl md:text-6xl max-w-4xl mb-2">
         Every place remembers <span className="italic text-pin">what each community said.</span>
       </H1>
-      <p className="text-lg text-ink-soft max-w-3xl mb-5">
+      <p className="text-sm md:text-lg text-ink-soft max-w-3xl mb-4 md:mb-5">
         Tap a pin — see how parents, nomads, vegans, lifters and more actually experienced it. Plus the photos, the highlights, and an AI summary of the room.
       </p>
-      <div className="flex-1 grid grid-cols-5 gap-6 min-h-0">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-6 min-h-0">
         {/* map */}
-        <div className="col-span-2 border-2 border-ink sticker bg-paper relative overflow-hidden">
+        <div className="md:col-span-2 border-2 border-ink sticker bg-paper relative overflow-hidden aspect-[4/3] md:aspect-auto">
           <StylizedMap tint={d.color} showLabels={false}>
             {spots.map((s, i) => (
               <GlowPin key={s.name} spot={s} active={i === idx} onClick={() => setIdx(i)} />
             ))}
           </StylizedMap>
-          <div className="absolute bottom-3 left-3 right-3 font-marker text-sm text-ink-soft bg-paper/80 px-2 py-1 rounded">
+          <div className="absolute bottom-2 left-2 right-2 md:bottom-3 md:left-3 md:right-3 font-marker text-xs md:text-sm text-ink-soft bg-paper/80 px-2 py-1 rounded">
             ↑ tap any glowing pin
           </div>
         </div>
 
         {/* detail panel */}
-        <div className="col-span-3 grid grid-rows-[auto_1fr_auto] gap-4 min-h-0">
+        <div className="md:col-span-3 grid grid-rows-[auto_auto_auto] md:grid-rows-[auto_1fr_auto] gap-3 md:gap-4 min-h-0">
           <AnimatePresence mode="wait">
             <motion.div
               key={d.name}
@@ -1049,25 +1050,25 @@ export function SlidePin() {
             >
               {/* community history — the hero of this slide */}
               <PaperCard rotate={0.4} className="min-h-0 overflow-hidden">
-                <div className="flex items-baseline justify-between mb-2">
-                  <div className="font-marker text-lg text-terracotta">community history · {d.name}</div>
-                  <div className="font-marker text-sm text-ink-soft">{d.totalVoices} voices · {d.friends} friends</div>
+                <div className="flex items-baseline justify-between mb-2 gap-2">
+                  <div className="font-marker text-sm md:text-lg text-terracotta truncate">community · {d.name}</div>
+                  <div className="font-marker text-xs md:text-sm text-ink-soft shrink-0">{d.totalVoices} voices · {d.friends} friends</div>
                 </div>
-                <div className="bg-mustard/60 border border-ink/40 p-3 mb-3">
-                  <div className="font-marker text-xs uppercase tracking-wider text-ink-soft mb-1">✦ AI summary</div>
-                  <div className="font-display text-[15px] leading-snug">{d.aiSummary}</div>
+                <div className="bg-mustard/60 border border-ink/40 p-2.5 md:p-3 mb-3">
+                  <div className="font-marker text-[10px] md:text-xs uppercase tracking-wider text-ink-soft mb-1">✦ AI summary</div>
+                  <div className="font-display text-[13px] md:text-[15px] leading-snug">{d.aiSummary}</div>
                 </div>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {d.perspectives.map((p) => {
                     const v = verdictStyle[p.verdict];
                     return (
-                      <div key={p.community} className={`border border-ink/50 p-2.5 ${v.bg}`}>
+                      <div key={p.community} className={`border border-ink/50 p-2 md:p-2.5 ${v.bg}`}>
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-lg leading-none">{p.emoji}</span>
-                          <span className="font-display font-bold text-[14px] flex-1">{p.community}</span>
-                          <span className={`font-marker text-[10px] px-1.5 py-0.5 bg-paper border border-ink/60 ${v.tone}`}>{v.label}</span>
+                          <span className="text-base md:text-lg leading-none">{p.emoji}</span>
+                          <span className="font-display font-bold text-[12px] md:text-[14px] flex-1 min-w-0 truncate">{p.community}</span>
+                          <span className={`font-marker text-[9px] md:text-[10px] px-1.5 py-0.5 bg-paper border border-ink/60 ${v.tone}`}>{v.label}</span>
                         </div>
-                        <div className="font-display text-[12px] leading-snug text-ink">{p.insight}</div>
+                        <div className="font-display text-[11px] md:text-[12px] leading-snug text-ink">{p.insight}</div>
                         <div className="font-marker text-[10px] text-ink-soft mt-1">{p.voices} voices</div>
                       </div>
                     );
@@ -1077,15 +1078,15 @@ export function SlidePin() {
 
               {/* photos */}
               <PaperCard rotate={-0.5}>
-                <div className="flex items-baseline justify-between mb-2">
-                  <div className="font-marker text-lg text-terracotta">photos that matter</div>
-                  <div className="font-marker text-sm text-ink-soft">picked from community uploads</div>
+                <div className="flex items-baseline justify-between mb-2 gap-2">
+                  <div className="font-marker text-sm md:text-lg text-terracotta">photos that matter</div>
+                  <div className="font-marker text-xs md:text-sm text-ink-soft shrink-0 hidden sm:block">picked from community uploads</div>
                 </div>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-3 gap-2 md:gap-3">
                   {d.photos.map((p) => (
-                    <div key={p.label} className="border border-ink/40 bg-paper-2 p-2 flex flex-col">
+                    <div key={p.label} className="border border-ink/40 bg-paper-2 p-1.5 md:p-2 flex flex-col">
                       <div className="aspect-[4/3]">{p.draw(d.color)}</div>
-                      <div className="font-marker text-sm text-ink-soft mt-1 text-center">{p.label}</div>
+                      <div className="font-marker text-xs md:text-sm text-ink-soft mt-1 text-center">{p.label}</div>
                     </div>
                   ))}
                 </div>
@@ -1093,13 +1094,13 @@ export function SlidePin() {
 
               {/* highlights */}
               <PaperCard rotate={-0.3} className="bg-mustard">
-                <div className="flex items-baseline gap-4">
-                  <div className="font-marker text-lg text-ink-soft">best for →</div>
-                  <div className="font-display text-xl flex-1">{d.bestFor}</div>
+                <div className="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4">
+                  <div className="font-marker text-sm md:text-lg text-ink-soft shrink-0">best for →</div>
+                  <div className="font-display text-base md:text-xl flex-1">{d.bestFor}</div>
                 </div>
-                <div className="flex flex-wrap gap-2 mt-3">
+                <div className="flex flex-wrap gap-1.5 md:gap-2 mt-2 md:mt-3">
                   {d.highlights.map((h) => (
-                    <span key={h} className="px-2 py-1 bg-paper border border-ink/50 font-marker text-sm">{h}</span>
+                    <span key={h} className="px-2 py-0.5 md:py-1 bg-paper border border-ink/50 font-marker text-xs md:text-sm">{h}</span>
                   ))}
                 </div>
               </PaperCard>
@@ -1148,26 +1149,26 @@ export function SlideRewards() {
   return (
     <SlideShell>
       <Eyebrow>contribution</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-4xl mb-3">
+      <H1 className="text-4xl md:text-6xl max-w-4xl mb-3">
         Contributing is a <span className="italic text-pin">game.</span>
       </H1>
-      <p className="text-lg text-ink-soft max-w-3xl mb-6">
+      <p className="text-base md:text-lg text-ink-soft max-w-3xl mb-5 md:mb-6">
         Every tag, photo, or guide drops loot into your backpack. Collect, mix, and trade items at partner spots around the world — like a city-sized RPG.
       </p>
-      <div className="flex-1 grid grid-cols-5 gap-6 min-h-0">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-6 min-h-0">
         {/* Backpack */}
-        <div className="col-span-3 border-2 border-ink sticker bg-paper-2 p-5 flex flex-col">
+        <div className="md:col-span-3 border-2 border-ink sticker bg-paper-2 p-3 md:p-5 flex flex-col">
           <div className="flex items-baseline justify-between mb-3">
-            <div className="font-marker text-xl text-terracotta">🎒 your backpack</div>
-            <div className="font-marker text-sm text-ink-soft">{collected} / {slots} slots</div>
+            <div className="font-marker text-base md:text-xl text-terracotta">🎒 your backpack</div>
+            <div className="font-marker text-xs md:text-sm text-ink-soft">{collected} / {slots} slots</div>
           </div>
-          <div className="grid grid-cols-4 gap-3 flex-1">
+          <div className="grid grid-cols-4 gap-2 md:gap-3 flex-1">
             {Array.from({ length: slots }).map((_, i) => {
               const item = i < collected ? loot[i] : null;
               if (!item) {
                 return (
                   <div key={i} className="border-2 border-dashed border-ink/30 rounded bg-paper/40 aspect-square flex items-center justify-center">
-                    <span className="font-marker text-sm text-ink-soft/60">empty</span>
+                    <span className="font-marker text-xs md:text-sm text-ink-soft/60">empty</span>
                   </div>
                 );
               }
@@ -1178,28 +1179,28 @@ export function SlideRewards() {
                   initial={{ scale: 0.4, opacity: 0, y: -30 }}
                   animate={{ scale: 1, opacity: 1, y: 0 }}
                   transition={{ type: "spring", stiffness: 220, damping: 14, delay: i * 0.05 }}
-                  className={`relative border-2 ${r.ring} rounded ${r.bg} aspect-square flex flex-col items-center justify-center p-1 sticker`}
+                  className={`relative border-2 ${r.ring} rounded ${r.bg} aspect-square flex flex-col items-center justify-center p-1 sticker overflow-hidden`}
                   style={{ transform: `rotate(${(i%2?1:-1)*1.5}deg)` }}
                 >
-                  <div className="text-3xl leading-none">{item.glyph}</div>
-                  <div className="font-display font-bold text-[11px] text-center mt-1 leading-tight">{item.name}</div>
-                  <div className="font-marker text-[9px] text-ink-soft text-center leading-tight">{item.via}</div>
-                  <span className="absolute top-1 right-1 font-marker text-[8px] uppercase tracking-wider bg-paper px-1 border border-ink/40 rounded">{r.label}</span>
+                  <div className="text-2xl md:text-3xl leading-none">{item.glyph}</div>
+                  <div className="font-display font-bold text-[10px] md:text-[11px] text-center mt-1 leading-tight px-0.5">{item.name}</div>
+                  <div className="font-marker text-[8px] md:text-[9px] text-ink-soft text-center leading-tight px-0.5 line-clamp-2">{item.via}</div>
+                  <span className="absolute top-0.5 right-0.5 md:top-1 md:right-1 font-marker text-[7px] md:text-[8px] uppercase tracking-wider bg-paper px-1 border border-ink/40 rounded">{r.label}</span>
                 </motion.div>
               );
             })}
           </div>
-          <div className="flex gap-3 mt-4">
+          <div className="flex gap-2 md:gap-3 mt-3 md:mt-4 flex-wrap">
             <button
               onClick={() => setCollected((c) => Math.min(loot.length, c + 1))}
               disabled={collected >= loot.length}
-              className="px-5 py-2.5 bg-pin text-paper border-2 border-ink sticker font-marker text-lg disabled:opacity-40"
+              className="px-3 py-2 md:px-5 md:py-2.5 bg-pin text-paper border-2 border-ink sticker font-marker text-sm md:text-lg disabled:opacity-40"
             >
               + contribute → drop loot
             </button>
             <button
               onClick={() => setCollected(0)}
-              className="px-4 py-2.5 bg-paper border-2 border-ink sticker font-marker text-base"
+              className="px-3 py-2 md:px-4 md:py-2.5 bg-paper border-2 border-ink sticker font-marker text-sm md:text-base"
             >
               reset
             </button>
@@ -1207,30 +1208,30 @@ export function SlideRewards() {
         </div>
 
         {/* Shop / exchanges */}
-        <div className="col-span-2 border-2 border-ink sticker bg-paper p-5 flex flex-col">
-          <div className="font-marker text-xl text-terracotta mb-1">🏪 trade at partner spots</div>
-          <div className="font-marker text-sm text-ink-soft mb-4">items unlock real-world rewards across the world.</div>
-          <div className="space-y-3 flex-1">
+        <div className="md:col-span-2 border-2 border-ink sticker bg-paper p-3 md:p-5 flex flex-col">
+          <div className="font-marker text-base md:text-xl text-terracotta mb-1">🏪 trade at partner spots</div>
+          <div className="font-marker text-xs md:text-sm text-ink-soft mb-3 md:mb-4">items unlock real-world rewards across the world.</div>
+          <div className="space-y-2 md:space-y-3 flex-1">
             {shopExchanges.map((s, i) => (
               <motion.div
                 key={s.trade}
                 initial={{ x: 20, opacity: 0 }}
                 whileInView={{ x: 0, opacity: 1 }}
                 transition={{ delay: i * 0.1 }}
-                className="flex items-center gap-3 border border-ink/40 bg-paper-2 p-3 rounded"
+                className="flex items-center gap-2 md:gap-3 border border-ink/40 bg-paper-2 p-2 md:p-3 rounded"
                 style={{ transform: `rotate(${(i%2?1:-1)*0.6}deg)` }}
               >
-                <div className="text-3xl">{s.glyph}</div>
+                <div className="text-2xl md:text-3xl shrink-0">{s.glyph}</div>
                 <div className="flex-1 min-w-0">
-                  <div className="font-display font-bold text-[14px] leading-tight">{s.trade}</div>
-                  <div className="font-marker text-xs text-ink-soft">at {s.at}</div>
+                  <div className="font-display font-bold text-[12px] md:text-[14px] leading-tight truncate">{s.trade}</div>
+                  <div className="font-marker text-[10px] md:text-xs text-ink-soft truncate">at {s.at}</div>
                 </div>
-                <div className="font-marker text-2xl text-ink-soft">→</div>
-                <div className="font-display text-[13px] text-pin font-bold text-right max-w-[120px] leading-tight">{s.reward}</div>
+                <div className="font-marker text-lg md:text-2xl text-ink-soft shrink-0">→</div>
+                <div className="font-display text-[11px] md:text-[13px] text-pin font-bold text-right max-w-[90px] md:max-w-[120px] leading-tight shrink-0">{s.reward}</div>
               </motion.div>
             ))}
           </div>
-          <div className="font-marker text-xs text-ink-soft mt-3 italic">play the city. level up. unlock the world.</div>
+          <div className="font-marker text-[10px] md:text-xs text-ink-soft mt-3 italic">play the city. level up. unlock the world.</div>
         </div>
       </div>
     </SlideShell>
@@ -1286,19 +1287,19 @@ export function SlideCompetition() {
   return (
     <SlideShell>
       <Eyebrow>competition</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-3xl mb-8">
+      <H1 className="text-4xl md:text-6xl max-w-3xl mb-6 md:mb-8">
         Nobody is <span className="italic text-pin">both</span> personal <em>and</em> alive.
       </H1>
-      <div className="flex-1 relative grid grid-cols-[1fr_auto] gap-4">
-        <div className="relative border-2 border-ink sticker bg-paper-2">
+      <div className="flex-1 relative grid grid-cols-1 md:grid-cols-[1fr_auto] gap-4">
+        <div className="relative border-2 border-ink sticker bg-paper-2 aspect-square md:aspect-auto">
           {/* Axes */}
           <div className="absolute left-1/2 top-0 bottom-0 border-l-2 border-dashed border-ink/40" />
           <div className="absolute top-1/2 left-0 right-0 border-t-2 border-dashed border-ink/40" />
           {/* labels */}
-          <div className="absolute top-2 left-1/2 -translate-x-1/2 font-marker text-lg text-ink-soft">↑ living map</div>
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 font-marker text-lg text-ink-soft">static lists ↓</div>
-          <div className="absolute left-2 top-1/2 -translate-y-1/2 -rotate-90 font-marker text-lg text-ink-soft">generic ←</div>
-          <div className="absolute right-2 top-1/2 -translate-y-1/2 rotate-90 font-marker text-lg text-ink-soft">→ personal</div>
+          <div className="absolute top-1.5 md:top-2 left-1/2 -translate-x-1/2 font-marker text-sm md:text-lg text-ink-soft">↑ living</div>
+          <div className="absolute bottom-1.5 md:bottom-2 left-1/2 -translate-x-1/2 font-marker text-sm md:text-lg text-ink-soft">static ↓</div>
+          <div className="absolute left-1.5 top-1/2 -translate-y-1/2 font-marker text-sm md:text-lg text-ink-soft md:-rotate-90">← generic</div>
+          <div className="absolute right-1.5 top-1/2 -translate-y-1/2 font-marker text-sm md:text-lg text-ink-soft md:rotate-90">personal →</div>
           {/* dots */}
           {competitors.map((c) => (
             <div
@@ -1306,8 +1307,8 @@ export function SlideCompetition() {
               className="absolute"
               style={{ left: `${c.x}%`, top: `${c.y}%`, transform: "translate(-50%,-50%)" }}
             >
-              <div className="w-3 h-3 rounded-full bg-ink/70" />
-              <div className="font-marker text-sm text-ink-soft whitespace-nowrap mt-1">{c.name}</div>
+              <div className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-ink/70" />
+              <div className="font-marker text-[10px] md:text-sm text-ink-soft whitespace-nowrap mt-1">{c.name}</div>
             </div>
           ))}
           {/* us */}
@@ -1318,15 +1319,15 @@ export function SlideCompetition() {
             className="absolute"
             style={{ left: "82%", top: "15%", transform: "translate(-50%,-50%)" }}
           >
-            <div className="bg-pin border-2 border-ink sticker px-3 py-1.5 font-display font-bold text-paper">
-              hypermaps.world
+            <div className="bg-pin border-2 border-ink sticker px-2 py-1 md:px-3 md:py-1.5 font-display font-bold text-xs md:text-base text-paper whitespace-nowrap">
+              hypermaps
             </div>
-            <svg className="absolute -bottom-4 left-1/2 -translate-x-1/2" width="20" height="14" viewBox="0 0 20 14">
+            <svg className="absolute -bottom-3 md:-bottom-4 left-1/2 -translate-x-1/2" width="20" height="14" viewBox="0 0 20 14">
               <path d="M 0 0 L 20 0 L 10 14 Z" fill="var(--pin)" stroke="var(--ink)" strokeWidth="1.5" />
             </svg>
           </motion.div>
         </div>
-        <div className="w-64 flex flex-col justify-center text-ink-soft text-sm space-y-3">
+        <div className="md:w-64 flex flex-col md:justify-center text-ink-soft text-sm md:text-base space-y-2 md:space-y-3">
           <p><b className="text-ink">Up-right</b> is empty. That's where a map of <em>your</em> world lives.</p>
           <p>Everyone else is either generic or frozen in time.</p>
         </div>
@@ -1352,21 +1353,21 @@ export function SlideClose() {
       ))}
       <div className="relative z-10 max-w-4xl">
         <Eyebrow>the vision</Eyebrow>
-        <H1 className="text-7xl md:text-[8rem] leading-[0.9]">
+        <H1 className="text-5xl md:text-[8rem] leading-[0.9]">
           Belong <span className="italic text-pin">anywhere.</span>
         </H1>
-        <p className="font-display italic text-2xl text-ink-soft mt-8 max-w-3xl mx-auto">
+        <p className="font-display italic text-lg md:text-2xl text-ink-soft mt-6 md:mt-8 max-w-3xl mx-auto">
           A world where every city reveals communities, spaces, and experiences that resonate with who you are.
         </p>
-        <div className="mt-12 flex items-center justify-center gap-4 flex-wrap">
-          <a href="mailto:hello@hypermaps.world" className="px-6 py-3 bg-ink text-paper border-2 border-ink sticker font-display font-bold text-lg">
+        <div className="mt-8 md:mt-12 flex items-center justify-center gap-3 md:gap-4 flex-wrap">
+          <a href="mailto:hello@hypermaps.world" className="px-4 py-2 md:px-6 md:py-3 bg-ink text-paper border-2 border-ink sticker font-display font-bold text-sm md:text-lg">
             hello@hypermaps.world
           </a>
-          <a href="https://hypermaps.world" className="px-6 py-3 bg-pin text-paper border-2 border-ink sticker font-display font-bold text-lg">
+          <a href="https://hypermaps.world" className="px-4 py-2 md:px-6 md:py-3 bg-pin text-paper border-2 border-ink sticker font-display font-bold text-sm md:text-lg">
             hypermaps.world
           </a>
         </div>
-        <div className="mt-10 font-marker text-xl text-terracotta">thanks for scrolling →</div>
+        <div className="mt-8 md:mt-10 font-marker text-base md:text-xl text-terracotta">thanks for scrolling →</div>
       </div>
     </SlideShell>
   );
