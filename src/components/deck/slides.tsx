@@ -744,7 +744,7 @@ export function SlideAsk() {
         Toss a question <span className="italic text-pin">into the ether.</span>
       </H1>
       <p className="text-lg text-ink-soft max-w-2xl mb-8">
-        AI answers first. Nearby locals — auto-matched to your keywords — chime in seconds later. Uber-like, for knowing things.
+        AI answers first. Nearby locals chime in seconds later.
       </p>
       <div className="flex-1 grid grid-cols-2 gap-10">
         <div className="space-y-3">
