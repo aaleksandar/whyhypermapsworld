@@ -1021,9 +1021,24 @@ function GlowPin({ spot, active, onClick }: { spot: PinSpot; active: boolean; on
   return (
     <button
       onClick={onClick}
-      className="absolute"
+      aria-label={`Show ${spot.name}`}
+      className="absolute group"
       style={{ left: `${spot.x}%`, top: `${spot.y}%`, transform: "translate(-50%,-100%)" }}
     >
+      {/* halo ring to flag inactive pins as tappable */}
+      {!active && (
+        <motion.span
+          className="absolute rounded-full border-2"
+          style={{
+            left: "50%", top: "100%",
+            width: 44, height: 44,
+            transform: "translate(-50%,-50%)",
+            borderColor: spot.color,
+          }}
+          animate={{ scale: [1, 1.8, 1], opacity: [0.9, 0, 0.9] }}
+          transition={{ duration: 1.8, repeat: Infinity }}
+        />
+      )}
       <motion.span
         className="absolute rounded-full"
         style={{
@@ -1032,24 +1047,34 @@ function GlowPin({ spot, active, onClick }: { spot: PinSpot; active: boolean; on
           transform: "translate(-50%,-50%)",
           background: spot.color,
           filter: "blur(14px)",
-          opacity: active ? 0.7 : 0.35,
+          opacity: active ? 0.7 : 0.45,
         }}
-        animate={active ? { scale: [1, 1.3, 1] } : { scale: [1, 1.15, 1] }}
-        transition={{ duration: active ? 1.2 : 2.4, repeat: Infinity }}
+        animate={active ? { scale: [1, 1.3, 1] } : { scale: [1, 1.25, 1] }}
+        transition={{ duration: active ? 1.2 : 1.8, repeat: Infinity }}
       />
       <motion.div
-        animate={{ y: active ? [0, -6, 0] : [0, -3, 0] }}
-        transition={{ duration: active ? 0.8 : 1.6, repeat: Infinity }}
+        animate={{ y: active ? [0, -6, 0] : [0, -4, 0] }}
+        transition={{ duration: active ? 0.8 : 1.2, repeat: Infinity }}
         className="relative"
       >
-        <svg width={active ? 36 : 28} height={(active ? 36 : 28) * 1.4} viewBox="0 0 22 30">
+        <svg width={active ? 36 : 30} height={(active ? 36 : 30) * 1.4} viewBox="0 0 22 30">
           <path d="M11 0 C 4 0 0 5 0 11 C 0 18 11 30 11 30 C 11 30 22 18 22 11 C 22 5 18 0 11 0 Z"
             fill={spot.color} stroke="var(--ink)" strokeWidth="1.5"/>
           <circle cx="11" cy="11" r="4" fill="var(--paper)"/>
         </svg>
-        <div className="absolute left-1/2 -translate-x-1/2 -top-7 font-marker text-base whitespace-nowrap bg-paper border border-ink/50 px-2 rounded sticker">
-          {active ? spot.name : "tap me"}
-        </div>
+        {active ? (
+          <div className="absolute left-1/2 -translate-x-1/2 -top-7 font-marker text-base whitespace-nowrap bg-paper border border-ink/50 px-2 rounded sticker">
+            {spot.name}
+          </div>
+        ) : (
+          <motion.div
+            className="absolute left-1/2 -translate-x-1/2 -top-8 font-marker text-[11px] whitespace-nowrap bg-pin text-paper border-2 border-ink px-1.5 py-0.5 rounded sticker shadow-[2px_2px_0_var(--ink)]"
+            animate={{ y: [0, -2, 0] }}
+            transition={{ duration: 1, repeat: Infinity }}
+          >
+            👆 tap
+          </motion.div>
+        )}
       </motion.div>
     </button>
   );
