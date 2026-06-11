@@ -1248,10 +1248,10 @@ export function SlideClose() {
       <div className="relative z-10 max-w-4xl">
         <Eyebrow>the vision</Eyebrow>
         <H1 className="text-7xl md:text-[8rem] leading-[0.9]">
-          Multidimensional <br/><span className="italic text-pin">belonging.</span>
+          Belong <span className="italic text-pin">anywhere.</span>
         </H1>
-        <p className="font-display italic text-2xl text-ink-soft mt-8 max-w-2xl mx-auto">
-          A world where the right place, the right person, the right moment find you — naturally, playfully, often.
+        <p className="font-display italic text-2xl text-ink-soft mt-8 max-w-3xl mx-auto">
+          A world where every city reveals communities, spaces, and experiences that resonate with who you are.
         </p>
         <div className="mt-12 flex items-center justify-center gap-4 flex-wrap">
           <a href="mailto:hello@hypermaps.world" className="px-6 py-3 bg-ink text-paper border-2 border-ink sticker font-display font-bold text-lg">
