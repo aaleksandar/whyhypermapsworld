@@ -499,7 +499,7 @@ export function SlideManyWorlds() {
       <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 min-h-0">
         {/* Map */}
         <div className="md:col-span-2 relative border-2 border-ink sticker bg-paper-2 overflow-hidden aspect-[4/3] md:aspect-auto">
-          <div className="absolute top-2 left-3 md:top-3 md:left-4 font-marker text-sm md:text-xl z-10 text-ink-soft">Saigon · {world.tagline}</div>
+          <div className="absolute top-2 left-3 md:top-3 md:left-4 font-marker text-base md:text-2xl z-10 text-ink-soft">Saigon · {world.tagline}</div>
           <AnimatePresence mode="wait">
             <motion.div
               key={world.id}
