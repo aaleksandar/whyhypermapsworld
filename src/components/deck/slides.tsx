@@ -9,6 +9,10 @@ import {
 import { MessageCircle, Users, StickyNote } from "lucide-react";
 import globe from "@/assets/deck/globe.png";
 import personas from "@/assets/deck/personas.jpg";
+import profileJulian from "@/assets/profile-julian.jpg";
+import profileMichelin from "@/assets/profile-michelin.jpg";
+import profileRA from "@/assets/profile-ra.jpg";
+import profileTre from "@/assets/profile-tre.jpg";
 
 
 /* 1. Cover */
