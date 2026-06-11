@@ -3,7 +3,7 @@ import { Deck } from "@/components/deck/Deck";
 import {
   SlideCover, SlidePersonas, SlideDecay,
   SlideManyWorlds, SlideVibes, SlideCharacter, SlideAsk,
-  SlidePin, SlideRewards, SlideCompetition, SlideClose,
+  SlidePin, SlideCompetition, SlideClose,
 } from "@/components/deck/slides";
 
 export const Route = createFileRoute("/")({
