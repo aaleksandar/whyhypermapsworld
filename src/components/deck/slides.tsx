@@ -1156,9 +1156,6 @@ export function SlidePin() {
       <H1 className="text-3xl md:text-6xl max-w-4xl mb-2">
         Every place remembers <span className="italic text-pin">what each community said.</span>
       </H1>
-      <p className="text-sm md:text-lg text-ink-soft max-w-3xl mb-4 md:mb-5">
-        Open any pin — see how parents, nomads, vegans, lifters and more actually experienced it. Plus the photos, the highlights, and an AI summary of the room.
-      </p>
       <div className="flex-1 grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-6 min-h-0">
         {/* map */}
         <div className="md:col-span-2 border-2 border-ink sticker bg-paper relative overflow-hidden aspect-[4/3] md:aspect-auto">
