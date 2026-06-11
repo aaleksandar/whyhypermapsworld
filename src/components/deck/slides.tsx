@@ -849,12 +849,24 @@ export function SlideCharacter() {
 }
 
 /* 10. Ask the area */
-const chatScript = [
+type AskMsg =
+  | { who: "you"; text: string }
+  | { who: "ai"; text: string; pin?: { x: number; y: number; label: string } }
+  | { who: "local"; name: string; text: string; pin?: { x: number; y: number; label: string } };
+
+const chatScript: AskMsg[] = [
   { who: "you", text: "where can i find art around me right now?" },
-  { who: "ai", text: "3 open galleries in District 3, and a street-mural walk along Pasteur. Want pins?" },
-  { who: "local", name: "Linh, local", text: "go to San Art before 6pm. Pop-up tonight on Ly Tu Trong — DM me 🌸" },
-  { who: "local", name: "Minh, mural-hunter", text: "the wall behind Cafe Apartment is fresh this week." },
+  { who: "ai", text: "3 open galleries in District 3, and a street-mural walk along Pasteur. Want pins?",
+    pin: { x: 32, y: 30, label: "District 3 galleries" } },
+  { who: "local", name: "Linh, local", text: "go to San Art before 6pm. Pop-up tonight on Ly Tu Trong — DM me 🌸",
+    pin: { x: 70, y: 28, label: "San Art" } },
+  { who: "local", name: "Minh, mural-hunter", text: "the wall behind Cafe Apartment is fresh this week.",
+    pin: { x: 66, y: 62, label: "Cafe Apartment mural" } },
 ];
+
+const pinColorFor = (who: AskMsg["who"]) =>
+  who === "ai" ? "var(--mustard)" : "var(--terracotta)";
+
 export function SlideAsk() {
   const [step, setStep] = useState(1);
   const visible = chatScript.slice(0, step);
@@ -867,6 +879,42 @@ export function SlideAsk() {
     return () => clearTimeout(t);
   }, [step, done]);
 
+  const wrapRef = React.useRef<HTMLDivElement | null>(null);
+  const mapRef = React.useRef<HTMLDivElement | null>(null);
+  const bubbleRefs = React.useRef<Record<number, HTMLDivElement | null>>({});
+  const [lines, setLines] = React.useState<{ i: number; x1: number; y1: number; x2: number; y2: number; color: string }[]>([]);
+  const [wrapSize, setWrapSize] = React.useState({ w: 0, h: 0 });
+
+  React.useLayoutEffect(() => {
+    const measure = () => {
+      const wrap = wrapRef.current;
+      const map = mapRef.current;
+      if (!wrap || !map) return;
+      const wb = wrap.getBoundingClientRect();
+      const mb = map.getBoundingClientRect();
+      setWrapSize({ w: wb.width, h: wb.height });
+      const out: { i: number; x1: number; y1: number; x2: number; y2: number; color: string }[] = [];
+      visible.forEach((m, i) => {
+        if (!("pin" in m) || !m.pin) return;
+        const bubble = bubbleRefs.current[i];
+        if (!bubble) return;
+        const bb = bubble.getBoundingClientRect();
+        const x1 = bb.right - wb.left;
+        const y1 = bb.top + bb.height / 2 - wb.top;
+        const x2 = mb.left - wb.left + (m.pin.x / 100) * mb.width;
+        const y2 = mb.top - wb.top + (m.pin.y / 100) * mb.height;
+        out.push({ i, x1, y1, x2, y2, color: pinColorFor(m.who) });
+      });
+      setLines(out);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (wrapRef.current) ro.observe(wrapRef.current);
+    if (mapRef.current) ro.observe(mapRef.current);
+    window.addEventListener("resize", measure);
+    return () => { ro.disconnect(); window.removeEventListener("resize", measure); };
+  }, [step, visible.length]);
+
   return (
     <SlideShell>
       <Eyebrow>ask the area · interactive</Eyebrow>
@@ -876,12 +924,37 @@ export function SlideAsk() {
       <p className="text-base md:text-lg text-ink-soft max-w-2xl mb-6 md:mb-8">
         AI answers first. Nearby locals chime in seconds later.
       </p>
-      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
-        <div className="space-y-3">
+      <div ref={wrapRef} className="relative flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+        <svg
+          className="absolute inset-0 pointer-events-none hidden md:block"
+          width={wrapSize.w}
+          height={wrapSize.h}
+          style={{ zIndex: 4 }}
+        >
+          <AnimatePresence>
+            {lines.map(l => (
+              <motion.path
+                key={l.i}
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: 0.85 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                d={`M ${l.x1} ${l.y1} C ${l.x1 + 60} ${l.y1}, ${l.x2 - 60} ${l.y2}, ${l.x2} ${l.y2}`}
+                stroke={l.color}
+                strokeWidth={2}
+                strokeDasharray="5 4"
+                fill="none"
+              />
+            ))}
+          </AnimatePresence>
+        </svg>
+
+        <div className="space-y-3 relative" style={{ zIndex: 2 }}>
           <AnimatePresence initial={false}>
             {visible.map((m, i) => (
               <motion.div
                 key={i}
+                ref={el => { bubbleRefs.current[i] = el; }}
                 layout
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -891,7 +964,7 @@ export function SlideAsk() {
                 }`}
               >
                 {m.who === "local" && (
-                  <div className="font-marker text-xs md:text-sm text-terracotta mb-1">{("name" in m && m.name) || "local"}</div>
+                  <div className="font-marker text-xs md:text-sm text-terracotta mb-1">{m.name}</div>
                 )}
                 {m.who === "ai" && <div className="font-marker text-xs md:text-sm text-ink-soft mb-1">🤖 local AI</div>}
                 <div className="font-display text-sm md:text-base">{m.text}</div>
@@ -934,20 +1007,52 @@ export function SlideAsk() {
             </motion.button>
           )}
         </div>
-        <div className="relative border-2 border-ink sticker bg-paper-2 aspect-square md:aspect-auto">
+
+        <div ref={mapRef} className="relative border-2 border-ink sticker bg-paper-2 aspect-square md:aspect-auto">
           <StylizedMap tint="var(--pin)" showLabels={false}>
             <Pin x={50} y={50} color="var(--pin)" size={32} label="you" />
-            {[{x:30,y:25,d:0.5},{x:72,y:30,d:1},{x:65,y:55,d:1.5},{x:25,y:55,d:2}].map((p,i)=>(
+            {[{x:18,y:18,d:0.5},{x:82,y:22,d:1},{x:80,y:78,d:1.5},{x:20,y:80,d:2}].map((p,i)=>(
               <motion.div
                 key={i}
                 className="absolute"
                 style={{ left:`${p.x}%`, top:`${p.y}%`, transform:"translate(-50%,-50%)" }}
-                animate={{ scale:[1,1.5,1], opacity:[1,0.3,1] }}
+                animate={{ scale:[1,1.5,1], opacity:[0.8,0.25,0.8] }}
                 transition={{ duration:2, repeat:Infinity, delay:p.d }}
               >
-                <div className="w-4 h-4 rounded-full bg-sage border-2 border-ink" />
+                <div className="w-3 h-3 rounded-full bg-sage/70 border-2 border-ink" />
               </motion.div>
             ))}
+            {visible.map((m, i) => {
+              if (!("pin" in m) || !m.pin) return null;
+              const color = pinColorFor(m.who);
+              const isNewest = i === visible.length - 1;
+              return (
+                <motion.div
+                  key={`ans-${i}`}
+                  className="absolute"
+                  style={{ left: `${m.pin.x}%`, top: `${m.pin.y}%`, transform: "translate(-50%, -100%)" }}
+                  initial={{ opacity: 0, y: -8, scale: 0.6 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ type: "spring", stiffness: 320, damping: 18 }}
+                >
+                  {isNewest && (
+                    <motion.span
+                      aria-hidden
+                      className="absolute rounded-full"
+                      style={{
+                        left: "50%", bottom: 0,
+                        width: 36, height: 36,
+                        transform: "translate(-50%, 50%)",
+                        background: color, filter: "blur(10px)",
+                      }}
+                      animate={{ opacity: [0.7, 0.2, 0.7], scale: [0.9, 1.4, 0.9] }}
+                      transition={{ duration: 1.6, repeat: Infinity }}
+                    />
+                  )}
+                  <Pin x={0} y={0} color={color} size={22} label={m.pin.label} />
+                </motion.div>
+              );
+            })}
           </StylizedMap>
         </div>
       </div>
