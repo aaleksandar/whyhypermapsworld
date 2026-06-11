@@ -87,19 +87,7 @@ export function Deck({ slides }: DeckProps) {
         <span className="opacity-50"> / {String(slides.length).padStart(2, "0")}</span>
       </div>
 
-      {/* Active slide title */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={active}
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -6 }}
-          transition={{ duration: 0.25 }}
-          className="absolute bottom-12 md:bottom-16 left-1/2 -translate-x-1/2 z-30 font-marker text-sm md:text-xl text-ink-soft pointer-events-none whitespace-nowrap"
-        >
-          {slides[active]?.title}
-        </motion.div>
-      </AnimatePresence>
+      {/* Active slide title removed per request */}
 
       {/* Progress route */}
       <div className="absolute bottom-3 md:bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1 max-w-[90vw]">
