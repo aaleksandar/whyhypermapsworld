@@ -69,11 +69,19 @@ export function SlidePersonas() {
             whileTap={{ scale: 0.97 }}
           >
             {!seen.has(i) && (
-              <motion.div
-                className="absolute -top-1.5 -right-1.5 z-10 w-3.5 h-3.5 rounded-full bg-pin border-2 border-ink"
-                animate={{ scale: [1, 1.4, 1], boxShadow: ["0 0 0 0 var(--pin)", "0 0 0 8px transparent", "0 0 0 0 var(--pin)"] }}
-                transition={{ duration: 1.4, repeat: Infinity }}
-              />
+              <div className="absolute top-2 right-2 z-20 pointer-events-none">
+                <motion.span
+                  className="absolute rounded-full"
+                  style={{ left: "50%", top: "50%", width: 28, height: 28, transform: "translate(-50%,-50%)", background: "var(--pin)", filter: "blur(8px)" }}
+                  animate={{ scale: [1, 1.6, 1], opacity: [0.7, 0.25, 0.7] }}
+                  transition={{ duration: 1.4, repeat: Infinity }}
+                />
+                <motion.span
+                  className="relative block w-3 h-3 rounded-full bg-pin border-2 border-ink"
+                  animate={{ scale: [1, 1.25, 1] }}
+                  transition={{ duration: 1.4, repeat: Infinity }}
+                />
+              </div>
             )}
             <div
               className="aspect-[3/2] bg-cover bg-no-repeat"
@@ -397,24 +405,32 @@ export function SlideManyWorlds() {
       <p className="text-base md:text-lg text-ink-soft max-w-3xl mb-4 md:mb-5">
         Every community maps the city differently. Step into the worlds of foodies, skaters, architects, musicians, parents, and locals.
       </p>
-      <div className="flex flex-wrap gap-1.5 md:gap-2 mb-4 md:mb-5">
+      <div className="flex flex-wrap gap-2 md:gap-3 mb-4 md:mb-5">
         {worlds.map(w => {
           const isActive = active === w.id;
           return (
-            <motion.button
-              key={w.id}
-              onClick={() => setActive(w.id)}
-              whileTap={{ scale: 0.94 }}
-              animate={!isActive ? { y: [0, -2, 0] } : { y: 0 }}
-              transition={!isActive ? { duration: 1.8, repeat: Infinity, delay: Math.random() * 0.8 } : {}}
-              className={`px-3 py-1.5 md:px-4 md:py-2 rounded-full border-2 border-ink font-marker text-sm md:text-lg transition-all ${
-                isActive
-                  ? "bg-ink text-paper sticker shadow-[3px_3px_0_var(--pin)]"
-                  : "bg-paper hover:bg-mustard shadow-[2px_2px_0_var(--ink)]"
-              }`}
-            >
-              {w.label}
-            </motion.button>
+            <div key={w.id} className="relative">
+              {!isActive && (
+                <motion.span
+                  aria-hidden
+                  className="absolute inset-0 rounded-full pointer-events-none"
+                  style={{ background: "var(--pin)", filter: "blur(12px)" }}
+                  animate={{ opacity: [0.35, 0.7, 0.35], scale: [0.95, 1.1, 0.95] }}
+                  transition={{ duration: 1.8, repeat: Infinity }}
+                />
+              )}
+              <motion.button
+                onClick={() => setActive(w.id)}
+                whileTap={{ scale: 0.94 }}
+                className={`relative px-3 py-1.5 md:px-4 md:py-2 rounded-full border-2 border-ink font-marker text-sm md:text-lg transition-all ${
+                  isActive
+                    ? "bg-ink text-paper sticker shadow-[3px_3px_0_var(--pin)]"
+                    : "bg-paper hover:bg-mustard shadow-[2px_2px_0_var(--ink)]"
+                }`}
+              >
+                {w.label}
+              </motion.button>
+            </div>
           );
         })}
       </div>
@@ -787,20 +803,29 @@ export function SlideAsk() {
               <div className="font-display text-sm md:text-base">{m.text}</div>
             </motion.div>
           ))}
-          <motion.button
-            onClick={() => setStep(s => s >= chatScript.length ? 1 : s + 1)}
-            whileTap={{ scale: 0.95 }}
-            animate={{ scale: [1, 1.04, 1], boxShadow: ["3px 3px 0 var(--ink)", "5px 5px 0 var(--ink)", "3px 3px 0 var(--ink)"] }}
-            transition={{ duration: 1.6, repeat: Infinity }}
-            className="mt-3 md:mt-4 px-5 py-2.5 border-2 border-ink sticker bg-pin text-paper font-marker text-base md:text-lg flex items-center gap-2"
-          >
+          <div className="relative inline-block mt-3 md:mt-4 self-start">
+            <motion.span
+              aria-hidden
+              className="absolute inset-0 rounded pointer-events-none"
+              style={{ background: "var(--pin)", filter: "blur(16px)" }}
+              animate={{ opacity: [0.4, 0.8, 0.4], scale: [0.95, 1.1, 0.95] }}
+              transition={{ duration: 1.6, repeat: Infinity }}
+            />
+            <motion.button
+              onClick={() => setStep(s => s >= chatScript.length ? 1 : s + 1)}
+              whileTap={{ scale: 0.95 }}
+              animate={{ scale: [1, 1.04, 1], boxShadow: ["3px 3px 0 var(--ink)", "5px 5px 0 var(--ink)", "3px 3px 0 var(--ink)"] }}
+              transition={{ duration: 1.6, repeat: Infinity }}
+              className="relative px-5 py-2.5 border-2 border-ink sticker bg-pin text-paper font-marker text-base md:text-lg flex items-center gap-2"
+            >
             {step >= chatScript.length ? "replay ↻" : (
               <>
                 next reply
                 <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 0.9, repeat: Infinity }}>→</motion.span>
               </>
             )}
-          </motion.button>
+            </motion.button>
+          </div>
         </div>
         <div className="relative border-2 border-ink sticker bg-paper-2 aspect-square md:aspect-auto">
           <StylizedMap tint="var(--pin)" showLabels={false}>
@@ -1011,18 +1036,20 @@ function GlowPin({ spot, active, onClick }: { spot: PinSpot; active: boolean; on
       className="absolute group"
       style={{ left: `${spot.x}%`, top: `${spot.y}%`, transform: "translate(-50%,-100%)" }}
     >
-      {/* halo ring to flag inactive pins as tappable */}
+      {/* soft pink interactive halo for inactive pins */}
       {!active && (
         <motion.span
-          className="absolute rounded-full border-2"
+          aria-hidden
+          className="absolute rounded-full pointer-events-none"
           style={{
             left: "50%", top: "100%",
-            width: 44, height: 44,
+            width: 64, height: 64,
             transform: "translate(-50%,-50%)",
-            borderColor: spot.color,
+            background: "var(--pin)",
+            filter: "blur(10px)",
           }}
-          animate={{ scale: [1, 1.8, 1], opacity: [0.9, 0, 0.9] }}
-          transition={{ duration: 1.8, repeat: Infinity }}
+          animate={{ scale: [1, 1.35, 1], opacity: [0.35, 0.85, 0.35] }}
+          transition={{ duration: 1.6, repeat: Infinity }}
         />
       )}
       <motion.span
@@ -1237,17 +1264,28 @@ export function SlideRewards() {
             })}
           </div>
           <div className="flex gap-2 md:gap-3 mt-3 md:mt-4 flex-wrap">
-            <motion.button
-              onClick={() => setCollected((c) => Math.min(loot.length, c + 1))}
-              disabled={collected >= loot.length}
-              whileTap={{ scale: 0.95 }}
-              animate={collected < loot.length ? { scale: [1, 1.05, 1], boxShadow: ["3px 3px 0 var(--ink)", "5px 5px 0 var(--ink)", "3px 3px 0 var(--ink)"] } : {}}
-              transition={{ duration: 1.4, repeat: Infinity }}
-              className="px-3 py-2 md:px-5 md:py-2.5 bg-pin text-paper border-2 border-ink sticker font-marker text-sm md:text-lg disabled:opacity-40 flex items-center gap-2"
-            >
-              contribute
-              <motion.span animate={{ y: [0, -3, 0] }} transition={{ duration: 0.8, repeat: Infinity }}>🎁</motion.span>
-            </motion.button>
+            <div className="relative inline-block">
+              {collected < loot.length && (
+                <motion.span
+                  aria-hidden
+                  className="absolute inset-0 rounded pointer-events-none"
+                  style={{ background: "var(--pin)", filter: "blur(16px)" }}
+                  animate={{ opacity: [0.4, 0.8, 0.4], scale: [0.95, 1.1, 0.95] }}
+                  transition={{ duration: 1.6, repeat: Infinity }}
+                />
+              )}
+              <motion.button
+                onClick={() => setCollected((c) => Math.min(loot.length, c + 1))}
+                disabled={collected >= loot.length}
+                whileTap={{ scale: 0.95 }}
+                animate={collected < loot.length ? { scale: [1, 1.05, 1], boxShadow: ["3px 3px 0 var(--ink)", "5px 5px 0 var(--ink)", "3px 3px 0 var(--ink)"] } : {}}
+                transition={{ duration: 1.4, repeat: Infinity }}
+                className="relative px-3 py-2 md:px-5 md:py-2.5 bg-pin text-paper border-2 border-ink sticker font-marker text-sm md:text-lg disabled:opacity-40 flex items-center gap-2"
+              >
+                contribute
+                <motion.span animate={{ y: [0, -3, 0] }} transition={{ duration: 0.8, repeat: Infinity }}>🎁</motion.span>
+              </motion.button>
+            </div>
             <button
               onClick={() => setCollected(0)}
               className="px-3 py-2 md:px-4 md:py-2.5 bg-paper border-2 border-ink sticker font-marker text-sm md:text-base"
