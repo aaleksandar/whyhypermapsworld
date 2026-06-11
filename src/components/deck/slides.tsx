@@ -455,7 +455,7 @@ const worlds: World[] = [
     label: "👕 Local & affordable fashion",
     tagline: "real prices, real local brands",
     tint: "var(--sage)",
-    filters: ["Under 500k₫", "Local brands", "🔥 Trending on TikTok", "New drops this week", "Thrift / vintage"],
+    filters: ["Under $10", "Local brands", "🔥 Trending on TikTok", "New drops this week", "Thrift / vintage"],
     pins: [
       { x: 25, y: 38, label: "Tan Dinh market", note: "thrift · negotiate hard" },
       { x: 55, y: 24, label: "L Seoul", note: "🔥 trending · viral on TikTok" },
