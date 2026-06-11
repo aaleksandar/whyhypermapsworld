@@ -45,23 +45,41 @@ const personaQuotes = [
 ];
 export function SlidePersonas() {
   const [hover, setHover] = useState<number | null>(null);
+  const [seen, setSeen] = useState<Set<number>>(new Set());
+  const touch = (i: number) => {
+    setHover(hover === i ? null : i);
+    setSeen((s) => new Set(s).add(i));
+  };
   return (
     <SlideShell>
       <Eyebrow>problem 01</Eyebrow>
-      <H1 className="text-3xl md:text-6xl max-w-4xl mb-6 md:mb-10">
+      <H1 className="text-3xl md:text-6xl max-w-4xl mb-3 md:mb-6">
         The same city means <span className="text-terracotta italic">different things</span> to different people.
       </H1>
+      <p className="font-marker text-sm md:text-base text-terracotta mb-4 md:mb-6 animate-pulse">
+        👆 tap a face to hear what they're really asking
+      </p>
       <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-3 md:grid-rows-2 gap-3 md:gap-6 flex-1 max-w-5xl">
         {personaQuotes.map((p, i) => (
           <motion.div
             key={i}
             onMouseEnter={() => setHover(i)}
             onMouseLeave={() => setHover(null)}
-            onClick={() => setHover(hover === i ? null : i)}
+            onClick={() => touch(i)}
             className="relative bg-paper border-2 border-ink sticker p-2 md:p-4 overflow-hidden cursor-pointer"
             style={{ transform: `rotate(${[-1.5, 1, -0.5, 1.5, -1, 0.8][i]}deg)` }}
             whileHover={{ scale: 1.04, zIndex: 5 }}
+            whileTap={{ scale: 0.97 }}
           >
+            {!seen.has(i) && (
+              <motion.div
+                className="absolute -top-2 -right-2 z-10 w-7 h-7 rounded-full bg-pin border-2 border-ink grid place-items-center text-paper font-marker text-xs shadow-[2px_2px_0_var(--ink)]"
+                animate={{ scale: [1, 1.15, 1] }}
+                transition={{ duration: 1.2, repeat: Infinity }}
+              >
+                tap
+              </motion.div>
+            )}
             <div
               className="aspect-[3/2] bg-cover bg-no-repeat"
               style={{
@@ -384,18 +402,35 @@ export function SlideManyWorlds() {
       <p className="text-base md:text-lg text-ink-soft max-w-3xl mb-4 md:mb-5">
         Every community maps the city differently. Step into the worlds of foodies, skaters, architects, musicians, parents, and locals.
       </p>
+      <div className="flex items-center gap-2 mb-2">
+        <motion.span
+          className="font-marker text-sm md:text-base text-terracotta"
+          animate={{ x: [0, 4, 0] }}
+          transition={{ duration: 1.4, repeat: Infinity }}
+        >
+          👇 switch worlds
+        </motion.span>
+      </div>
       <div className="flex flex-wrap gap-1.5 md:gap-2 mb-4 md:mb-5">
-        {worlds.map(w => (
-          <button
-            key={w.id}
-            onClick={() => setActive(w.id)}
-            className={`px-3 py-1.5 md:px-4 md:py-2 rounded-full border-2 border-ink font-marker text-sm md:text-lg transition-all ${
-              active === w.id ? "bg-ink text-paper sticker" : "bg-paper hover:bg-paper-2"
-            }`}
-          >
-            {w.label}
-          </button>
-        ))}
+        {worlds.map(w => {
+          const isActive = active === w.id;
+          return (
+            <motion.button
+              key={w.id}
+              onClick={() => setActive(w.id)}
+              whileTap={{ scale: 0.94 }}
+              animate={!isActive ? { y: [0, -2, 0] } : { y: 0 }}
+              transition={!isActive ? { duration: 1.8, repeat: Infinity, delay: Math.random() * 0.8 } : {}}
+              className={`px-3 py-1.5 md:px-4 md:py-2 rounded-full border-2 border-ink font-marker text-sm md:text-lg transition-all ${
+                isActive
+                  ? "bg-ink text-paper sticker shadow-[3px_3px_0_var(--pin)]"
+                  : "bg-paper hover:bg-mustard shadow-[2px_2px_0_var(--ink)]"
+              }`}
+            >
+              {w.label}
+            </motion.button>
+          );
+        })}
       </div>
       <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 min-h-0">
         {/* Map */}
@@ -766,12 +801,20 @@ export function SlideAsk() {
               <div className="font-display text-sm md:text-base">{m.text}</div>
             </motion.div>
           ))}
-          <button
+          <motion.button
             onClick={() => setStep(s => s >= chatScript.length ? 1 : s + 1)}
-            className="mt-3 md:mt-4 px-4 py-2 border-2 border-ink sticker bg-paper hover:bg-mustard font-marker text-base md:text-lg"
+            whileTap={{ scale: 0.95 }}
+            animate={{ scale: [1, 1.04, 1], boxShadow: ["3px 3px 0 var(--ink)", "5px 5px 0 var(--ink)", "3px 3px 0 var(--ink)"] }}
+            transition={{ duration: 1.6, repeat: Infinity }}
+            className="mt-3 md:mt-4 px-5 py-2.5 border-2 border-ink sticker bg-pin text-paper font-marker text-base md:text-lg flex items-center gap-2"
           >
-            {step >= chatScript.length ? "replay ↻" : "next reply →"}
-          </button>
+            {step >= chatScript.length ? "replay ↻" : (
+              <>
+                tap for next reply
+                <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 0.9, repeat: Infinity }}>→</motion.span>
+              </>
+            )}
+          </motion.button>
         </div>
         <div className="relative border-2 border-ink sticker bg-paper-2 aspect-square md:aspect-auto">
           <StylizedMap tint="var(--pin)" showLabels={false}>
@@ -978,9 +1021,24 @@ function GlowPin({ spot, active, onClick }: { spot: PinSpot; active: boolean; on
   return (
     <button
       onClick={onClick}
-      className="absolute"
+      aria-label={`Show ${spot.name}`}
+      className="absolute group"
       style={{ left: `${spot.x}%`, top: `${spot.y}%`, transform: "translate(-50%,-100%)" }}
     >
+      {/* halo ring to flag inactive pins as tappable */}
+      {!active && (
+        <motion.span
+          className="absolute rounded-full border-2"
+          style={{
+            left: "50%", top: "100%",
+            width: 44, height: 44,
+            transform: "translate(-50%,-50%)",
+            borderColor: spot.color,
+          }}
+          animate={{ scale: [1, 1.8, 1], opacity: [0.9, 0, 0.9] }}
+          transition={{ duration: 1.8, repeat: Infinity }}
+        />
+      )}
       <motion.span
         className="absolute rounded-full"
         style={{
@@ -989,24 +1047,34 @@ function GlowPin({ spot, active, onClick }: { spot: PinSpot; active: boolean; on
           transform: "translate(-50%,-50%)",
           background: spot.color,
           filter: "blur(14px)",
-          opacity: active ? 0.7 : 0.35,
+          opacity: active ? 0.7 : 0.45,
         }}
-        animate={active ? { scale: [1, 1.3, 1] } : { scale: [1, 1.15, 1] }}
-        transition={{ duration: active ? 1.2 : 2.4, repeat: Infinity }}
+        animate={active ? { scale: [1, 1.3, 1] } : { scale: [1, 1.25, 1] }}
+        transition={{ duration: active ? 1.2 : 1.8, repeat: Infinity }}
       />
       <motion.div
-        animate={{ y: active ? [0, -6, 0] : [0, -3, 0] }}
-        transition={{ duration: active ? 0.8 : 1.6, repeat: Infinity }}
+        animate={{ y: active ? [0, -6, 0] : [0, -4, 0] }}
+        transition={{ duration: active ? 0.8 : 1.2, repeat: Infinity }}
         className="relative"
       >
-        <svg width={active ? 36 : 28} height={(active ? 36 : 28) * 1.4} viewBox="0 0 22 30">
+        <svg width={active ? 36 : 30} height={(active ? 36 : 30) * 1.4} viewBox="0 0 22 30">
           <path d="M11 0 C 4 0 0 5 0 11 C 0 18 11 30 11 30 C 11 30 22 18 22 11 C 22 5 18 0 11 0 Z"
             fill={spot.color} stroke="var(--ink)" strokeWidth="1.5"/>
           <circle cx="11" cy="11" r="4" fill="var(--paper)"/>
         </svg>
-        <div className="absolute left-1/2 -translate-x-1/2 -top-7 font-marker text-base whitespace-nowrap bg-paper border border-ink/50 px-2 rounded sticker">
-          {active ? spot.name : "tap me"}
-        </div>
+        {active ? (
+          <div className="absolute left-1/2 -translate-x-1/2 -top-7 font-marker text-base whitespace-nowrap bg-paper border border-ink/50 px-2 rounded sticker">
+            {spot.name}
+          </div>
+        ) : (
+          <motion.div
+            className="absolute left-1/2 -translate-x-1/2 -top-8 font-marker text-[11px] whitespace-nowrap bg-pin text-paper border-2 border-ink px-1.5 py-0.5 rounded sticker shadow-[2px_2px_0_var(--ink)]"
+            animate={{ y: [0, -2, 0] }}
+            transition={{ duration: 1, repeat: Infinity }}
+          >
+            👆 tap
+          </motion.div>
+        )}
       </motion.div>
     </button>
   );
@@ -1191,13 +1259,17 @@ export function SlideRewards() {
             })}
           </div>
           <div className="flex gap-2 md:gap-3 mt-3 md:mt-4 flex-wrap">
-            <button
+            <motion.button
               onClick={() => setCollected((c) => Math.min(loot.length, c + 1))}
               disabled={collected >= loot.length}
-              className="px-3 py-2 md:px-5 md:py-2.5 bg-pin text-paper border-2 border-ink sticker font-marker text-sm md:text-lg disabled:opacity-40"
+              whileTap={{ scale: 0.95 }}
+              animate={collected < loot.length ? { scale: [1, 1.05, 1], boxShadow: ["3px 3px 0 var(--ink)", "5px 5px 0 var(--ink)", "3px 3px 0 var(--ink)"] } : {}}
+              transition={{ duration: 1.4, repeat: Infinity }}
+              className="px-3 py-2 md:px-5 md:py-2.5 bg-pin text-paper border-2 border-ink sticker font-marker text-sm md:text-lg disabled:opacity-40 flex items-center gap-2"
             >
-              + contribute → drop loot
-            </button>
+              👆 tap to contribute
+              <motion.span animate={{ y: [0, -3, 0] }} transition={{ duration: 0.8, repeat: Infinity }}>🎁</motion.span>
+            </motion.button>
             <button
               onClick={() => setCollected(0)}
               className="px-3 py-2 md:px-4 md:py-2.5 bg-paper border-2 border-ink sticker font-marker text-sm md:text-base"
