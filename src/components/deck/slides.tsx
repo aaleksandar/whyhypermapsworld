@@ -801,12 +801,20 @@ export function SlideAsk() {
               <div className="font-display text-sm md:text-base">{m.text}</div>
             </motion.div>
           ))}
-          <button
+          <motion.button
             onClick={() => setStep(s => s >= chatScript.length ? 1 : s + 1)}
-            className="mt-3 md:mt-4 px-4 py-2 border-2 border-ink sticker bg-paper hover:bg-mustard font-marker text-base md:text-lg"
+            whileTap={{ scale: 0.95 }}
+            animate={{ scale: [1, 1.04, 1], boxShadow: ["3px 3px 0 var(--ink)", "5px 5px 0 var(--ink)", "3px 3px 0 var(--ink)"] }}
+            transition={{ duration: 1.6, repeat: Infinity }}
+            className="mt-3 md:mt-4 px-5 py-2.5 border-2 border-ink sticker bg-pin text-paper font-marker text-base md:text-lg flex items-center gap-2"
           >
-            {step >= chatScript.length ? "replay ↻" : "next reply →"}
-          </button>
+            {step >= chatScript.length ? "replay ↻" : (
+              <>
+                tap for next reply
+                <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 0.9, repeat: Infinity }}>→</motion.span>
+              </>
+            )}
+          </motion.button>
         </div>
         <div className="relative border-2 border-ink sticker bg-paper-2 aspect-square md:aspect-auto">
           <StylizedMap tint="var(--pin)" showLabels={false}>
