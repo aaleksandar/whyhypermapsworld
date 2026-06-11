@@ -14,6 +14,47 @@ import profileMichelin from "@/assets/profile-michelin.jpg";
 import profileRA from "@/assets/profile-ra.jpg";
 import profileTre from "@/assets/profile-tre.jpg";
 
+/* Animated cursor hint — loops a move + click ripple to teach the user this is clickable. */
+export function CursorHint({
+  x, y, show = true, label, delay = 0,
+}: { x: number | string; y: number | string; show?: boolean; label?: string; delay?: number }) {
+  return (
+    <AnimatePresence>
+      {show && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0, scale: 0.6 }}
+          transition={{ delay }}
+          className="absolute pointer-events-none z-30"
+          style={{ left: typeof x === "number" ? `${x}%` : x, top: typeof y === "number" ? `${y}%` : y }}
+        >
+          <motion.div
+            animate={{ x: [0, 8, 0, 0], y: [0, 6, 0, 0], scale: [1, 1, 0.85, 1] }}
+            transition={{ duration: 1.8, repeat: Infinity, times: [0, 0.35, 0.55, 1], ease: "easeInOut" }}
+            className="relative"
+          >
+            {/* click ripple */}
+            <motion.span
+              className="absolute -left-1 -top-1 block w-8 h-8 rounded-full border-2 border-ink"
+              animate={{ scale: [0, 1.6], opacity: [0.8, 0] }}
+              transition={{ duration: 0.9, repeat: Infinity, repeatDelay: 0.9, delay: 0.45, ease: "easeOut" }}
+            />
+            <svg width="26" height="30" viewBox="0 0 26 30" className="drop-shadow-[2px_2px_0_rgba(26,23,20,0.35)]">
+              <path d="M3 2 L3 24 L9 19 L13 28 L17 26 L13 17 L21 17 Z" fill="var(--paper)" stroke="var(--ink)" strokeWidth="2" strokeLinejoin="round" />
+            </svg>
+            {label && (
+              <div className="absolute left-7 top-6 font-marker text-sm md:text-base text-terracotta bg-paper/90 border border-ink px-1.5 py-0.5 whitespace-nowrap">
+                {label}
+              </div>
+            )}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 
 /* 1. Cover */
 export function SlideCover() {
