@@ -1287,19 +1287,19 @@ export function SlideCompetition() {
   return (
     <SlideShell>
       <Eyebrow>competition</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-3xl mb-8">
+      <H1 className="text-4xl md:text-6xl max-w-3xl mb-6 md:mb-8">
         Nobody is <span className="italic text-pin">both</span> personal <em>and</em> alive.
       </H1>
-      <div className="flex-1 relative grid grid-cols-[1fr_auto] gap-4">
-        <div className="relative border-2 border-ink sticker bg-paper-2">
+      <div className="flex-1 relative grid grid-cols-1 md:grid-cols-[1fr_auto] gap-4">
+        <div className="relative border-2 border-ink sticker bg-paper-2 aspect-square md:aspect-auto">
           {/* Axes */}
           <div className="absolute left-1/2 top-0 bottom-0 border-l-2 border-dashed border-ink/40" />
           <div className="absolute top-1/2 left-0 right-0 border-t-2 border-dashed border-ink/40" />
           {/* labels */}
-          <div className="absolute top-2 left-1/2 -translate-x-1/2 font-marker text-lg text-ink-soft">↑ living map</div>
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 font-marker text-lg text-ink-soft">static lists ↓</div>
-          <div className="absolute left-2 top-1/2 -translate-y-1/2 -rotate-90 font-marker text-lg text-ink-soft">generic ←</div>
-          <div className="absolute right-2 top-1/2 -translate-y-1/2 rotate-90 font-marker text-lg text-ink-soft">→ personal</div>
+          <div className="absolute top-1.5 md:top-2 left-1/2 -translate-x-1/2 font-marker text-sm md:text-lg text-ink-soft">↑ living</div>
+          <div className="absolute bottom-1.5 md:bottom-2 left-1/2 -translate-x-1/2 font-marker text-sm md:text-lg text-ink-soft">static ↓</div>
+          <div className="absolute left-1.5 top-1/2 -translate-y-1/2 font-marker text-sm md:text-lg text-ink-soft md:-rotate-90">← generic</div>
+          <div className="absolute right-1.5 top-1/2 -translate-y-1/2 font-marker text-sm md:text-lg text-ink-soft md:rotate-90">personal →</div>
           {/* dots */}
           {competitors.map((c) => (
             <div
@@ -1307,8 +1307,8 @@ export function SlideCompetition() {
               className="absolute"
               style={{ left: `${c.x}%`, top: `${c.y}%`, transform: "translate(-50%,-50%)" }}
             >
-              <div className="w-3 h-3 rounded-full bg-ink/70" />
-              <div className="font-marker text-sm text-ink-soft whitespace-nowrap mt-1">{c.name}</div>
+              <div className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-ink/70" />
+              <div className="font-marker text-[10px] md:text-sm text-ink-soft whitespace-nowrap mt-1">{c.name}</div>
             </div>
           ))}
           {/* us */}
@@ -1319,15 +1319,15 @@ export function SlideCompetition() {
             className="absolute"
             style={{ left: "82%", top: "15%", transform: "translate(-50%,-50%)" }}
           >
-            <div className="bg-pin border-2 border-ink sticker px-3 py-1.5 font-display font-bold text-paper">
-              hypermaps.world
+            <div className="bg-pin border-2 border-ink sticker px-2 py-1 md:px-3 md:py-1.5 font-display font-bold text-xs md:text-base text-paper whitespace-nowrap">
+              hypermaps
             </div>
-            <svg className="absolute -bottom-4 left-1/2 -translate-x-1/2" width="20" height="14" viewBox="0 0 20 14">
+            <svg className="absolute -bottom-3 md:-bottom-4 left-1/2 -translate-x-1/2" width="20" height="14" viewBox="0 0 20 14">
               <path d="M 0 0 L 20 0 L 10 14 Z" fill="var(--pin)" stroke="var(--ink)" strokeWidth="1.5" />
             </svg>
           </motion.div>
         </div>
-        <div className="w-64 flex flex-col justify-center text-ink-soft text-sm space-y-3">
+        <div className="md:w-64 flex flex-col md:justify-center text-ink-soft text-sm md:text-base space-y-2 md:space-y-3">
           <p><b className="text-ink">Up-right</b> is empty. That's where a map of <em>your</em> world lives.</p>
           <p>Everyone else is either generic or frozen in time.</p>
         </div>
