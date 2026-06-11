@@ -58,7 +58,7 @@ export function StylizedMap({
           fill="none"
         />
         {showLabels && (
-          <g fontFamily="Caveat, cursive" fontSize="2.4" fill="var(--ink-soft)">
+          <g fontFamily="Caveat, cursive" fontSize="3.4" fill="var(--ink-soft)">
             <text x="20" y="20">park</text>
             <text x="64" y="16">district 1</text>
             <text x="44" y="38">canal</text>
