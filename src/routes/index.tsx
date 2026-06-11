@@ -25,7 +25,6 @@ const slides = [
   { id: "stuck",       title: "the incumbent is stuck",render: () => <SlideStuck /> },
   { id: "solution",    title: "the solution",          render: () => <SlideSolutionHero /> },
   { id: "worlds",      title: "many worlds",           render: () => <SlideManyWorlds /> },
-  { id: "layers",      title: "layers",                render: () => <SlideLayers /> },
   { id: "vibes",       title: "matching your vibe",    render: () => <SlideVibes /> },
   { id: "character",   title: "you, the character",    render: () => <SlideCharacter /> },
   { id: "ask",         title: "ask the area",          render: () => <SlideAsk /> },
