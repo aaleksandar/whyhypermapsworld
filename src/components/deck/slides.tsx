@@ -793,9 +793,16 @@ export function SlideAsk() {
   );
 }
 
-/* 11. Pin context */
+/* 11. Pin context — what every community remembers about this place */
 type PinPhoto = { label: string; draw: (c: string) => React.ReactNode };
-type PinThread = { q: string; replies: number; hot?: boolean };
+type Verdict = "love" | "avoid" | "mixed";
+type Perspective = {
+  community: string;
+  emoji: string;
+  verdict: Verdict;
+  insight: string;
+  voices: number;
+};
 type PinSpot = {
   name: string;
   kind: string;
@@ -804,9 +811,9 @@ type PinSpot = {
   highlights: string[];
   bestFor: string;
   photos: PinPhoto[];
-  threads: PinThread[];
+  perspectives: Perspective[];
   aiSummary: string;
-  threadCount: number;
+  totalVoices: number;
   friends: number;
 };
 
@@ -890,6 +897,29 @@ const draw = {
 
 const spots: PinSpot[] = [
   {
+    name: "Slow Hours Café", kind: "cool café", x: 60, y: 22, color: "var(--terracotta)",
+    highlights: ["Fast wifi 220Mbps", "Outlets at every table", "Sugar-free menu"],
+    bestFor: "deep-work mornings and a sugar-free matcha",
+    photos: [
+      { label: "pour-over", draw: draw.cup },
+      { label: "plant wall", draw: draw.plants },
+      { label: "corner seat", draw: draw.seat },
+    ],
+    perspectives: [
+      { community: "Digital nomads", emoji: "💻", verdict: "love",
+        insight: "Big tables, outlet at every seat, wifi 220Mbps. Best deep-work spot in D3.", voices: 184 },
+      { community: "Parents",        emoji: "👶", verdict: "avoid",
+        insight: "Guests glare the moment kids make noise. Vibe shifts instantly — kids feel they're 'ruining' the room.", voices: 41 },
+      { community: "Zero-sugar",     emoji: "🚫", verdict: "love",
+        insight: "Unsweetened matcha, sugar-free syrups, sparkling water on tap. Owner gets it.", voices: 58 },
+      { community: "Vegans",         emoji: "🌱", verdict: "mixed",
+        insight: "Only one vegan pastry. Oat milk costs +20k. No real plant-based meal.", voices: 26 },
+    ],
+    totalVoices: 309,
+    aiSummary: "Loved by nomads and the zero-sugar crowd. Avoid with small kids — the room punishes noise. Vegans have one option, that's it.",
+    friends: 7,
+  },
+  {
     name: "Iron + Oak Gym", kind: "gym", x: 30, y: 32, color: "var(--pin)",
     highlights: ["Open 24h", "Bumper plates", "Women-only hour 7-9pm"],
     bestFor: "serious lifters who hate waiting for a rack",
@@ -898,52 +928,50 @@ const spots: PinSpot[] = [
       { label: "showers", draw: draw.shower },
       { label: "yoga corner", draw: draw.yoga },
     ],
-    threads: [
-      { q: "Is it safe for women at night?", replies: 47, hot: true },
-      { q: "Air quality / ventilation?", replies: 22 },
-      { q: "Do they have deadlift platforms?", replies: 14 },
+    perspectives: [
+      { community: "Lifters",   emoji: "🏋", verdict: "love",
+        insight: "8 racks, bumper plates, deadlift platforms. You never wait.", voices: 210 },
+      { community: "Women",     emoji: "♀",  verdict: "love",
+        insight: "Women-only hour 7-9pm, always staffed. Feels safe at night.", voices: 92 },
+      { community: "Beginners", emoji: "🌱", verdict: "mixed",
+        insight: "No intro classes. Regulars are intense — can feel intimidating week one.", voices: 34 },
+      { community: "Nomads",    emoji: "💻", verdict: "avoid",
+        insight: "No lounge, lockers too small for a laptop. Not a 'gym + work' spot.", voices: 18 },
     ],
-    threadCount: 83,
-    aiSummary: "Locals say it's the cleanest rack-heavy gym in D3. Women feel safe after 7pm (staffed). A/C struggles on Saturday mornings.",
+    totalVoices: 354,
+    aiSummary: "Best lifting gym in D3 and safe for women after dark. Beginners feel out of place; not built for laptop-toting nomads.",
     friends: 4,
   },
   {
-    name: "Slow Hours Café", kind: "cool café", x: 60, y: 22, color: "var(--terracotta)",
-    highlights: ["Fast wifi", "Outlets at every table", "Quiet 'til 11am"],
-    bestFor: "long deep-work sessions and a good matcha",
-    photos: [
-      { label: "pour-over", draw: draw.cup },
-      { label: "plant wall", draw: draw.plants },
-      { label: "corner seat", draw: draw.seat },
-    ],
-    threads: [
-      { q: "Wifi speed for video calls?", replies: 31, hot: true },
-      { q: "Outlets near the window?", replies: 12 },
-      { q: "Loud after 2pm?", replies: 9 },
-    ],
-    threadCount: 52,
-    aiSummary: "Best café in the area for laptop work mornings. Wifi 200+ Mbps. Gets loud after 2pm — bring headphones or leave by then.",
-    friends: 7,
-  },
-  {
     name: "Hum Vegan Kitchen", kind: "vegan spot", x: 48, y: 48, color: "var(--sage)",
-    highlights: ["Fully vegan", "GF marked", "Owner is vegan"],
+    highlights: ["100% vegan kitchen", "GF marked", "Kids menu"],
     bestFor: "strict vegans who also need gluten-free",
     photos: [
       { label: "buddha bowl", draw: draw.bowl },
       { label: "tofu mapo", draw: draw.leaf },
       { label: "menu", draw: draw.menu },
     ],
-    threads: [
-      { q: "Are the noodles really GF?", replies: 28, hot: true },
-      { q: "Soy-free options?", replies: 18 },
-      { q: "Owner vegan or just vegan-friendly?", replies: 11 },
+    perspectives: [
+      { community: "Vegans",       emoji: "🌱", verdict: "love",
+        insight: "100% vegan kitchen, owner is vegan, zero cross-contact risk.", voices: 167 },
+      { community: "Celiac / GF",  emoji: "🌾", verdict: "love",
+        insight: "GF noodles use rice flour, marked clearly on the menu.", voices: 73 },
+      { community: "Parents",      emoji: "👶", verdict: "love",
+        insight: "Kids menu, crayons, high chairs. Staff actually smile at toddlers.", voices: 49 },
+      { community: "Meat-eaters",  emoji: "🍖", verdict: "mixed",
+        insight: "Tofu mapo converts skeptics. Portions feel small if you're hungry.", voices: 22 },
     ],
-    threadCount: 57,
-    aiSummary: "Genuinely 100% vegan kitchen, no cross-contact. GF noodles use rice flour. Soy-free menu exists but you have to ask.",
+    totalVoices: 311,
+    aiSummary: "A safe yes for vegans, celiacs, and families with small kids. Big appetites should order an extra side.",
     friends: 3,
   },
 ];
+
+const verdictStyle: Record<Verdict, { bg: string; label: string; tone: string }> = {
+  love:  { bg: "bg-sage/30",       label: "LOVE",  tone: "text-sage" },
+  avoid: { bg: "bg-terracotta/25", label: "AVOID", tone: "text-terracotta" },
+  mixed: { bg: "bg-mustard/40",    label: "MIXED", tone: "text-ink-soft" },
+};
 
 function GlowPin({ spot, active, onClick }: { spot: PinSpot; active: boolean; onClick: () => void }) {
   return (
@@ -952,7 +980,6 @@ function GlowPin({ spot, active, onClick }: { spot: PinSpot; active: boolean; on
       className="absolute"
       style={{ left: `${spot.x}%`, top: `${spot.y}%`, transform: "translate(-50%,-100%)" }}
     >
-      {/* glow halo */}
       <motion.span
         className="absolute rounded-full"
         style={{
@@ -991,10 +1018,10 @@ export function SlidePin() {
     <SlideShell>
       <Eyebrow>pin context</Eyebrow>
       <H1 className="text-5xl md:text-6xl max-w-4xl mb-2">
-        Tap a pin. See <span className="italic text-pin">what you actually care about.</span>
+        Every place remembers <span className="italic text-pin">what each community said.</span>
       </H1>
-      <p className="text-lg text-ink-soft max-w-2xl mb-5">
-        Photos that matter, an AI-summarized community thread, and the highlights people <em>actually</em> show up for.
+      <p className="text-lg text-ink-soft max-w-3xl mb-5">
+        Tap a pin — see how parents, nomads, vegans, lifters and more actually experienced it. Plus the photos, the highlights, and an AI summary of the room.
       </p>
       <div className="flex-1 grid grid-cols-5 gap-6 min-h-0">
         {/* map */}
@@ -1020,38 +1047,45 @@ export function SlidePin() {
               transition={{ duration: 0.25 }}
               className="contents"
             >
+              {/* community history — the hero of this slide */}
+              <PaperCard rotate={0.4} className="min-h-0 overflow-hidden">
+                <div className="flex items-baseline justify-between mb-2">
+                  <div className="font-marker text-lg text-terracotta">community history · {d.name}</div>
+                  <div className="font-marker text-sm text-ink-soft">{d.totalVoices} voices · {d.friends} friends</div>
+                </div>
+                <div className="bg-mustard/60 border border-ink/40 p-3 mb-3">
+                  <div className="font-marker text-xs uppercase tracking-wider text-ink-soft mb-1">✦ AI summary</div>
+                  <div className="font-display text-[15px] leading-snug">{d.aiSummary}</div>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  {d.perspectives.map((p) => {
+                    const v = verdictStyle[p.verdict];
+                    return (
+                      <div key={p.community} className={`border border-ink/50 p-2.5 ${v.bg}`}>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-lg leading-none">{p.emoji}</span>
+                          <span className="font-display font-bold text-[14px] flex-1">{p.community}</span>
+                          <span className={`font-marker text-[10px] px-1.5 py-0.5 bg-paper border border-ink/60 ${v.tone}`}>{v.label}</span>
+                        </div>
+                        <div className="font-display text-[12px] leading-snug text-ink">{p.insight}</div>
+                        <div className="font-marker text-[10px] text-ink-soft mt-1">{p.voices} voices</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </PaperCard>
+
               {/* photos */}
               <PaperCard rotate={-0.5}>
                 <div className="flex items-baseline justify-between mb-2">
                   <div className="font-marker text-lg text-terracotta">photos that matter</div>
-                  <div className="font-display text-2xl">{d.name}</div>
+                  <div className="font-marker text-sm text-ink-soft">picked from community uploads</div>
                 </div>
                 <div className="grid grid-cols-3 gap-3">
                   {d.photos.map((p) => (
                     <div key={p.label} className="border border-ink/40 bg-paper-2 p-2 flex flex-col">
                       <div className="aspect-[4/3]">{p.draw(d.color)}</div>
                       <div className="font-marker text-sm text-ink-soft mt-1 text-center">{p.label}</div>
-                    </div>
-                  ))}
-                </div>
-              </PaperCard>
-
-              {/* threads + AI summary */}
-              <PaperCard rotate={0.4} className="min-h-0 overflow-hidden">
-                <div className="flex items-baseline justify-between mb-2">
-                  <div className="font-marker text-lg text-terracotta">community threads</div>
-                  <div className="font-marker text-sm text-ink-soft">{d.threadCount} discussions · {d.friends} friends here</div>
-                </div>
-                <div className="bg-mustard/60 border border-ink/40 p-3 mb-3">
-                  <div className="font-marker text-xs uppercase tracking-wider text-ink-soft mb-1">✦ AI summary</div>
-                  <div className="font-display text-[15px] leading-snug">{d.aiSummary}</div>
-                </div>
-                <div className="space-y-2">
-                  {d.threads.map((t) => (
-                    <div key={t.q} className="flex items-center gap-3 border-l-4 border-pin pl-3 py-1">
-                      <div className="font-display flex-1">{t.q}</div>
-                      {t.hot && <span className="font-marker text-xs text-terracotta">🔥 hot</span>}
-                      <span className="font-marker text-sm text-ink-soft">{t.replies} replies</span>
                     </div>
                   ))}
                 </div>
