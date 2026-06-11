@@ -1018,27 +1018,27 @@ export function SlidePin() {
   return (
     <SlideShell>
       <Eyebrow>pin context</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-4xl mb-2">
+      <H1 className="text-3xl md:text-6xl max-w-4xl mb-2">
         Every place remembers <span className="italic text-pin">what each community said.</span>
       </H1>
-      <p className="text-lg text-ink-soft max-w-3xl mb-5">
+      <p className="text-sm md:text-lg text-ink-soft max-w-3xl mb-4 md:mb-5">
         Tap a pin — see how parents, nomads, vegans, lifters and more actually experienced it. Plus the photos, the highlights, and an AI summary of the room.
       </p>
-      <div className="flex-1 grid grid-cols-5 gap-6 min-h-0">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-6 min-h-0">
         {/* map */}
-        <div className="col-span-2 border-2 border-ink sticker bg-paper relative overflow-hidden">
+        <div className="md:col-span-2 border-2 border-ink sticker bg-paper relative overflow-hidden aspect-[4/3] md:aspect-auto">
           <StylizedMap tint={d.color} showLabels={false}>
             {spots.map((s, i) => (
               <GlowPin key={s.name} spot={s} active={i === idx} onClick={() => setIdx(i)} />
             ))}
           </StylizedMap>
-          <div className="absolute bottom-3 left-3 right-3 font-marker text-sm text-ink-soft bg-paper/80 px-2 py-1 rounded">
+          <div className="absolute bottom-2 left-2 right-2 md:bottom-3 md:left-3 md:right-3 font-marker text-xs md:text-sm text-ink-soft bg-paper/80 px-2 py-1 rounded">
             ↑ tap any glowing pin
           </div>
         </div>
 
         {/* detail panel */}
-        <div className="col-span-3 grid grid-rows-[auto_1fr_auto] gap-4 min-h-0">
+        <div className="md:col-span-3 grid grid-rows-[auto_auto_auto] md:grid-rows-[auto_1fr_auto] gap-3 md:gap-4 min-h-0">
           <AnimatePresence mode="wait">
             <motion.div
               key={d.name}
@@ -1050,25 +1050,25 @@ export function SlidePin() {
             >
               {/* community history — the hero of this slide */}
               <PaperCard rotate={0.4} className="min-h-0 overflow-hidden">
-                <div className="flex items-baseline justify-between mb-2">
-                  <div className="font-marker text-lg text-terracotta">community history · {d.name}</div>
-                  <div className="font-marker text-sm text-ink-soft">{d.totalVoices} voices · {d.friends} friends</div>
+                <div className="flex items-baseline justify-between mb-2 gap-2">
+                  <div className="font-marker text-sm md:text-lg text-terracotta truncate">community · {d.name}</div>
+                  <div className="font-marker text-xs md:text-sm text-ink-soft shrink-0">{d.totalVoices} voices · {d.friends} friends</div>
                 </div>
-                <div className="bg-mustard/60 border border-ink/40 p-3 mb-3">
-                  <div className="font-marker text-xs uppercase tracking-wider text-ink-soft mb-1">✦ AI summary</div>
-                  <div className="font-display text-[15px] leading-snug">{d.aiSummary}</div>
+                <div className="bg-mustard/60 border border-ink/40 p-2.5 md:p-3 mb-3">
+                  <div className="font-marker text-[10px] md:text-xs uppercase tracking-wider text-ink-soft mb-1">✦ AI summary</div>
+                  <div className="font-display text-[13px] md:text-[15px] leading-snug">{d.aiSummary}</div>
                 </div>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {d.perspectives.map((p) => {
                     const v = verdictStyle[p.verdict];
                     return (
-                      <div key={p.community} className={`border border-ink/50 p-2.5 ${v.bg}`}>
+                      <div key={p.community} className={`border border-ink/50 p-2 md:p-2.5 ${v.bg}`}>
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-lg leading-none">{p.emoji}</span>
-                          <span className="font-display font-bold text-[14px] flex-1">{p.community}</span>
-                          <span className={`font-marker text-[10px] px-1.5 py-0.5 bg-paper border border-ink/60 ${v.tone}`}>{v.label}</span>
+                          <span className="text-base md:text-lg leading-none">{p.emoji}</span>
+                          <span className="font-display font-bold text-[12px] md:text-[14px] flex-1 min-w-0 truncate">{p.community}</span>
+                          <span className={`font-marker text-[9px] md:text-[10px] px-1.5 py-0.5 bg-paper border border-ink/60 ${v.tone}`}>{v.label}</span>
                         </div>
-                        <div className="font-display text-[12px] leading-snug text-ink">{p.insight}</div>
+                        <div className="font-display text-[11px] md:text-[12px] leading-snug text-ink">{p.insight}</div>
                         <div className="font-marker text-[10px] text-ink-soft mt-1">{p.voices} voices</div>
                       </div>
                     );
@@ -1078,15 +1078,15 @@ export function SlidePin() {
 
               {/* photos */}
               <PaperCard rotate={-0.5}>
-                <div className="flex items-baseline justify-between mb-2">
-                  <div className="font-marker text-lg text-terracotta">photos that matter</div>
-                  <div className="font-marker text-sm text-ink-soft">picked from community uploads</div>
+                <div className="flex items-baseline justify-between mb-2 gap-2">
+                  <div className="font-marker text-sm md:text-lg text-terracotta">photos that matter</div>
+                  <div className="font-marker text-xs md:text-sm text-ink-soft shrink-0 hidden sm:block">picked from community uploads</div>
                 </div>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-3 gap-2 md:gap-3">
                   {d.photos.map((p) => (
-                    <div key={p.label} className="border border-ink/40 bg-paper-2 p-2 flex flex-col">
+                    <div key={p.label} className="border border-ink/40 bg-paper-2 p-1.5 md:p-2 flex flex-col">
                       <div className="aspect-[4/3]">{p.draw(d.color)}</div>
-                      <div className="font-marker text-sm text-ink-soft mt-1 text-center">{p.label}</div>
+                      <div className="font-marker text-xs md:text-sm text-ink-soft mt-1 text-center">{p.label}</div>
                     </div>
                   ))}
                 </div>
@@ -1094,13 +1094,13 @@ export function SlidePin() {
 
               {/* highlights */}
               <PaperCard rotate={-0.3} className="bg-mustard">
-                <div className="flex items-baseline gap-4">
-                  <div className="font-marker text-lg text-ink-soft">best for →</div>
-                  <div className="font-display text-xl flex-1">{d.bestFor}</div>
+                <div className="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4">
+                  <div className="font-marker text-sm md:text-lg text-ink-soft shrink-0">best for →</div>
+                  <div className="font-display text-base md:text-xl flex-1">{d.bestFor}</div>
                 </div>
-                <div className="flex flex-wrap gap-2 mt-3">
+                <div className="flex flex-wrap gap-1.5 md:gap-2 mt-2 md:mt-3">
                   {d.highlights.map((h) => (
-                    <span key={h} className="px-2 py-1 bg-paper border border-ink/50 font-marker text-sm">{h}</span>
+                    <span key={h} className="px-2 py-0.5 md:py-1 bg-paper border border-ink/50 font-marker text-xs md:text-sm">{h}</span>
                   ))}
                 </div>
               </PaperCard>
