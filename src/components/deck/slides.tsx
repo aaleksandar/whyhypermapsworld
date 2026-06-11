@@ -25,7 +25,7 @@ export function SlideCover() {
         animate={{ rotate: 0, opacity: 1 }}
         transition={{ duration: 0.8, type: "spring" }}
       />
-      <Eyebrow>a pitch deck · 2026</Eyebrow>
+      
       <H1 className="text-4xl sm:text-6xl md:text-8xl whitespace-nowrap">
         hypermaps<span className="text-pin">.world</span>
       </H1>
