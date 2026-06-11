@@ -19,7 +19,7 @@ export function Eyebrow({ children }: { children: ReactNode }) {
 
 export function H1({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
-    <h1 className={`font-display font-extrabold text-ink leading-[0.95] tracking-tight break-words hyphens-auto ${className}`}>
+    <h1 className={`font-display font-extrabold text-ink leading-[0.95] tracking-tight [overflow-wrap:normal] [word-break:keep-all] hyphens-none ${className}`}>
       {children}
     </h1>
   );
