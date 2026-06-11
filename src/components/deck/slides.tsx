@@ -433,8 +433,6 @@ export function SlideManyWorlds() {
             </div>
           );
         })}
-          );
-        })}
       </div>
       <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 min-h-0">
         {/* Map */}
