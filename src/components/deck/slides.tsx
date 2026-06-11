@@ -531,7 +531,7 @@ export function SlideManyWorlds() {
                 />
               )}
               <motion.button
-                onClick={() => setActive(w.id)}
+                onClick={() => { setActive(w.id); setInteracted(true); }}
                 whileTap={{ scale: 0.94 }}
                 className={`relative px-3 py-1.5 md:px-4 md:py-2 rounded-full border-2 border-ink font-marker text-sm md:text-lg transition-all ${
                   isActive
