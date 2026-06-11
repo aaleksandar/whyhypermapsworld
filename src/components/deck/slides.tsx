@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SlideShell, Eyebrow, H1, Pin, PaperCard } from "./primitives";
 import { StylizedMap } from "./StylizedMap";
