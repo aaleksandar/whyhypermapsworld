@@ -27,7 +27,7 @@ const slides = [
   { id: "character",   title: "you, the character",    render: () => <SlideCharacter /> },
   { id: "ask",         title: "ask the area",          render: () => <SlideAsk /> },
   { id: "pin",         title: "pin context",           render: () => <SlidePin /> },
-  { id: "rewards",     title: "contribute & reward",   render: () => <SlideRewards /> },
+  
   { id: "competition", title: "competition",           render: () => <SlideCompetition /> },
   { id: "close",       title: "vision",                render: () => <SlideClose /> },
 ];
