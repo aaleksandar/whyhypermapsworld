@@ -900,7 +900,8 @@ export function SlideAsk() {
     return () => clearTimeout(t);
   }, [step, done, active]);
 
-  const [wrapSize_dummy, setWrapSize_dummy] = [null, null] as any;
+  const bubbleRefs = React.useRef<Record<number, HTMLDivElement | null>>({});
+  const [lines, setLines] = React.useState<{ i: number; x1: number; y1: number; x2: number; y2: number; color: string }[]>([]);
   const [wrapSize, setWrapSize] = React.useState({ w: 0, h: 0 });
 
   React.useLayoutEffect(() => {
