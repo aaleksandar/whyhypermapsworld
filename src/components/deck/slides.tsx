@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SlideShell, Eyebrow, H1, Pin, PaperCard } from "./primitives";
 import { StylizedMap } from "./StylizedMap";
+import {
+  SiWhatsapp, SiTelegram, SiReddit, SiInstagram, SiTiktok, SiFacebook,
+  SiDiscord, SiGmail,
+} from "react-icons/si";
+import { MessageCircle, Users, StickyNote } from "lucide-react";
 import globe from "@/assets/deck/globe.png";
 import personas from "@/assets/deck/personas.jpg";
 
