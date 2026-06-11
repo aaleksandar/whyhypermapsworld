@@ -14,6 +14,47 @@ import profileMichelin from "@/assets/profile-michelin.jpg";
 import profileRA from "@/assets/profile-ra.jpg";
 import profileTre from "@/assets/profile-tre.jpg";
 
+/* Animated cursor hint — loops a move + click ripple to teach the user this is clickable. */
+export function CursorHint({
+  x, y, show = true, label, delay = 0,
+}: { x: number | string; y: number | string; show?: boolean; label?: string; delay?: number }) {
+  return (
+    <AnimatePresence>
+      {show && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0, scale: 0.6 }}
+          transition={{ delay }}
+          className="absolute pointer-events-none z-30"
+          style={{ left: typeof x === "number" ? `${x}%` : x, top: typeof y === "number" ? `${y}%` : y }}
+        >
+          <motion.div
+            animate={{ x: [0, 8, 0, 0], y: [0, 6, 0, 0], scale: [1, 1, 0.85, 1] }}
+            transition={{ duration: 1.8, repeat: Infinity, times: [0, 0.35, 0.55, 1], ease: "easeInOut" }}
+            className="relative"
+          >
+            {/* click ripple */}
+            <motion.span
+              className="absolute -left-1 -top-1 block w-8 h-8 rounded-full border-2 border-ink"
+              animate={{ scale: [0, 1.6], opacity: [0.8, 0] }}
+              transition={{ duration: 0.9, repeat: Infinity, repeatDelay: 0.9, delay: 0.45, ease: "easeOut" }}
+            />
+            <svg width="26" height="30" viewBox="0 0 26 30" className="drop-shadow-[2px_2px_0_rgba(26,23,20,0.35)]">
+              <path d="M3 2 L3 24 L9 19 L13 28 L17 26 L13 17 L21 17 Z" fill="var(--paper)" stroke="var(--ink)" strokeWidth="2" strokeLinejoin="round" />
+            </svg>
+            {label && (
+              <div className="absolute left-7 top-6 font-marker text-sm md:text-base text-terracotta bg-paper/90 border border-ink px-1.5 py-0.5 whitespace-nowrap">
+                {label}
+              </div>
+            )}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 
 /* 1. Cover */
 export function SlideCover() {
@@ -65,7 +106,8 @@ export function SlidePersonas() {
       <H1 className="text-3xl md:text-6xl max-w-4xl mb-3 md:mb-6">
         The same city means <span className="text-terracotta italic">different things</span> to different people.
       </H1>
-      <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-3 md:grid-rows-2 gap-3 md:gap-6 flex-1 max-w-5xl">
+      <div className="relative grid grid-cols-2 md:grid-cols-3 grid-rows-3 md:grid-rows-2 gap-3 md:gap-6 flex-1 max-w-5xl">
+        <CursorHint x="14%" y="14%" show={seen.size === 0} label="tap a card" />
         {personaQuotes.map((p, i) => (
           <motion.div
             key={i}
@@ -413,7 +455,7 @@ const worlds: World[] = [
     label: "👕 Local & affordable fashion",
     tagline: "real prices, real local brands",
     tint: "var(--sage)",
-    filters: ["Under 500k₫", "Local brands", "🔥 Trending on TikTok", "New drops this week", "Thrift / vintage"],
+    filters: ["Under $10", "Local brands", "🔥 Trending on TikTok", "New drops this week", "Thrift / vintage"],
     pins: [
       { x: 25, y: 38, label: "Tan Dinh market", note: "thrift · negotiate hard" },
       { x: 55, y: 24, label: "L Seoul", note: "🔥 trending · viral on TikTok" },
@@ -462,6 +504,7 @@ const worlds: World[] = [
 ];
 export function SlideManyWorlds() {
   const [active, setActive] = useState("jam");
+  const [interacted, setInteracted] = useState(false);
   const world = worlds.find(w => w.id === active)!;
   return (
     <SlideShell>
@@ -472,7 +515,8 @@ export function SlideManyWorlds() {
       <p className="text-base md:text-lg text-ink-soft max-w-3xl mb-4 md:mb-5">
         Every community maps the city differently. Step into the worlds of foodies, skaters, architects, musicians, parents, and locals.
       </p>
-      <div className="flex flex-wrap gap-2 md:gap-3 mb-4 md:mb-5">
+      <div className="relative flex flex-wrap gap-2 md:gap-3 mb-4 md:mb-5">
+        <CursorHint x="22%" y="80%" show={!interacted} label="try a world" />
         {worlds.map(w => {
           const isActive = active === w.id;
           return (
@@ -487,7 +531,7 @@ export function SlideManyWorlds() {
                 />
               )}
               <motion.button
-                onClick={() => setActive(w.id)}
+                onClick={() => { setActive(w.id); setInteracted(true); }}
                 whileTap={{ scale: 0.94 }}
                 className={`relative px-3 py-1.5 md:px-4 md:py-2 rounded-full border-2 border-ink font-marker text-sm md:text-lg transition-all ${
                   isActive
@@ -582,7 +626,7 @@ export function SlideManyWorlds() {
 
 /* 7. Vibes (merged: matching + layers of understanding) */
 const vibeSignals = [
-  { name: "Niche facts", desc: "Has a cradle. Late kitchen. Sauna. Open now.", color: "var(--water)" },
+  { name: "Niche facts", desc: "Has a cradle. Late kitchen. Sauna. Wheelchair-friendly.", color: "var(--water)" },
   { name: "Reviews from people like you", desc: "Not the loudest voices — the closest ones.", color: "var(--sage)" },
   { name: "Friends & taste-graph", desc: "Where the people you trust already are.", color: "var(--mustard)" },
   { name: "AI vibe estimate", desc: "We approximate the feeling of a place — and of you.", color: "var(--pin)" },
@@ -602,13 +646,13 @@ export function SlideVibes() {
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-8 flex-1 md:items-center">
         {/* Left: 3 inputs */}
         <div className="md:col-span-2 space-y-3 md:space-y-4">
-          <div className="font-marker text-base md:text-xl text-terracotta mb-1">what we read</div>
+          <div className="font-marker text-lg md:text-2xl text-terracotta mb-1">what we read</div>
           {["Who you are", "Where you are", "What you need"].map((t, i) => (
             <PaperCard key={t} rotate={i === 1 ? 1 : -1.2} className="bg-paper-2 flex items-baseline gap-3 md:gap-4">
-              <div className="font-display font-extrabold text-2xl md:text-3xl text-pin shrink-0">{i+1}</div>
+              <div className="font-display font-extrabold text-3xl md:text-4xl text-pin shrink-0">{i+1}</div>
               <div className="min-w-0">
-                <div className="font-display font-bold text-lg md:text-2xl leading-tight">{t}</div>
-                <div className="font-marker text-sm md:text-base text-ink-soft">
+                <div className="font-display font-bold text-xl md:text-2xl leading-tight">{t}</div>
+                <div className="font-marker text-base md:text-lg text-ink-soft">
                   {i === 0 && "history, taste, the worlds you belong to"}
                   {i === 1 && "city, neighborhood, this exact corner"}
                   {i === 2 && "right now: jam, eat, hide, wander"}
@@ -620,18 +664,18 @@ export function SlideVibes() {
 
         {/* Middle: signals stack */}
         <div className="md:col-span-2 space-y-2 md:space-y-3">
-          <div className="font-marker text-base md:text-xl text-terracotta mb-1">what we stack</div>
+          <div className="font-marker text-lg md:text-2xl text-terracotta mb-1">what we stack</div>
           {vibeSignals.map((s, i) => (
             <motion.div
               key={s.name}
               initial={{ x: -20, opacity: 0 }}
               whileInView={{ x: 0, opacity: 1 }}
               transition={{ delay: i * 0.08 }}
-              className="border-2 border-ink sticker p-2.5 md:p-3 md:px-4"
+              className="border-2 border-ink sticker p-3 md:p-4"
               style={{ background: s.color, transform: `rotate(${-1.5 + i * 0.8}deg)` }}
             >
-              <div className="font-display font-bold text-base md:text-lg leading-tight">{s.name}</div>
-              <div className="font-marker text-sm md:text-base text-ink-soft leading-tight">{s.desc}</div>
+              <div className="font-display font-bold text-lg md:text-xl leading-tight">{s.name}</div>
+              <div className="font-marker text-base md:text-lg text-ink-soft leading-snug">{s.desc}</div>
             </motion.div>
           ))}
         </div>
@@ -1347,10 +1391,11 @@ function GlowPin({ spot, active, onClick }: { spot: PinSpot; active: boolean; on
 
 export function SlidePin() {
   const [idx, setIdx] = useState(0);
+  const [interacted, setInteracted] = useState(false);
   const d = spots[idx];
   return (
     <SlideShell>
-      <Eyebrow>pin context</Eyebrow>
+      <Eyebrow>pin context · interactive</Eyebrow>
       <H1 className="text-3xl md:text-6xl max-w-4xl mb-2">
         Every place remembers <span className="italic text-pin">what each community said.</span>
       </H1>
@@ -1359,9 +1404,10 @@ export function SlidePin() {
         <div className="md:col-span-2 border-2 border-ink sticker bg-paper relative overflow-hidden aspect-[4/3] md:aspect-auto">
           <StylizedMap tint={d.color} showLabels={false}>
             {spots.map((s, i) => (
-              <GlowPin key={s.name} spot={s} active={i === idx} onClick={() => setIdx(i)} />
+              <GlowPin key={s.name} spot={s} active={i === idx} onClick={() => { setIdx(i); setInteracted(true); }} />
             ))}
           </StylizedMap>
+          <CursorHint x={`${spots[1].x}%`} y={`${spots[1].y}%`} show={!interacted} label="tap a pin" />
           <div className="absolute bottom-2 left-2 right-2 md:bottom-3 md:left-3 md:right-3 font-marker text-xs md:text-sm text-ink-soft bg-paper/80 px-2 py-1 rounded">
             ↑ open any glowing pin
           </div>
@@ -1484,8 +1530,8 @@ export function SlideCompetition() {
           {/* labels */}
           <div className="absolute top-1.5 md:top-2 left-1/2 -translate-x-1/2 font-marker text-base md:text-2xl text-ink-soft">↑ living</div>
           <div className="absolute bottom-1.5 md:bottom-2 left-1/2 -translate-x-1/2 font-marker text-base md:text-2xl text-ink-soft">static ↓</div>
-          <div className="absolute left-1.5 top-1/2 -translate-y-1/2 font-marker text-base md:text-2xl text-ink-soft">← generic</div>
-          <div className="absolute right-1.5 top-1/2 -translate-y-1/2 font-marker text-base md:text-2xl text-ink-soft">personal →</div>
+          <div className="absolute left-1.5 bottom-7 md:left-2 md:bottom-9 font-marker text-base md:text-2xl text-ink-soft">← generic</div>
+          <div className="absolute right-1.5 bottom-7 md:right-2 md:bottom-9 font-marker text-base md:text-2xl text-ink-soft">personal →</div>
           {/* dots */}
           {competitors.map((c) => (
             <div
@@ -1554,7 +1600,7 @@ export function SlideClose() {
             hypermaps.world
           </a>
         </div>
-        <div className="mt-8 md:mt-10 font-marker text-base md:text-xl text-terracotta">thanks for scrolling →</div>
+        <div className="mt-8 md:mt-10 font-marker text-base md:text-xl text-terracotta">thanks for scrolling</div>
       </div>
     </SlideShell>
   );
