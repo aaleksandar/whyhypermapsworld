@@ -229,33 +229,135 @@ export function SlideSolutionHero() {
   );
 }
 
-/* 6. Many Worlds interactive */
-type World = { id: string; label: string; tint: string; pins: { x: number; y: number; label: string }[] };
+/* 6. Many Worlds interactive — each world has its own filters, pins (with the criteria that world cares about), and events */
+type WorldPin = { x: number; y: number; label: string; note: string };
+type WorldEvent = { when: string; title: string };
+type World = {
+  id: string;
+  label: string;
+  tagline: string;
+  tint: string;
+  filters: string[];
+  pins: WorldPin[];
+  events: WorldEvent[];
+};
 const worlds: World[] = [
-  { id: "vegan", label: "🌱 Vegan & GF", tint: "var(--sage)",
-    pins: [{x:22,y:25,label:"Hum Vegan"},{x:55,y:35,label:"Saigon Veg"},{x:75,y:18,label:"Pi Bistro"},{x:40,y:48,label:"Loving Hut"}] },
-  { id: "parent", label: "👶 Parent-friendly", tint: "var(--mustard)",
-    pins: [{x:18,y:32,label:"Park café"},{x:50,y:22,label:"changing room"},{x:78,y:40,label:"playground"},{x:62,y:50,label:"family pho"}] },
-  { id: "modern", label: "🏛 Modernist architecture", tint: "var(--terracotta)",
-    pins: [{x:30,y:18,label:"NK Apt 1968"},{x:60,y:28,label:"Reunification"},{x:48,y:42,label:"old villa"},{x:82,y:22,label:"brutalist tower"}] },
-  { id: "clothes", label: "👕 Local affordable clothes", tint: "var(--pin)",
-    pins: [{x:25,y:38,label:"Ben Thanh"},{x:55,y:25,label:"Saigon Square"},{x:72,y:48,label:"thrift alley"},{x:42,y:18,label:"Tan Dinh"}] },
-  { id: "laptop", label: "💻 Laptop-friendly cafés", tint: "var(--water)",
-    pins: [{x:20,y:22,label:"The Workshop"},{x:48,y:38,label:"Things Café"},{x:70,y:25,label:"Shin Coffee"},{x:38,y:52,label:"Bosgaurus"}] },
+  {
+    id: "jam",
+    label: "🎸 Jam spots",
+    tagline: "for musicians who want to plug in tonight",
+    tint: "var(--pin)",
+    filters: ["Open mic", "Jam nights", "Practice rooms", "Gear-friendly", "Looking for bandmates"],
+    pins: [
+      { x: 22, y: 26, label: "The Observatory", note: "Sun open jam · drums on site" },
+      { x: 55, y: 34, label: "Yoko Café", note: "acoustic night · Wed" },
+      { x: 74, y: 20, label: "Soma Art", note: "rehearsal rooms · hourly" },
+      { x: 42, y: 48, label: "Indika", note: "BYO gear · friendly sound guy" },
+    ],
+    events: [
+      { when: "Sun 9pm", title: "Open jam · The Observatory" },
+      { when: "Thu", title: "Bassist wanted · indie trio, Thao Dien" },
+    ],
+  },
+  {
+    id: "parent",
+    label: "👶 Parent-friendly",
+    tagline: "for the gear, the chaos, the tiny humans",
+    tint: "var(--mustard)",
+    filters: ["Changing tables", "Kids menu", "Playground", "Stroller access", "Cot / cradle", "Quiet hours"],
+    pins: [
+      { x: 20, y: 30, label: "Park Hyatt", note: "cot on request · quiet pool" },
+      { x: 50, y: 22, label: "Annam Gourmet", note: "changing room upstairs" },
+      { x: 76, y: 40, label: "Runam Bistro", note: "indoor playground" },
+      { x: 60, y: 50, label: "Pho 2000", note: "high chairs · kids portion" },
+    ],
+    events: [
+      { when: "Sat 10am", title: "Toddler storytime · Tao Dan park" },
+      { when: "Sun", title: "Family swap meet · D2 community garden" },
+    ],
+  },
+  {
+    id: "archi",
+    label: "🏛 Architecture hunters",
+    tagline: "for the people who look up",
+    tint: "var(--terracotta)",
+    filters: ["Modernist", "Brutalist", "Colonial-era", "New urban", "Art deco", "Lost & forgotten"],
+    pins: [
+      { x: 30, y: 20, label: "NK Apartments", note: "1968 · modernist icon" },
+      { x: 60, y: 28, label: "Reunification Palace", note: "Ngô Viết Thụ · 1966" },
+      { x: 48, y: 44, label: "Hẻm 14 villa", note: "colonial · crumbling, gorgeous" },
+      { x: 82, y: 24, label: "Landmark 81", note: "new urban · sky deck" },
+    ],
+    events: [
+      { when: "Sun 3pm", title: "Open House · Saigon modernist walk" },
+      { when: "Next week", title: "New: Ba Son district opens to public" },
+    ],
+  },
+  {
+    id: "clothes",
+    label: "👕 Local & affordable fashion",
+    tagline: "real prices, real local brands",
+    tint: "var(--sage)",
+    filters: ["Under 500k₫", "Local brands", "🔥 Trending on TikTok", "New drops this week", "Thrift / vintage"],
+    pins: [
+      { x: 25, y: 38, label: "Tan Dinh market", note: "thrift · negotiate hard" },
+      { x: 55, y: 24, label: "L Seoul", note: "🔥 trending · viral on TikTok" },
+      { x: 72, y: 48, label: "Subtle Studios", note: "new local brand · 380k tees" },
+      { x: 42, y: 18, label: "Métiers", note: "just launched · Reddit favorite" },
+    ],
+    events: [
+      { when: "Sat", title: "Saigon Indie Fair · 40+ local brands" },
+      { when: "Fri 6pm", title: "Drop party · Subtle Studios SS line" },
+    ],
+  },
+  {
+    id: "vegan",
+    label: "🌱 Vegan & allergy-safe",
+    tagline: "no awkward 'is this really vegan?' moments",
+    tint: "var(--water)",
+    filters: ["Fully vegan", "Vegetarian-only", "Celiac-safe GF kitchen", "Nut-free", "Halal", "Soy-free"],
+    pins: [
+      { x: 22, y: 26, label: "Hum Vegan", note: "fully vegan · separate GF prep" },
+      { x: 55, y: 36, label: "Pi Bistro", note: "vegetarian · contains gluten" },
+      { x: 75, y: 18, label: "Saigon Veg", note: "vegan + celiac-safe kitchen" },
+      { x: 40, y: 48, label: "Loving Hut", note: "vegan · nut warning" },
+    ],
+    events: [
+      { when: "Sun 9am", title: "Plant-based brunch market · D2" },
+      { when: "Wed", title: "Celiac potluck · safe kitchen confirmed" },
+    ],
+  },
+  {
+    id: "art",
+    label: "🎨 Art map",
+    tagline: "what's opening, what's worth the trip",
+    tint: "var(--pin)",
+    filters: ["Gallery openings", "Installations", "Museum exhibitions", "Street art", "Artist studios"],
+    pins: [
+      { x: 24, y: 22, label: "Galerie Quynh", note: "new opening · Thu 7pm" },
+      { x: 52, y: 32, label: "The Factory", note: "exhibition through Aug" },
+      { x: 74, y: 26, label: "MoCA Saigon", note: "major retrospective" },
+      { x: 40, y: 50, label: "Hẻm 47 mural", note: "fresh street piece · this week" },
+    ],
+    events: [
+      { when: "Thu 7pm", title: "Vernissage · Galerie Quynh" },
+      { when: "Sat", title: "Studio crawl · 6 artists, District 4" },
+    ],
+  },
 ];
 export function SlideManyWorlds() {
-  const [active, setActive] = useState("vegan");
+  const [active, setActive] = useState("jam");
   const world = worlds.find(w => w.id === active)!;
   return (
     <SlideShell>
       <Eyebrow>solution · interactive</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-3xl mb-4">
-        Enter <span className="italic text-pin">many worlds.</span>
+      <H1 className="text-5xl md:text-6xl max-w-3xl mb-3">
+        Every world cares about <span className="italic text-pin">different things.</span>
       </H1>
-      <p className="text-lg text-ink-soft max-w-2xl mb-6">
-        Same city. Different lens. Toggle the world you live in — the map re-skins around you.
+      <p className="text-lg text-ink-soft max-w-2xl mb-5">
+        Same city. Different lens. Pick a world — the filters, the pins, even the events on the map shift to what that tribe actually looks for.
       </p>
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-5">
         {worlds.map(w => (
           <button
             key={w.id}
@@ -268,22 +370,78 @@ export function SlideManyWorlds() {
           </button>
         ))}
       </div>
-      <div className="flex-1 relative border-2 border-ink sticker bg-paper-2 overflow-hidden">
-        <div className="absolute top-3 left-4 font-marker text-xl z-10 text-ink-soft">Saigon · district 1</div>
+      <div className="flex-1 grid grid-cols-3 gap-4 min-h-0">
+        {/* Map */}
+        <div className="col-span-2 relative border-2 border-ink sticker bg-paper-2 overflow-hidden">
+          <div className="absolute top-3 left-4 font-marker text-xl z-10 text-ink-soft">Saigon · {world.tagline}</div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={world.id}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.35 }}
+              className="absolute inset-0"
+            >
+              <StylizedMap tint={world.tint}>
+                {world.pins.map((p, i) => (
+                  <div key={p.label}>
+                    <Pin x={p.x} y={p.y} label={p.label} delay={0.1 + i * 0.08} color={world.tint} size={26} />
+                    <motion.div
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.25 + i * 0.08 }}
+                      className="absolute font-marker text-[13px] text-ink bg-paper/85 px-1.5 py-0.5 rounded border border-ink/30 whitespace-nowrap"
+                      style={{ left: `${p.x}%`, top: `${p.y + 4}%`, transform: "translate(-50%, 0)" }}
+                    >
+                      {p.note}
+                    </motion.div>
+                  </div>
+                ))}
+              </StylizedMap>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+        {/* Side panel: filters + events */}
         <AnimatePresence mode="wait">
           <motion.div
-            key={world.id}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            className="absolute inset-0"
+            key={world.id + "-side"}
+            initial={{ opacity: 0, x: 12 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -8 }}
+            transition={{ duration: 0.3 }}
+            className="flex flex-col gap-4 min-h-0"
           >
-            <StylizedMap tint={world.tint}>
-              {world.pins.map((p, i) => (
-                <Pin key={p.label} x={p.x} y={p.y} label={p.label} delay={0.1 + i * 0.08} color={world.tint} size={26} />
-              ))}
-            </StylizedMap>
+            <div className="border-2 border-ink sticker bg-paper p-4">
+              <div className="font-marker text-base text-ink-soft mb-2">filters this world cares about</div>
+              <div className="flex flex-wrap gap-1.5">
+                {world.filters.map(f => (
+                  <span
+                    key={f}
+                    className="px-2.5 py-1 rounded-full border-2 border-ink text-sm bg-paper-2"
+                    style={{ background: world.tint, color: "var(--paper)" }}
+                  >
+                    {f}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="border-2 border-ink sticker bg-paper p-4 flex-1 min-h-0 overflow-auto">
+              <div className="font-marker text-base text-ink-soft mb-2">happening · for this world</div>
+              <ul className="space-y-2">
+                {world.events.map(e => (
+                  <li key={e.title} className="flex gap-2 items-start">
+                    <span
+                      className="font-marker text-sm px-2 py-0.5 rounded border-2 border-ink whitespace-nowrap"
+                      style={{ background: world.tint, color: "var(--paper)" }}
+                    >
+                      {e.when}
+                    </span>
+                    <span className="text-sm text-ink leading-snug">{e.title}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </motion.div>
         </AnimatePresence>
       </div>
