@@ -95,15 +95,15 @@ export function SlideDecay() {
   return (
     <SlideShell>
       <Eyebrow>problem 02</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-3xl">
+      <H1 className="text-4xl md:text-6xl max-w-3xl">
         Knowledge <span className="text-terracotta italic">leaks away.</span>
       </H1>
-      <div className="flex-1 grid grid-cols-5 gap-10 items-center mt-6">
-        <div className="col-span-2 space-y-4 text-lg text-ink-soft">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-5 gap-5 md:gap-10 md:items-center mt-5 md:mt-6">
+        <div className="md:col-span-2 space-y-3 md:space-y-4 text-base md:text-lg text-ink-soft">
           <p>Useful local recommendations are shared every day — across TikTok, Instagram, Reddit, Facebook Groups, WhatsApp, Telegram, and private conversations.</p>
           <p>Most are impossible to find a month later.</p>
         </div>
-        <div className="col-span-3 h-full relative">
+        <div className="md:col-span-3 relative aspect-[4/3] md:aspect-auto md:h-full">
           <StylizedMap tint="var(--terracotta)" showLabels={false}>
             {[
               { x: 14, y: 12, c: "var(--pin)",       tip: "best bún bò — auntie at 6am",    src: "WhatsApp · 2021" },
@@ -126,9 +126,9 @@ export function SlideDecay() {
                 animate={{ opacity: [1, 1, 0.05, 0.05, 1] }}
                 transition={{ duration: 7, repeat: Infinity, delay: i * 0.35, times: [0, 0.35, 0.55, 0.85, 1] }}
               >
-                <Pin x={0} y={0} delay={0} size={16} color={p.c} />
+                <Pin x={0} y={0} delay={0} size={14} color={p.c} />
                 <motion.div
-                  className="absolute left-3 top-1 whitespace-nowrap bg-paper border border-ink/60 sticker px-2 py-1 shadow-[2px_2px_0_rgba(26,23,20,0.15)]"
+                  className="absolute left-3 top-1 bg-paper border border-ink/60 sticker px-1.5 py-0.5 md:px-2 md:py-1 shadow-[2px_2px_0_rgba(26,23,20,0.15)]"
                   style={{ transform: `rotate(${(i % 2 ? 1 : -1) * (1 + (i % 3))}deg)` }}
                   animate={{
                     opacity: [1, 0.4, 0, 0, 1],
@@ -137,14 +137,14 @@ export function SlideDecay() {
                   }}
                   transition={{ duration: 7, repeat: Infinity, delay: i * 0.35 + 0.2, times: [0, 0.3, 0.5, 0.85, 1] }}
                 >
-                  <div className="font-marker text-[11px] leading-tight text-ink max-w-[150px] whitespace-normal">
+                  <div className="font-marker text-[9px] md:text-[11px] leading-tight text-ink max-w-[90px] md:max-w-[150px] whitespace-normal">
                     "{p.tip}"
                   </div>
-                  <div className="text-[9px] text-ink-soft italic mt-0.5">{p.src}</div>
+                  <div className="text-[8px] md:text-[9px] text-ink-soft italic mt-0.5">{p.src}</div>
                 </motion.div>
               </motion.div>
             ))}
-            <div className="absolute bottom-2 right-2 font-marker text-xs text-terracotta bg-paper/80 px-2 py-0.5 rounded">
+            <div className="absolute bottom-2 right-2 font-marker text-[10px] md:text-xs text-terracotta bg-paper/80 px-2 py-0.5 rounded">
               tips evaporate →
             </div>
           </StylizedMap>
