@@ -778,10 +778,19 @@ export function SlideCharacter() {
           >
             <div className="flex items-center gap-3 mb-2">
               <div
-                className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-ink flex items-center justify-center font-display text-lg md:text-xl text-paper shrink-0"
-                style={{ background: p.color }}
+                className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-ink flex items-center justify-center font-display text-lg md:text-xl text-paper shrink-0 overflow-hidden"
+                style={{ background: p.avatarBg ?? p.color }}
               >
-                {p.glyph}
+                {p.avatar ? (
+                  <img
+                    src={p.avatar}
+                    alt={p.name}
+                    loading="lazy"
+                    className={`w-full h-full ${p.avatarFit === "contain" ? "object-contain p-1" : "object-cover"}`}
+                  />
+                ) : (
+                  p.glyph
+                )}
               </div>
               <div className="min-w-0">
                 <div className="font-display font-bold text-base md:text-lg leading-tight truncate">{p.name}</div>
