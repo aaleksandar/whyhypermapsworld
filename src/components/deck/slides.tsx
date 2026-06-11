@@ -189,14 +189,40 @@ export function SlideSolutionHero() {
           <StylizedMap tint={["var(--sage)", "var(--terracotta)", "var(--mustard)", "var(--pin)"][i]} showLabels={false} />
         </motion.div>
       ))}
+      {/* Floating world chips behind the headline */}
+      {[
+        { label: "Vegan",        x: "8%",  y: "22%", rot: -6,  delay: 0.2, dx: 12, color: "var(--sage)" },
+        { label: "Architecture", x: "72%", y: "18%", rot: 5,   delay: 0.5, dx: -14, color: "var(--terracotta)" },
+        { label: "Late-night",   x: "78%", y: "70%", rot: -3,  delay: 0.8, dx: 10, color: "var(--pin)" },
+      ].map((chip) => (
+        <motion.div
+          key={chip.label}
+          className="absolute z-0 pointer-events-none"
+          style={{ left: chip.x, top: chip.y }}
+          initial={{ opacity: 0, y: 20, rotate: chip.rot }}
+          animate={{ opacity: 0.55, y: [0, -8, 0], x: [0, chip.dx, 0], rotate: chip.rot }}
+          transition={{
+            opacity: { delay: chip.delay, duration: 0.8 },
+            y: { delay: chip.delay, duration: 6, repeat: Infinity, ease: "easeInOut" },
+            x: { delay: chip.delay, duration: 7, repeat: Infinity, ease: "easeInOut" },
+          }}
+        >
+          <div
+            className="bg-paper border-2 border-ink sticker px-4 py-2 font-marker text-xl"
+            style={{ color: chip.color }}
+          >
+            {chip.label}
+          </div>
+        </motion.div>
+      ))}
       <div className="relative z-10 max-w-5xl">
         <Eyebrow>the solution</Eyebrow>
-        <H1 className="text-7xl md:text-[9rem] leading-[0.9]">
-          A map that knows <br/>
-          <span className="italic text-pin">who you are.</span>
+        <H1 className="text-6xl md:text-8xl leading-[0.95]">
+          A map that knows who you are
+          <span className="italic text-pin"> — and the worlds you belong to.</span>
         </H1>
-        <p className="font-display italic text-2xl text-ink-soft mt-8 max-w-2xl">
-          Google Maps meets Reddit. Geocaching meets your group chat. A living map you enter, like a world.
+        <p className="font-display italic text-2xl text-ink-soft mt-8 max-w-3xl">
+          Slip between worlds like rooms: foodies, skaters, modernists, night owls. Each one curated by the people already living it. The map listens, learns, and shows you the city you'd actually love.
         </p>
       </div>
     </SlideShell>
