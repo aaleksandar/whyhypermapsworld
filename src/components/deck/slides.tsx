@@ -868,19 +868,38 @@ const pinColorFor = (who: AskMsg["who"]) =>
   who === "ai" ? "var(--mustard)" : "var(--terracotta)";
 
 export function SlideAsk() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
+  const [active, setActive] = useState(false);
   const visible = chatScript.slice(0, step);
   const done = step >= chatScript.length;
 
+  const wrapRef = React.useRef<HTMLDivElement | null>(null);
+  const mapRef = React.useRef<HTMLDivElement | null>(null);
+
+  // start (or reset) when the slide comes into view
   React.useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setActive(entry.isIntersecting && entry.intersectionRatio > 0.5),
+      { threshold: [0, 0.5, 1] }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  React.useEffect(() => {
+    if (!active) return;
+    if (step === 0) {
+      const t = setTimeout(() => setStep(1), 400);
+      return () => clearTimeout(t);
+    }
     if (done) return;
     const delay = step === 1 ? 1800 : 1400 + Math.random() * 800;
     const t = setTimeout(() => setStep(s => Math.min(s + 1, chatScript.length)), delay);
     return () => clearTimeout(t);
-  }, [step, done]);
+  }, [step, done, active]);
 
-  const wrapRef = React.useRef<HTMLDivElement | null>(null);
-  const mapRef = React.useRef<HTMLDivElement | null>(null);
   const bubbleRefs = React.useRef<Record<number, HTMLDivElement | null>>({});
   const [lines, setLines] = React.useState<{ i: number; x1: number; y1: number; x2: number; y2: number; color: string }[]>([]);
   const [wrapSize, setWrapSize] = React.useState({ w: 0, h: 0 });
