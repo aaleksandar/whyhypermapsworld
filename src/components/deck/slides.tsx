@@ -104,7 +104,7 @@ export function SlidePersonas() {
     <SlideShell>
       <Eyebrow>problem 01</Eyebrow>
       <H1 className="text-3xl md:text-6xl max-w-4xl mb-3 md:mb-6">
-        The same city means <span className="text-terracotta italic">different things</span> to different people.
+        The same places mean <span className="text-terracotta italic">different things</span> to different people.
       </H1>
       <div className="relative grid grid-cols-2 md:grid-cols-3 grid-rows-3 md:grid-rows-2 gap-3 md:gap-6 flex-1 max-w-5xl">
         <CursorHint x="14%" y="14%" show={seen.size === 0} label="tap a card" />
