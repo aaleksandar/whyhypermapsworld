@@ -682,6 +682,7 @@ type Profile = {
 const profiles: Profile[] = [
   {
     name: "Julian", kind: "person", glyph: "J", color: "var(--sage)",
+    avatar: profileJulian, avatarFit: "cover",
     tagline: "explorer · hunts hidden cafés",
     mapLabel: "places he's been",
     pins: [
@@ -697,6 +698,7 @@ const profiles: Profile[] = [
   },
   {
     name: "Michelin", kind: "guide", glyph: "★", color: "var(--pin)",
+    avatar: profileMichelin, avatarFit: "cover",
     tagline: "the guide · scores restaurants",
     mapLabel: "rated this year",
     pins: [
@@ -712,6 +714,7 @@ const profiles: Profile[] = [
   },
   {
     name: "Resident Advisor", kind: "list", glyph: "♪", color: "var(--ink)",
+    avatar: profileRA, avatarFit: "contain", avatarBg: "#fff",
     tagline: "the list · electronic events",
     mapLabel: "live tonight",
     pins: [
@@ -727,6 +730,7 @@ const profiles: Profile[] = [
   },
   {
     name: "Tre Vineyard", kind: "brand", glyph: "❦", color: "var(--terracotta)",
+    avatar: profileTre, avatarFit: "cover",
     tagline: "the brand · a winery in Đà Lạt",
     mapLabel: "where their wine is poured",
     pins: [
