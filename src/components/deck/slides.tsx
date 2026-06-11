@@ -858,6 +858,15 @@ const chatScript = [
 export function SlideAsk() {
   const [step, setStep] = useState(1);
   const visible = chatScript.slice(0, step);
+  const done = step >= chatScript.length;
+
+  React.useEffect(() => {
+    if (done) return;
+    const delay = step === 1 ? 1800 : 1400 + Math.random() * 800;
+    const t = setTimeout(() => setStep(s => Math.min(s + 1, chatScript.length)), delay);
+    return () => clearTimeout(t);
+  }, [step, done]);
+
   return (
     <SlideShell>
       <Eyebrow>ask the area · interactive</Eyebrow>
@@ -869,46 +878,61 @@ export function SlideAsk() {
       </p>
       <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
         <div className="space-y-3">
-          {visible.map((m, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={`p-3 md:p-4 max-w-md border-2 border-ink sticker ${
-                m.who === "you" ? "ml-auto bg-pin text-paper" :
-                m.who === "ai" ? "bg-mustard" : "bg-paper"
-              }`}
-            >
-              {m.who === "local" && (
-                <div className="font-marker text-xs md:text-sm text-terracotta mb-1">{("name" in m && m.name) || "local"}</div>
-              )}
-              {m.who === "ai" && <div className="font-marker text-xs md:text-sm text-ink-soft mb-1">🤖 local AI</div>}
-              <div className="font-display text-sm md:text-base">{m.text}</div>
-            </motion.div>
-          ))}
-          <div className="relative inline-block mt-3 md:mt-4 self-start">
-            <motion.span
-              aria-hidden
-              className="absolute inset-0 rounded pointer-events-none"
-              style={{ background: "var(--pin)", filter: "blur(16px)" }}
-              animate={{ opacity: [0.4, 0.8, 0.4], scale: [0.95, 1.1, 0.95] }}
-              transition={{ duration: 1.6, repeat: Infinity }}
-            />
-            <motion.button
-              onClick={() => setStep(s => s >= chatScript.length ? 1 : s + 1)}
-              whileTap={{ scale: 0.95 }}
-              animate={{ scale: [1, 1.04, 1], boxShadow: ["3px 3px 0 var(--ink)", "5px 5px 0 var(--ink)", "3px 3px 0 var(--ink)"] }}
-              transition={{ duration: 1.6, repeat: Infinity }}
-              className="relative px-5 py-2.5 border-2 border-ink sticker bg-pin text-paper font-marker text-base md:text-lg flex items-center gap-2"
-            >
-            {step >= chatScript.length ? "replay ↻" : (
-              <>
-                next reply
-                <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 0.9, repeat: Infinity }}>→</motion.span>
-              </>
+          <AnimatePresence initial={false}>
+            {visible.map((m, i) => (
+              <motion.div
+                key={i}
+                layout
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`p-3 md:p-4 max-w-md border-2 border-ink sticker ${
+                  m.who === "you" ? "ml-auto bg-pin text-paper" :
+                  m.who === "ai" ? "bg-mustard" : "bg-paper"
+                }`}
+              >
+                {m.who === "local" && (
+                  <div className="font-marker text-xs md:text-sm text-terracotta mb-1">{("name" in m && m.name) || "local"}</div>
+                )}
+                {m.who === "ai" && <div className="font-marker text-xs md:text-sm text-ink-soft mb-1">🤖 local AI</div>}
+                <div className="font-display text-sm md:text-base">{m.text}</div>
+              </motion.div>
+            ))}
+            {!done && (
+              <motion.div
+                key="waiting"
+                layout
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                className="p-3 md:p-4 max-w-md border-2 border-dashed border-ink/50 sticker bg-paper/60 flex items-center gap-3"
+              >
+                <div className="flex gap-1">
+                  {[0, 1, 2].map(d => (
+                    <motion.span
+                      key={d}
+                      className="w-2 h-2 rounded-full bg-ink/60"
+                      animate={{ y: [0, -3, 0], opacity: [0.4, 1, 0.4] }}
+                      transition={{ duration: 1, repeat: Infinity, delay: d * 0.15 }}
+                    />
+                  ))}
+                </div>
+                <span className="font-marker text-xs md:text-sm text-ink-soft">
+                  {step === 1 ? "waiting for local answers…" : "another local typing…"}
+                </span>
+              </motion.div>
             )}
+          </AnimatePresence>
+          {done && (
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              onClick={() => setStep(1)}
+              whileTap={{ scale: 0.95 }}
+              className="mt-3 md:mt-4 px-5 py-2.5 border-2 border-ink sticker bg-paper text-ink font-marker text-base md:text-lg"
+            >
+              replay ↻
             </motion.button>
-          </div>
+          )}
         </div>
         <div className="relative border-2 border-ink sticker bg-paper-2 aspect-square md:aspect-auto">
           <StylizedMap tint="var(--pin)" showLabels={false}>
