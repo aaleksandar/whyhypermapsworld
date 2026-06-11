@@ -1345,7 +1345,7 @@ export function SlidePin() {
         </div>
 
         {/* detail panel */}
-        <div className="md:col-span-3 min-h-0">
+        <div className="md:col-span-3 min-h-0 flex">
           <AnimatePresence mode="wait">
             <motion.div
               key={d.name}
@@ -1353,30 +1353,30 @@ export function SlidePin() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.25 }}
-              className="contents"
+              className="flex-1 min-h-0 flex"
             >
               {/* community history — the hero of this slide */}
-              <PaperCard rotate={0.4} className="min-h-0 overflow-hidden">
-                <div className="flex items-baseline justify-between mb-2 gap-2">
-                  <div className="font-marker text-sm md:text-lg text-terracotta truncate">community · {d.name}</div>
-                  <div className="font-marker text-xs md:text-sm text-ink-soft shrink-0">{d.totalVoices} voices · {d.friends} friends</div>
+              <PaperCard rotate={0.4} className="flex-1 min-h-0 flex flex-col overflow-hidden">
+                <div className="flex items-baseline justify-between mb-3 gap-2">
+                  <div className="font-marker text-base md:text-2xl text-terracotta truncate">community · {d.name}</div>
+                  <div className="font-marker text-xs md:text-base text-ink-soft shrink-0">{d.totalVoices} voices · {d.friends} friends</div>
                 </div>
-                <div className="bg-mustard/60 border border-ink/40 p-2.5 md:p-3 mb-3">
-                  <div className="font-marker text-[10px] md:text-xs uppercase tracking-wider text-ink-soft mb-1">✦ AI summary</div>
-                  <div className="font-display text-[13px] md:text-[15px] leading-snug">{d.aiSummary}</div>
+                <div className="bg-mustard/60 border border-ink/40 p-3 md:p-4 mb-3 md:mb-4">
+                  <div className="font-marker text-[11px] md:text-sm uppercase tracking-wider text-ink-soft mb-1.5">✦ AI summary</div>
+                  <div className="font-display text-sm md:text-lg leading-snug">{d.aiSummary}</div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 md:gap-3 flex-1 min-h-0">
                   {d.perspectives.map((p) => {
                     const v = verdictStyle[p.verdict];
                     return (
-                      <div key={p.community} className={`border border-ink/50 p-2 md:p-2.5 ${v.bg}`}>
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="text-base md:text-lg leading-none">{p.emoji}</span>
-                          <span className="font-display font-bold text-[12px] md:text-[14px] flex-1 min-w-0 truncate">{p.community}</span>
-                          <span className={`font-marker text-[9px] md:text-[10px] px-1.5 py-0.5 bg-paper border border-ink/60 ${v.tone}`}>{v.label}</span>
+                      <div key={p.community} className={`border border-ink/50 p-2.5 md:p-3.5 flex flex-col ${v.bg}`}>
+                        <div className="flex items-center gap-2 mb-1.5">
+                          <span className="text-base md:text-xl leading-none">{p.emoji}</span>
+                          <span className="font-display font-bold text-[13px] md:text-base flex-1 min-w-0 truncate">{p.community}</span>
+                          <span className={`font-marker text-[9px] md:text-xs px-1.5 py-0.5 bg-paper border border-ink/60 ${v.tone}`}>{v.label}</span>
                         </div>
-                        <div className="font-display text-[11px] md:text-[12px] leading-snug text-ink">{p.insight}</div>
-                        <div className="font-marker text-[10px] text-ink-soft mt-1">{p.voices} voices</div>
+                        <div className="font-display text-xs md:text-[15px] leading-snug text-ink">{p.insight}</div>
+                        <div className="font-marker text-[10px] md:text-xs text-ink-soft mt-auto pt-1.5">{p.voices} voices</div>
                       </div>
                     );
                   })}
