@@ -824,7 +824,8 @@ export function SlideAsk() {
                 <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 0.9, repeat: Infinity }}>→</motion.span>
               </>
             )}
-          </motion.button>
+            </motion.button>
+          </div>
         </div>
         <div className="relative border-2 border-ink sticker bg-paper-2 aspect-square md:aspect-auto">
           <StylizedMap tint="var(--pin)" showLabels={false}>
