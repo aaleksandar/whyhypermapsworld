@@ -112,7 +112,35 @@ export function SlidePersonas() {
 }
 
 /* 3. Information decay */
+const decayTips = [
+  { c: "var(--pin)",       tip: "best bún bò — auntie at 6am",    src: "WhatsApp · 2021" },
+  { c: "var(--terracotta)",tip: "rooftop jam every Thursday",     src: "Telegram · 2022" },
+  { c: "var(--sage)",      tip: "tailor who copies any jacket",   src: "Reddit · 2019" },
+  { c: "var(--mustard)",   tip: "kid-friendly café, has cradle",  src: "FB group · 2020" },
+  { c: "var(--terracotta)",tip: "tiny natural wine bar, no sign", src: "DM · 2023" },
+  { c: "var(--pin)",       tip: "skate spot — smooth till 11pm",  src: "Discord · 2022" },
+  { c: "var(--sage)",      tip: "affordable vintage, Tue only",   src: "WhatsApp · 2020" },
+  { c: "var(--mustard)",   tip: "gallery opening every 1st Fri",  src: "Email · 2021" },
+  { c: "var(--terracotta)",tip: "queer-safe dance floor",         src: "Group chat · 2022" },
+  { c: "var(--sage)",      tip: "wheelchair-accessible entrance", src: "Forum · 2020" },
+  { c: "var(--pin)",       tip: "vegan pho — ask for #7",         src: "DM · 2023" },
+  { c: "var(--mustard)",   tip: "she'll braid your hair, $8",     src: "Note · 2019" },
+];
+// 4 slots positioned in spaced quadrants
+const decaySlots = [
+  { x: 18, y: 22, rot: -2 },
+  { x: 68, y: 18, rot: 1.5 },
+  { x: 24, y: 60, rot: 1 },
+  { x: 72, y: 58, rot: -1.5 },
+];
+const CYCLE = 4200; // ms per pin lifecycle
+
 export function SlideDecay() {
+  const [tick, setTick] = React.useState(0);
+  React.useEffect(() => {
+    const id = setInterval(() => setTick(t => t + 1), CYCLE);
+    return () => clearInterval(id);
+  }, []);
   return (
     <SlideShell>
       <Eyebrow>problem 02</Eyebrow>
@@ -126,46 +154,44 @@ export function SlideDecay() {
         </div>
         <div className="md:col-span-3 relative aspect-[4/3] md:aspect-auto md:h-full">
           <StylizedMap tint="var(--terracotta)" showLabels={false}>
-            {[
-              { x: 14, y: 12, c: "var(--pin)",       tip: "best bún bò — auntie at 6am",    src: "WhatsApp · 2021" },
-              { x: 38, y: 8,  c: "var(--terracotta)",tip: "rooftop jam every Thursday",     src: "Telegram · 2022" },
-              { x: 62, y: 14, c: "var(--sage)",      tip: "tailor who copies any jacket",   src: "Reddit · 2019" },
-              { x: 82, y: 10, c: "var(--mustard)",   tip: "kid-friendly café, has cradle",  src: "FB group · 2020" },
-              { x: 20, y: 32, c: "var(--terracotta)",tip: "tiny natural wine bar, no sign", src: "DM · 2023" },
-              { x: 46, y: 28, c: "var(--pin)",       tip: "skate spot — smooth till 11pm",  src: "Discord · 2022" },
-              { x: 70, y: 34, c: "var(--sage)",      tip: "affordable vintage, Tue only",   src: "WhatsApp · 2020" },
-              { x: 12, y: 48, c: "var(--mustard)",   tip: "gallery opening every 1st Fri",  src: "Email · 2021" },
-              { x: 34, y: 50, c: "var(--pin)",       tip: "she'll braid your hair, $8",     src: "Note · 2019" },
-              { x: 58, y: 46, c: "var(--terracotta)",tip: "queer-safe dance floor",         src: "Group chat · 2022" },
-              { x: 80, y: 44, c: "var(--sage)",      tip: "wheelchair-accessible entrance", src: "Forum · 2020" },
-              { x: 26, y: 18, c: "var(--sage)",      tip: "vegan pho — ask for #7",         src: "DM · 2023" },
-            ].map((p, i) => (
-              <motion.div
-                key={i}
-                className="absolute"
-                style={{ left: `${p.x}%`, top: `${p.y}%` }}
-                animate={{ opacity: [1, 1, 0.05, 0.05, 1] }}
-                transition={{ duration: 7, repeat: Infinity, delay: i * 0.35, times: [0, 0.35, 0.55, 0.85, 1] }}
-              >
-                <Pin x={0} y={0} delay={0} size={14} color={p.c} />
-                <motion.div
-                  className="absolute left-3 top-1 bg-paper border border-ink/60 sticker px-1.5 py-0.5 md:px-2 md:py-1 shadow-[2px_2px_0_rgba(26,23,20,0.15)]"
-                  style={{ transform: `rotate(${(i % 2 ? 1 : -1) * (1 + (i % 3))}deg)` }}
-                  animate={{
-                    opacity: [1, 0.4, 0, 0, 1],
-                    filter: ["blur(0px)", "blur(1px)", "blur(4px)", "blur(4px)", "blur(0px)"],
-                    y: [0, -4, -14, -14, 0],
-                  }}
-                  transition={{ duration: 7, repeat: Infinity, delay: i * 0.35 + 0.2, times: [0, 0.3, 0.5, 0.85, 1] }}
+            {decaySlots.map((slot, si) => {
+              const idx = (tick + si * 3) % decayTips.length;
+              const p = decayTips[idx];
+              return (
+                <div
+                  key={si}
+                  className="absolute"
+                  style={{ left: `${slot.x}%`, top: `${slot.y}%` }}
                 >
-                  <div className="font-marker text-[9px] md:text-[11px] leading-tight text-ink max-w-[90px] md:max-w-[150px] whitespace-normal">
-                    "{p.tip}"
-                  </div>
-                  <div className="text-[8px] md:text-[9px] text-ink-soft italic mt-0.5">{p.src}</div>
-                </motion.div>
-              </motion.div>
-            ))}
-            <div className="absolute bottom-2 right-2 font-marker text-[10px] md:text-xs text-terracotta bg-paper/80 px-2 py-0.5 rounded">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, y: 8, filter: "blur(0px)" }}
+                      animate={{
+                        opacity: [0, 1, 1, 0.35, 0],
+                        y: [8, 0, 0, -10, -22],
+                        filter: ["blur(0px)", "blur(0px)", "blur(0px)", "blur(2px)", "blur(6px)"],
+                      }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: CYCLE / 1000, times: [0, 0.12, 0.7, 0.9, 1], ease: "easeOut" }}
+                      className="relative"
+                    >
+                      <Pin x={0} y={0} delay={0} size={22} color={p.c} />
+                      <div
+                        className="absolute left-5 -top-1 bg-paper border-2 border-ink sticker px-2.5 py-1.5 md:px-3 md:py-2 shadow-[3px_3px_0_rgba(26,23,20,0.18)]"
+                        style={{ transform: `rotate(${slot.rot}deg)` }}
+                      >
+                        <div className="font-marker text-sm md:text-lg leading-tight text-ink max-w-[180px] md:max-w-[240px] whitespace-normal">
+                          "{p.tip}"
+                        </div>
+                        <div className="text-[11px] md:text-sm text-ink-soft italic mt-1">{p.src}</div>
+                      </div>
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+            <div className="absolute bottom-2 right-2 font-marker text-xs md:text-sm text-terracotta bg-paper/80 px-2 py-1 rounded">
               tips evaporate →
             </div>
           </StylizedMap>
