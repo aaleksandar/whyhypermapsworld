@@ -377,11 +377,11 @@ export function SlideManyWorlds() {
   return (
     <SlideShell>
       <Eyebrow>solution · interactive</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-3xl mb-3">
-        Every world cares about <span className="italic text-pin">different things.</span>
+      <H1 className="text-5xl md:text-6xl max-w-4xl mb-3">
+        The map of <span className="italic text-pin">many worlds.</span>
       </H1>
-      <p className="text-lg text-ink-soft max-w-2xl mb-5">
-        Same city. Different lens. Pick a world — the filters, the pins, even the events on the map shift to what that tribe actually looks for.
+      <p className="text-lg text-ink-soft max-w-3xl mb-5">
+        Every community maps the city differently. Step into the worlds of foodies, skaters, architects, musicians, parents, and locals.
       </p>
       <div className="flex flex-wrap gap-2 mb-5">
         {worlds.map(w => (
