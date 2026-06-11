@@ -117,11 +117,6 @@ export function SlidePersonas() {
 }
 
 /* 3. Information decay */
-import {
-  SiWhatsapp, SiTelegram, SiReddit, SiInstagram, SiTiktok, SiFacebook,
-  SiDiscord, SiGmail,
-} from "react-icons/si";
-import { MessageCircle, Users, StickyNote } from "lucide-react";
 
 const SOURCE_META: Record<string, { Icon: React.ComponentType<{ size?: number; className?: string; style?: React.CSSProperties }>; color: string; label: string }> = {
   WhatsApp:    { Icon: SiWhatsapp,    color: "#25D366", label: "WhatsApp" },
