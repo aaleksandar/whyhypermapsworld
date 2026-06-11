@@ -1139,9 +1139,15 @@ function GlowPin({ spot, active, onClick }: { spot: PinSpot; active: boolean; on
           <circle cx="11" cy="11" r="4" fill="var(--paper)"/>
         </svg>
         {active && (
-          <div className="absolute left-1/2 -translate-x-1/2 -top-7 font-marker text-base whitespace-nowrap bg-paper border border-ink/50 px-2 rounded sticker">
-            {spot.name}
-          </div>
+          spot.y < 28 ? (
+            <div className="absolute left-1/2 -translate-x-1/2 top-full mt-1 font-marker text-xs md:text-base whitespace-nowrap bg-paper border border-ink/50 px-2 rounded sticker">
+              {spot.name}
+            </div>
+          ) : (
+            <div className="absolute left-1/2 -translate-x-1/2 -top-6 md:-top-7 font-marker text-xs md:text-base whitespace-nowrap bg-paper border border-ink/50 px-2 rounded sticker">
+              {spot.name}
+            </div>
+          )
         )}
       </motion.div>
     </button>
