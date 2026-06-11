@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SlideShell, Eyebrow, H1, Pin, PaperCard } from "./primitives";
 import { StylizedMap } from "./StylizedMap";
+import {
+  SiWhatsapp, SiTelegram, SiReddit, SiInstagram, SiTiktok, SiFacebook,
+  SiDiscord, SiGmail,
+} from "react-icons/si";
+import { MessageCircle, Users, StickyNote } from "lucide-react";
 import globe from "@/assets/deck/globe.png";
 import personas from "@/assets/deck/personas.jpg";
 
@@ -112,33 +117,54 @@ export function SlidePersonas() {
 }
 
 /* 3. Information decay */
+
+const SOURCE_META: Record<string, { Icon: React.ComponentType<{ size?: number; className?: string; style?: React.CSSProperties }>; color: string; label: string }> = {
+  WhatsApp:    { Icon: SiWhatsapp,    color: "#25D366", label: "WhatsApp" },
+  Telegram:    { Icon: SiTelegram,    color: "#26A5E4", label: "Telegram" },
+  Reddit:      { Icon: SiReddit,      color: "#FF4500", label: "Reddit" },
+  Instagram:   { Icon: SiInstagram,   color: "#E1306C", label: "Instagram" },
+  TikTok:      { Icon: SiTiktok,      color: "#111111", label: "TikTok" },
+  Facebook:    { Icon: SiFacebook,    color: "#1877F2", label: "FB group" },
+  Discord:     { Icon: SiDiscord,     color: "#5865F2", label: "Discord" },
+  Email:       { Icon: SiGmail,       color: "#EA4335", label: "Email" },
+  DM:          { Icon: MessageCircle, color: "var(--ink-soft)", label: "DM" },
+  GroupChat:   { Icon: Users,         color: "var(--ink-soft)", label: "Group chat" },
+  Forum:       { Icon: MessageCircle, color: "var(--ink-soft)", label: "Forum" },
+  Note:        { Icon: StickyNote,    color: "var(--ink-soft)", label: "Note" },
+};
+
 const decayTips = [
-  { c: "var(--pin)",       tip: "best bún bò — auntie at 6am",    src: "WhatsApp · 2021" },
-  { c: "var(--terracotta)",tip: "rooftop jam every Thursday",     src: "Telegram · 2022" },
-  { c: "var(--sage)",      tip: "tailor who copies any jacket",   src: "Reddit · 2019" },
-  { c: "var(--mustard)",   tip: "kid-friendly café, has cradle",  src: "FB group · 2020" },
-  { c: "var(--terracotta)",tip: "tiny natural wine bar, no sign", src: "DM · 2023" },
-  { c: "var(--pin)",       tip: "skate spot — smooth till 11pm",  src: "Discord · 2022" },
-  { c: "var(--sage)",      tip: "affordable vintage, Tue only",   src: "WhatsApp · 2020" },
-  { c: "var(--mustard)",   tip: "gallery opening every 1st Fri",  src: "Email · 2021" },
-  { c: "var(--terracotta)",tip: "queer-safe dance floor",         src: "Group chat · 2022" },
-  { c: "var(--sage)",      tip: "wheelchair-accessible entrance", src: "Forum · 2020" },
-  { c: "var(--pin)",       tip: "vegan pho — ask for #7",         src: "DM · 2023" },
-  { c: "var(--mustard)",   tip: "she'll braid your hair, $8",     src: "Note · 2019" },
+  { c: "var(--pin)",        tip: "best bún bò — auntie at 6am",     source: "WhatsApp",  when: "Mar 2021" },
+  { c: "var(--terracotta)", tip: "rooftop jam every Thursday",      source: "Telegram",  when: "Aug 2022" },
+  { c: "var(--sage)",       tip: "tailor who copies any jacket",    source: "Reddit",    when: "Nov 2019" },
+  { c: "var(--mustard)",    tip: "kid-friendly café, has cradle",   source: "Facebook",  when: "Jun 2023" },
+  { c: "var(--terracotta)", tip: "tiny natural wine bar, no sign",  source: "Instagram", when: "Feb 2024" },
+  { c: "var(--pin)",        tip: "skate spot — smooth till 11pm",   source: "Discord",   when: "Sep 2022" },
+  { c: "var(--sage)",       tip: "affordable vintage, Tue only",    source: "TikTok",    when: "Apr 2025" },
+  { c: "var(--mustard)",    tip: "gallery opening every 1st Fri",   source: "Email",     when: "Jan 2021" },
+  { c: "var(--terracotta)", tip: "queer-safe dance floor",          source: "GroupChat", when: "Oct 2023" },
+  { c: "var(--sage)",       tip: "wheelchair-accessible entrance",  source: "Forum",     when: "May 2020" },
+  { c: "var(--pin)",        tip: "vegan pho — ask for #7",          source: "DM",        when: "Jul 2024" },
+  { c: "var(--mustard)",    tip: "she'll braid your hair, $8",      source: "Note",      when: "Dec 2019" },
+  { c: "var(--terracotta)", tip: "free yoga in the park, Sundays",  source: "Instagram", when: "Aug 2026" },
+  { c: "var(--sage)",       tip: "best mochi — back of the alley",  source: "TikTok",    when: "Feb 2026" },
+  { c: "var(--pin)",        tip: "luthier fixes anything stringed", source: "Reddit",    when: "Mar 2025" },
+  { c: "var(--mustard)",    tip: "secret rooftop pool, ask Marco",  source: "WhatsApp",  when: "Jun 2024" },
 ];
-// 4 slots positioned in spaced quadrants
+
 const decaySlots = [
-  { x: 18, y: 22, rot: -2 },
-  { x: 68, y: 18, rot: 1.5 },
-  { x: 24, y: 60, rot: 1 },
-  { x: 72, y: 58, rot: -1.5 },
+  { x: 16, y: 20, rot: -2 },
+  { x: 64, y: 16, rot: 1.5 },
+  { x: 20, y: 58, rot: 1 },
+  { x: 66, y: 54, rot: -1.5 },
 ];
-const CYCLE = 4200; // ms per pin lifecycle
+const CYCLE = 5200; // ms per pin lifecycle
+const STEP = CYCLE / 4; // staggered phase between slots
 
 export function SlideDecay() {
   const [tick, setTick] = React.useState(0);
   React.useEffect(() => {
-    const id = setInterval(() => setTick(t => t + 1), CYCLE);
+    const id = setInterval(() => setTick(t => t + 1), STEP);
     return () => clearInterval(id);
   }, []);
   return (
@@ -155,8 +181,11 @@ export function SlideDecay() {
         <div className="md:col-span-3 relative aspect-[4/3] md:aspect-auto md:h-full">
           <StylizedMap tint="var(--terracotta)" showLabels={false}>
             {decaySlots.map((slot, si) => {
-              const idx = (tick + si * 3) % decayTips.length;
+              const slotTick = Math.floor((tick + 1000 - si) / 4);
+              const idx = (slotTick + si * 5) % decayTips.length;
               const p = decayTips[idx];
+              const meta = SOURCE_META[p.source] ?? SOURCE_META.DM;
+              const Icon = meta.Icon;
               return (
                 <div
                   key={si}
@@ -173,27 +202,27 @@ export function SlideDecay() {
                         filter: ["blur(0px)", "blur(0px)", "blur(0px)", "blur(2px)", "blur(6px)"],
                       }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: CYCLE / 1000, times: [0, 0.12, 0.7, 0.9, 1], ease: "easeOut" }}
+                      transition={{ duration: CYCLE / 1000, times: [0, 0.1, 0.72, 0.9, 1], ease: "easeOut" }}
                       className="relative"
                     >
                       <Pin x={0} y={0} delay={0} size={22} color={p.c} />
                       <div
-                        className="absolute left-5 -top-1 bg-paper border-2 border-ink sticker px-2.5 py-1.5 md:px-3 md:py-2 shadow-[3px_3px_0_rgba(26,23,20,0.18)]"
+                        className="absolute left-5 -top-1 bg-paper border-2 border-ink sticker px-3 py-2 md:px-4 md:py-3 shadow-[3px_3px_0_rgba(26,23,20,0.18)]"
                         style={{ transform: `rotate(${slot.rot}deg)` }}
                       >
-                        <div className="font-marker text-sm md:text-lg leading-tight text-ink max-w-[180px] md:max-w-[240px] whitespace-normal">
+                        <div className="font-marker text-sm md:text-lg leading-snug text-ink w-[200px] md:w-[300px] whitespace-normal">
                           "{p.tip}"
                         </div>
-                        <div className="text-[11px] md:text-sm text-ink-soft italic mt-1">{p.src}</div>
+                        <div className="flex items-center gap-1.5 mt-1.5 text-[11px] md:text-sm text-ink-soft italic">
+                          <Icon size={14} className="shrink-0" style={{ color: meta.color }} />
+                          <span>{meta.label} · {p.when}</span>
+                        </div>
                       </div>
                     </motion.div>
                   </AnimatePresence>
                 </div>
               );
             })}
-            <div className="absolute bottom-2 right-2 font-marker text-xs md:text-sm text-terracotta bg-paper/80 px-2 py-1 rounded">
-              tips evaporate →
-            </div>
           </StylizedMap>
         </div>
       </div>
