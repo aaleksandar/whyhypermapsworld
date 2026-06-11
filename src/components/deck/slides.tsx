@@ -45,23 +45,41 @@ const personaQuotes = [
 ];
 export function SlidePersonas() {
   const [hover, setHover] = useState<number | null>(null);
+  const [seen, setSeen] = useState<Set<number>>(new Set());
+  const touch = (i: number) => {
+    setHover(hover === i ? null : i);
+    setSeen((s) => new Set(s).add(i));
+  };
   return (
     <SlideShell>
       <Eyebrow>problem 01</Eyebrow>
-      <H1 className="text-3xl md:text-6xl max-w-4xl mb-6 md:mb-10">
+      <H1 className="text-3xl md:text-6xl max-w-4xl mb-3 md:mb-6">
         The same city means <span className="text-terracotta italic">different things</span> to different people.
       </H1>
+      <p className="font-marker text-sm md:text-base text-terracotta mb-4 md:mb-6 animate-pulse">
+        👆 tap a face to hear what they're really asking
+      </p>
       <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-3 md:grid-rows-2 gap-3 md:gap-6 flex-1 max-w-5xl">
         {personaQuotes.map((p, i) => (
           <motion.div
             key={i}
             onMouseEnter={() => setHover(i)}
             onMouseLeave={() => setHover(null)}
-            onClick={() => setHover(hover === i ? null : i)}
+            onClick={() => touch(i)}
             className="relative bg-paper border-2 border-ink sticker p-2 md:p-4 overflow-hidden cursor-pointer"
             style={{ transform: `rotate(${[-1.5, 1, -0.5, 1.5, -1, 0.8][i]}deg)` }}
             whileHover={{ scale: 1.04, zIndex: 5 }}
+            whileTap={{ scale: 0.97 }}
           >
+            {!seen.has(i) && (
+              <motion.div
+                className="absolute -top-2 -right-2 z-10 w-7 h-7 rounded-full bg-pin border-2 border-ink grid place-items-center text-paper font-marker text-xs shadow-[2px_2px_0_var(--ink)]"
+                animate={{ scale: [1, 1.15, 1] }}
+                transition={{ duration: 1.2, repeat: Infinity }}
+              >
+                tap
+              </motion.div>
+            )}
             <div
               className="aspect-[3/2] bg-cover bg-no-repeat"
               style={{
