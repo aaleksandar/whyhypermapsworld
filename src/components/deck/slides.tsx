@@ -405,24 +405,34 @@ export function SlideManyWorlds() {
       <p className="text-base md:text-lg text-ink-soft max-w-3xl mb-4 md:mb-5">
         Every community maps the city differently. Step into the worlds of foodies, skaters, architects, musicians, parents, and locals.
       </p>
-      <div className="flex flex-wrap gap-1.5 md:gap-2 mb-4 md:mb-5">
+      <div className="flex flex-wrap gap-2 md:gap-3 mb-4 md:mb-5">
         {worlds.map(w => {
           const isActive = active === w.id;
           return (
-            <motion.button
-              key={w.id}
-              onClick={() => setActive(w.id)}
-              whileTap={{ scale: 0.94 }}
-              animate={!isActive ? { y: [0, -2, 0] } : { y: 0 }}
-              transition={!isActive ? { duration: 1.8, repeat: Infinity, delay: Math.random() * 0.8 } : {}}
-              className={`px-3 py-1.5 md:px-4 md:py-2 rounded-full border-2 border-ink font-marker text-sm md:text-lg transition-all ${
-                isActive
-                  ? "bg-ink text-paper sticker shadow-[3px_3px_0_var(--pin)]"
-                  : "bg-paper hover:bg-mustard shadow-[2px_2px_0_var(--ink)]"
-              }`}
-            >
-              {w.label}
-            </motion.button>
+            <div key={w.id} className="relative">
+              {!isActive && (
+                <motion.span
+                  aria-hidden
+                  className="absolute inset-0 rounded-full pointer-events-none"
+                  style={{ background: "var(--pin)", filter: "blur(12px)" }}
+                  animate={{ opacity: [0.35, 0.7, 0.35], scale: [0.95, 1.1, 0.95] }}
+                  transition={{ duration: 1.8, repeat: Infinity }}
+                />
+              )}
+              <motion.button
+                onClick={() => setActive(w.id)}
+                whileTap={{ scale: 0.94 }}
+                className={`relative px-3 py-1.5 md:px-4 md:py-2 rounded-full border-2 border-ink font-marker text-sm md:text-lg transition-all ${
+                  isActive
+                    ? "bg-ink text-paper sticker shadow-[3px_3px_0_var(--pin)]"
+                    : "bg-paper hover:bg-mustard shadow-[2px_2px_0_var(--ink)]"
+                }`}
+              >
+                {w.label}
+              </motion.button>
+            </div>
+          );
+        })}
           );
         })}
       </div>
