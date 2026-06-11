@@ -4,7 +4,7 @@ import { SlideShell, Eyebrow, H1, Pin, PaperCard } from "./primitives";
 import { StylizedMap } from "./StylizedMap";
 import globe from "@/assets/deck/globe.png";
 import personas from "@/assets/deck/personas.jpg";
-import pack from "@/assets/deck/pack.png";
+
 
 /* 1. Cover */
 export function SlideCover() {
