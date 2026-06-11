@@ -1304,6 +1304,7 @@ export function SlideCompetition() {
             <svg className="absolute -bottom-3 md:-bottom-4 left-1/2 -translate-x-1/2" width="20" height="14" viewBox="0 0 20 14">
               <path d="M 0 0 L 20 0 L 10 14 Z" fill="var(--pin)" stroke="var(--ink)" strokeWidth="1.5" />
             </svg>
+            <div className="absolute -bottom-6 md:-bottom-7 left-1/2 -translate-x-1/2 w-2 h-2 md:w-3 md:h-3 rounded-full bg-ink" />
           </motion.div>
         </div>
         <div className="md:w-64 flex flex-col md:justify-center text-ink-soft text-sm md:text-base space-y-2 md:space-y-3">
