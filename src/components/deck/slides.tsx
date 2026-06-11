@@ -15,19 +15,19 @@ export function SlideCover() {
         alt="Hand-drawn globe with pins"
         width={520}
         height={520}
-        className="w-[36vh] max-w-[420px] mb-6 drop-shadow-[3px_5px_0_rgba(26,23,20,0.2)]"
+        className="w-[55vw] max-w-[420px] mb-6 drop-shadow-[3px_5px_0_rgba(26,23,20,0.2)]"
         initial={{ rotate: -8, opacity: 0 }}
         animate={{ rotate: 0, opacity: 1 }}
         transition={{ duration: 0.8, type: "spring" }}
       />
       <Eyebrow>a pitch deck · 2026</Eyebrow>
-      <H1 className="text-7xl md:text-8xl">
+      <H1 className="text-5xl md:text-8xl">
         hypermaps<span className="text-pin">.world</span>
       </H1>
-      <p className="font-display italic text-2xl md:text-3xl text-ink-soft mt-6 max-w-2xl">
+      <p className="font-display italic text-xl md:text-3xl text-ink-soft mt-6 max-w-2xl">
         Find where you belong.
       </p>
-      <div className="mt-10 font-marker text-xl text-terracotta animate-pulse">
+      <div className="mt-8 md:mt-10 font-marker text-base md:text-xl text-terracotta animate-pulse">
         scroll right →
       </div>
     </SlideShell>
