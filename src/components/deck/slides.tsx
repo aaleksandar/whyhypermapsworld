@@ -1277,8 +1277,8 @@ export function SlideCompetition() {
           {/* labels */}
           <div className="absolute top-1.5 md:top-2 left-1/2 -translate-x-1/2 font-marker text-sm md:text-lg text-ink-soft">↑ living</div>
           <div className="absolute bottom-1.5 md:bottom-2 left-1/2 -translate-x-1/2 font-marker text-sm md:text-lg text-ink-soft">static ↓</div>
-          <div className="absolute left-1.5 top-1/2 -translate-y-1/2 font-marker text-sm md:text-lg text-ink-soft md:-rotate-90">← generic</div>
-          <div className="absolute right-1.5 top-1/2 -translate-y-1/2 font-marker text-sm md:text-lg text-ink-soft md:rotate-90">personal →</div>
+          <div className="absolute left-1.5 top-1/2 -translate-y-1/2 font-marker text-sm md:text-lg text-ink-soft">← generic</div>
+          <div className="absolute right-1.5 top-1/2 -translate-y-1/2 font-marker text-sm md:text-lg text-ink-soft">personal →</div>
           {/* dots */}
           {competitors.map((c) => (
             <div
