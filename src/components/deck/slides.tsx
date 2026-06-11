@@ -1264,17 +1264,28 @@ export function SlideRewards() {
             })}
           </div>
           <div className="flex gap-2 md:gap-3 mt-3 md:mt-4 flex-wrap">
-            <motion.button
-              onClick={() => setCollected((c) => Math.min(loot.length, c + 1))}
-              disabled={collected >= loot.length}
-              whileTap={{ scale: 0.95 }}
-              animate={collected < loot.length ? { scale: [1, 1.05, 1], boxShadow: ["3px 3px 0 var(--ink)", "5px 5px 0 var(--ink)", "3px 3px 0 var(--ink)"] } : {}}
-              transition={{ duration: 1.4, repeat: Infinity }}
-              className="px-3 py-2 md:px-5 md:py-2.5 bg-pin text-paper border-2 border-ink sticker font-marker text-sm md:text-lg disabled:opacity-40 flex items-center gap-2"
-            >
-              contribute
-              <motion.span animate={{ y: [0, -3, 0] }} transition={{ duration: 0.8, repeat: Infinity }}>🎁</motion.span>
-            </motion.button>
+            <div className="relative inline-block">
+              {collected < loot.length && (
+                <motion.span
+                  aria-hidden
+                  className="absolute inset-0 rounded pointer-events-none"
+                  style={{ background: "var(--pin)", filter: "blur(16px)" }}
+                  animate={{ opacity: [0.4, 0.8, 0.4], scale: [0.95, 1.1, 0.95] }}
+                  transition={{ duration: 1.6, repeat: Infinity }}
+                />
+              )}
+              <motion.button
+                onClick={() => setCollected((c) => Math.min(loot.length, c + 1))}
+                disabled={collected >= loot.length}
+                whileTap={{ scale: 0.95 }}
+                animate={collected < loot.length ? { scale: [1, 1.05, 1], boxShadow: ["3px 3px 0 var(--ink)", "5px 5px 0 var(--ink)", "3px 3px 0 var(--ink)"] } : {}}
+                transition={{ duration: 1.4, repeat: Infinity }}
+                className="relative px-3 py-2 md:px-5 md:py-2.5 bg-pin text-paper border-2 border-ink sticker font-marker text-sm md:text-lg disabled:opacity-40 flex items-center gap-2"
+              >
+                contribute
+                <motion.span animate={{ y: [0, -3, 0] }} transition={{ duration: 0.8, repeat: Infinity }}>🎁</motion.span>
+              </motion.button>
+            </div>
             <button
               onClick={() => setCollected(0)}
               className="px-3 py-2 md:px-4 md:py-2.5 bg-paper border-2 border-ink sticker font-marker text-sm md:text-base"
