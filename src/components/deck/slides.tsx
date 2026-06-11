@@ -48,8 +48,8 @@ export function SlidePersonas() {
   return (
     <SlideShell>
       <Eyebrow>problem 01</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-3xl mb-10">
-        Everyone is hunting for places. <span className="text-terracotta italic">Nobody</span> has a good way.
+      <H1 className="text-5xl md:text-6xl max-w-4xl mb-10">
+        The same city means <span className="text-terracotta italic">different things</span> to different people.
       </H1>
       <div className="grid grid-cols-3 grid-rows-2 gap-6 flex-1 max-w-5xl">
         {personaQuotes.map((p, i) => (
