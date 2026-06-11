@@ -25,7 +25,7 @@ export function SlideCover() {
         hypermaps<span className="text-pin">.world</span>
       </H1>
       <p className="font-display italic text-2xl md:text-3xl text-ink-soft mt-6 max-w-2xl">
-        A map that knows who you are <br/>— and resonates with your vibe.
+        Find where you belong.
       </p>
       <div className="mt-10 font-marker text-xl text-terracotta animate-pulse">
         scroll right →
