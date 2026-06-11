@@ -1149,26 +1149,26 @@ export function SlideRewards() {
   return (
     <SlideShell>
       <Eyebrow>contribution</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-4xl mb-3">
+      <H1 className="text-4xl md:text-6xl max-w-4xl mb-3">
         Contributing is a <span className="italic text-pin">game.</span>
       </H1>
-      <p className="text-lg text-ink-soft max-w-3xl mb-6">
+      <p className="text-base md:text-lg text-ink-soft max-w-3xl mb-5 md:mb-6">
         Every tag, photo, or guide drops loot into your backpack. Collect, mix, and trade items at partner spots around the world — like a city-sized RPG.
       </p>
-      <div className="flex-1 grid grid-cols-5 gap-6 min-h-0">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-6 min-h-0">
         {/* Backpack */}
-        <div className="col-span-3 border-2 border-ink sticker bg-paper-2 p-5 flex flex-col">
+        <div className="md:col-span-3 border-2 border-ink sticker bg-paper-2 p-3 md:p-5 flex flex-col">
           <div className="flex items-baseline justify-between mb-3">
-            <div className="font-marker text-xl text-terracotta">🎒 your backpack</div>
-            <div className="font-marker text-sm text-ink-soft">{collected} / {slots} slots</div>
+            <div className="font-marker text-base md:text-xl text-terracotta">🎒 your backpack</div>
+            <div className="font-marker text-xs md:text-sm text-ink-soft">{collected} / {slots} slots</div>
           </div>
-          <div className="grid grid-cols-4 gap-3 flex-1">
+          <div className="grid grid-cols-4 gap-2 md:gap-3 flex-1">
             {Array.from({ length: slots }).map((_, i) => {
               const item = i < collected ? loot[i] : null;
               if (!item) {
                 return (
                   <div key={i} className="border-2 border-dashed border-ink/30 rounded bg-paper/40 aspect-square flex items-center justify-center">
-                    <span className="font-marker text-sm text-ink-soft/60">empty</span>
+                    <span className="font-marker text-xs md:text-sm text-ink-soft/60">empty</span>
                   </div>
                 );
               }
@@ -1179,28 +1179,28 @@ export function SlideRewards() {
                   initial={{ scale: 0.4, opacity: 0, y: -30 }}
                   animate={{ scale: 1, opacity: 1, y: 0 }}
                   transition={{ type: "spring", stiffness: 220, damping: 14, delay: i * 0.05 }}
-                  className={`relative border-2 ${r.ring} rounded ${r.bg} aspect-square flex flex-col items-center justify-center p-1 sticker`}
+                  className={`relative border-2 ${r.ring} rounded ${r.bg} aspect-square flex flex-col items-center justify-center p-1 sticker overflow-hidden`}
                   style={{ transform: `rotate(${(i%2?1:-1)*1.5}deg)` }}
                 >
-                  <div className="text-3xl leading-none">{item.glyph}</div>
-                  <div className="font-display font-bold text-[11px] text-center mt-1 leading-tight">{item.name}</div>
-                  <div className="font-marker text-[9px] text-ink-soft text-center leading-tight">{item.via}</div>
-                  <span className="absolute top-1 right-1 font-marker text-[8px] uppercase tracking-wider bg-paper px-1 border border-ink/40 rounded">{r.label}</span>
+                  <div className="text-2xl md:text-3xl leading-none">{item.glyph}</div>
+                  <div className="font-display font-bold text-[10px] md:text-[11px] text-center mt-1 leading-tight px-0.5">{item.name}</div>
+                  <div className="font-marker text-[8px] md:text-[9px] text-ink-soft text-center leading-tight px-0.5 line-clamp-2">{item.via}</div>
+                  <span className="absolute top-0.5 right-0.5 md:top-1 md:right-1 font-marker text-[7px] md:text-[8px] uppercase tracking-wider bg-paper px-1 border border-ink/40 rounded">{r.label}</span>
                 </motion.div>
               );
             })}
           </div>
-          <div className="flex gap-3 mt-4">
+          <div className="flex gap-2 md:gap-3 mt-3 md:mt-4 flex-wrap">
             <button
               onClick={() => setCollected((c) => Math.min(loot.length, c + 1))}
               disabled={collected >= loot.length}
-              className="px-5 py-2.5 bg-pin text-paper border-2 border-ink sticker font-marker text-lg disabled:opacity-40"
+              className="px-3 py-2 md:px-5 md:py-2.5 bg-pin text-paper border-2 border-ink sticker font-marker text-sm md:text-lg disabled:opacity-40"
             >
               + contribute → drop loot
             </button>
             <button
               onClick={() => setCollected(0)}
-              className="px-4 py-2.5 bg-paper border-2 border-ink sticker font-marker text-base"
+              className="px-3 py-2 md:px-4 md:py-2.5 bg-paper border-2 border-ink sticker font-marker text-sm md:text-base"
             >
               reset
             </button>
@@ -1208,30 +1208,30 @@ export function SlideRewards() {
         </div>
 
         {/* Shop / exchanges */}
-        <div className="col-span-2 border-2 border-ink sticker bg-paper p-5 flex flex-col">
-          <div className="font-marker text-xl text-terracotta mb-1">🏪 trade at partner spots</div>
-          <div className="font-marker text-sm text-ink-soft mb-4">items unlock real-world rewards across the world.</div>
-          <div className="space-y-3 flex-1">
+        <div className="md:col-span-2 border-2 border-ink sticker bg-paper p-3 md:p-5 flex flex-col">
+          <div className="font-marker text-base md:text-xl text-terracotta mb-1">🏪 trade at partner spots</div>
+          <div className="font-marker text-xs md:text-sm text-ink-soft mb-3 md:mb-4">items unlock real-world rewards across the world.</div>
+          <div className="space-y-2 md:space-y-3 flex-1">
             {shopExchanges.map((s, i) => (
               <motion.div
                 key={s.trade}
                 initial={{ x: 20, opacity: 0 }}
                 whileInView={{ x: 0, opacity: 1 }}
                 transition={{ delay: i * 0.1 }}
-                className="flex items-center gap-3 border border-ink/40 bg-paper-2 p-3 rounded"
+                className="flex items-center gap-2 md:gap-3 border border-ink/40 bg-paper-2 p-2 md:p-3 rounded"
                 style={{ transform: `rotate(${(i%2?1:-1)*0.6}deg)` }}
               >
-                <div className="text-3xl">{s.glyph}</div>
+                <div className="text-2xl md:text-3xl shrink-0">{s.glyph}</div>
                 <div className="flex-1 min-w-0">
-                  <div className="font-display font-bold text-[14px] leading-tight">{s.trade}</div>
-                  <div className="font-marker text-xs text-ink-soft">at {s.at}</div>
+                  <div className="font-display font-bold text-[12px] md:text-[14px] leading-tight truncate">{s.trade}</div>
+                  <div className="font-marker text-[10px] md:text-xs text-ink-soft truncate">at {s.at}</div>
                 </div>
-                <div className="font-marker text-2xl text-ink-soft">→</div>
-                <div className="font-display text-[13px] text-pin font-bold text-right max-w-[120px] leading-tight">{s.reward}</div>
+                <div className="font-marker text-lg md:text-2xl text-ink-soft shrink-0">→</div>
+                <div className="font-display text-[11px] md:text-[13px] text-pin font-bold text-right max-w-[90px] md:max-w-[120px] leading-tight shrink-0">{s.reward}</div>
               </motion.div>
             ))}
           </div>
-          <div className="font-marker text-xs text-ink-soft mt-3 italic">play the city. level up. unlock the world.</div>
+          <div className="font-marker text-[10px] md:text-xs text-ink-soft mt-3 italic">play the city. level up. unlock the world.</div>
         </div>
       </div>
     </SlideShell>
