@@ -670,6 +670,9 @@ type Profile = {
   tagline: string;
   color: string;
   glyph: string;
+  avatar?: string;
+  avatarFit?: "cover" | "contain";
+  avatarBg?: string;
   mapLabel: string;
   pins: { x: number; y: number }[];
   stat: string;
