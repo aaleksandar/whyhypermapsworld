@@ -69,11 +69,19 @@ export function SlidePersonas() {
             whileTap={{ scale: 0.97 }}
           >
             {!seen.has(i) && (
-              <motion.div
-                className="absolute -top-1.5 -right-1.5 z-10 w-3.5 h-3.5 rounded-full bg-pin border-2 border-ink"
-                animate={{ scale: [1, 1.4, 1], boxShadow: ["0 0 0 0 var(--pin)", "0 0 0 8px transparent", "0 0 0 0 var(--pin)"] }}
-                transition={{ duration: 1.4, repeat: Infinity }}
-              />
+              <div className="absolute top-2 right-2 z-20 pointer-events-none">
+                <motion.span
+                  className="absolute rounded-full"
+                  style={{ left: "50%", top: "50%", width: 28, height: 28, transform: "translate(-50%,-50%)", background: "var(--pin)", filter: "blur(8px)" }}
+                  animate={{ scale: [1, 1.6, 1], opacity: [0.7, 0.25, 0.7] }}
+                  transition={{ duration: 1.4, repeat: Infinity }}
+                />
+                <motion.span
+                  className="relative block w-3 h-3 rounded-full bg-pin border-2 border-ink"
+                  animate={{ scale: [1, 1.25, 1] }}
+                  transition={{ duration: 1.4, repeat: Infinity }}
+                />
+              </div>
             )}
             <div
               className="aspect-[3/2] bg-cover bg-no-repeat"
