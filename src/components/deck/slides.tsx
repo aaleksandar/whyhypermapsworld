@@ -646,13 +646,13 @@ export function SlideVibes() {
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-8 flex-1 md:items-center">
         {/* Left: 3 inputs */}
         <div className="md:col-span-2 space-y-3 md:space-y-4">
-          <div className="font-marker text-base md:text-xl text-terracotta mb-1">what we read</div>
+          <div className="font-marker text-lg md:text-2xl text-terracotta mb-1">what we read</div>
           {["Who you are", "Where you are", "What you need"].map((t, i) => (
             <PaperCard key={t} rotate={i === 1 ? 1 : -1.2} className="bg-paper-2 flex items-baseline gap-3 md:gap-4">
-              <div className="font-display font-extrabold text-2xl md:text-3xl text-pin shrink-0">{i+1}</div>
+              <div className="font-display font-extrabold text-3xl md:text-4xl text-pin shrink-0">{i+1}</div>
               <div className="min-w-0">
-                <div className="font-display font-bold text-lg md:text-2xl leading-tight">{t}</div>
-                <div className="font-marker text-sm md:text-base text-ink-soft">
+                <div className="font-display font-bold text-xl md:text-2xl leading-tight">{t}</div>
+                <div className="font-marker text-base md:text-lg text-ink-soft">
                   {i === 0 && "history, taste, the worlds you belong to"}
                   {i === 1 && "city, neighborhood, this exact corner"}
                   {i === 2 && "right now: jam, eat, hide, wander"}
