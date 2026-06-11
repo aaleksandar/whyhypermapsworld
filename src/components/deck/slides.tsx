@@ -486,12 +486,12 @@ const vibeSignals = [
 export function SlideVibes() {
   return (
     <SlideShell>
-      <Eyebrow>matching</Eyebrow>
+      <Eyebrow>how it works</Eyebrow>
       <H1 className="text-5xl md:text-6xl max-w-4xl mb-3">
-        We match you with places of <span className="italic text-pin">your vibe.</span>
+        We help you find places of <span className="italic text-pin">your vibe.</span>
       </H1>
       <p className="text-lg text-ink-soft max-w-3xl mb-10">
-        Vibe isn't magic — it's an <b>approximation</b>. We stack niche factual data, reviews from people like you, signals from your friends, and an AI estimate of who you are right now. The more you use the map, the sharper the guess.
+        Our algorithm stacks niche factual data, reviews from people like you, signals from your friends, and your inputs — to find places that match you.
       </p>
 
       <div className="grid grid-cols-5 gap-8 flex-1 items-center">
