@@ -1391,10 +1391,11 @@ function GlowPin({ spot, active, onClick }: { spot: PinSpot; active: boolean; on
 
 export function SlidePin() {
   const [idx, setIdx] = useState(0);
+  const [interacted, setInteracted] = useState(false);
   const d = spots[idx];
   return (
     <SlideShell>
-      <Eyebrow>pin context</Eyebrow>
+      <Eyebrow>pin context · interactive</Eyebrow>
       <H1 className="text-3xl md:text-6xl max-w-4xl mb-2">
         Every place remembers <span className="italic text-pin">what each community said.</span>
       </H1>
@@ -1403,9 +1404,10 @@ export function SlidePin() {
         <div className="md:col-span-2 border-2 border-ink sticker bg-paper relative overflow-hidden aspect-[4/3] md:aspect-auto">
           <StylizedMap tint={d.color} showLabels={false}>
             {spots.map((s, i) => (
-              <GlowPin key={s.name} spot={s} active={i === idx} onClick={() => setIdx(i)} />
+              <GlowPin key={s.name} spot={s} active={i === idx} onClick={() => { setIdx(i); setInteracted(true); }} />
             ))}
           </StylizedMap>
+          <CursorHint x={`${spots[1].x}%`} y={`${spots[1].y}%`} show={!interacted} label="tap a pin" />
           <div className="absolute bottom-2 left-2 right-2 md:bottom-3 md:left-3 md:right-3 font-marker text-xs md:text-sm text-ink-soft bg-paper/80 px-2 py-1 rounded">
             ↑ open any glowing pin
           </div>
