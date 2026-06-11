@@ -984,10 +984,31 @@ export function SlideAsk() {
                   m.who === "ai" ? "bg-mustard" : "bg-paper"
                 }`}
               >
-                {m.who === "local" && (
-                  <div className="font-marker text-xs md:text-sm text-terracotta mb-1">{m.name}</div>
+                {m.who === "ai" && (
+                  <div className="flex items-center gap-2 mb-2 pb-2 border-b border-ink/30">
+                    <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-ink text-mustard flex items-center justify-center font-marker text-base shrink-0">
+                      ✦
+                    </div>
+                    <div className="min-w-0">
+                      <div className="font-display font-bold text-sm md:text-base leading-tight">local AI</div>
+                      <div className="font-marker text-[10px] md:text-xs text-ink-soft uppercase tracking-wider">instant · trained on this area</div>
+                    </div>
+                  </div>
                 )}
-                {m.who === "ai" && <div className="font-marker text-xs md:text-sm text-ink-soft mb-1">🤖 local AI</div>}
+                {m.who === "local" && (
+                  <div className="flex items-center gap-2 mb-2 pb-2 border-b border-ink/20">
+                    <div
+                      className="w-8 h-8 md:w-9 md:h-9 rounded-full border-2 border-ink flex items-center justify-center font-marker text-sm md:text-base text-paper shrink-0"
+                      style={{ background: m.avatarTone }}
+                    >
+                      {m.name.charAt(0)}
+                    </div>
+                    <div className="min-w-0">
+                      <div className="font-display font-bold text-sm md:text-base text-ink leading-tight truncate">{m.name}</div>
+                      <div className="font-marker text-[10px] md:text-xs text-ink-soft truncate">{m.role}</div>
+                    </div>
+                  </div>
+                )}
                 <div className="font-display text-sm md:text-base">{m.text}</div>
               </motion.div>
             ))}
