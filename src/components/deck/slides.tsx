@@ -532,16 +532,19 @@ export function SlideVibes() {
 export const SlideLayers = SlideVibes;
 
 /* 9. Character profiles */
+type ActivityKind = "rated" | "tagged" | "photo" | "visited" | "added" | "live";
 type Profile = {
   name: string;
   kind: "person" | "brand" | "guide" | "list";
   tagline: string;
   color: string;
-  glyph: string;            // single character / emoji shown in avatar
-  mapLabel: string;         // what the pins on the map represent
+  glyph: string;
+  mapLabel: string;
   pins: { x: number; y: number }[];
   stat: string;
+  activity: { kind: ActivityKind; place: string; when: string; note?: string }[];
 };
+
 const profiles: Profile[] = [
   {
     name: "Julian", kind: "person", glyph: "J", color: "var(--sage)",
@@ -552,6 +555,11 @@ const profiles: Profile[] = [
       { x: 45, y: 40 }, { x: 28, y: 50 }, { x: 65, y: 48 },
     ],
     stat: "312 places · 138 cafés mapped",
+    activity: [
+      { kind: "photo", place: "Slow Hours Café", when: "2h", note: "corner seat" },
+      { kind: "visited", place: "Iron + Oak Gym", when: "yesterday" },
+      { kind: "tagged", place: "Hum Vegan", when: "3d", note: "+ quiet" },
+    ],
   },
   {
     name: "Michelin", kind: "guide", glyph: "★", color: "var(--pin)",
@@ -562,6 +570,11 @@ const profiles: Profile[] = [
       { x: 40, y: 45 }, { x: 60, y: 50 },
     ],
     stat: "2026 picks · 38 restaurants in Saigon",
+    activity: [
+      { kind: "rated", place: "Anan Saigon", when: "today", note: "★★" },
+      { kind: "rated", place: "Nén Light", when: "2d", note: "★" },
+      { kind: "added", place: "Quince", when: "1w", note: "bib gourmand" },
+    ],
   },
   {
     name: "Resident Advisor", kind: "list", glyph: "♪", color: "var(--ink)",
@@ -572,6 +585,11 @@ const profiles: Profile[] = [
       { x: 70, y: 40 }, { x: 48, y: 48 }, { x: 30, y: 45 }, { x: 78, y: 22 },
     ],
     stat: "23 venues open tonight",
+    activity: [
+      { kind: "live", place: "The Observatory", when: "9pm", note: "Hyperaktivist" },
+      { kind: "added", place: "Arcan", when: "today", note: "Sat lineup" },
+      { kind: "photo", place: "Savage", when: "1d", note: "floor shot" },
+    ],
   },
   {
     name: "Tre Vineyard", kind: "brand", glyph: "❦", color: "var(--terracotta)",
@@ -582,14 +600,22 @@ const profiles: Profile[] = [
       { x: 68, y: 42 }, { x: 35, y: 45 },
     ],
     stat: "now poured at 47 places",
+    activity: [
+      { kind: "added", place: "Stoker Woodfired", when: "today", note: "by the glass" },
+      { kind: "photo", place: "Ănăn", when: "yesterday", note: "user pour" },
+      { kind: "tagged", place: "Nén Light", when: "4d", note: "pairing" },
+    ],
   },
 ];
 
 const kindBadge: Record<Profile["kind"], string> = {
-  person: "person",
-  brand: "brand",
-  guide: "guide",
-  list: "list",
+  person: "person", brand: "brand", guide: "guide", list: "list",
+};
+const activityVerb: Record<ActivityKind, string> = {
+  rated: "rated", tagged: "tagged", photo: "photo of", visited: "visited", added: "added", live: "live at",
+};
+const activityIcon: Record<ActivityKind, string> = {
+  rated: "★", tagged: "#", photo: "◉", visited: "✦", added: "+", live: "♪",
 };
 
 export function SlideCharacter() {
@@ -599,8 +625,8 @@ export function SlideCharacter() {
       <H1 className="text-5xl md:text-6xl max-w-4xl mb-3">
         Everyone gets a <span className="italic text-pin">profile.</span> Even places, brands and lists.
       </H1>
-      <p className="text-lg text-ink-soft max-w-3xl mb-8">
-        A profile is a person, a brand, a curated list or a guide — and every profile has its own map of the world.
+      <p className="text-lg text-ink-soft max-w-3xl mb-6">
+        A profile is a person, a brand, a curated list or a guide — each with its own map and a live feed of what they're doing on it.
       </p>
       <div className="grid grid-cols-4 gap-5 flex-1">
         {profiles.map((p, i) => (
@@ -614,32 +640,60 @@ export function SlideCharacter() {
           >
             <div className="flex items-center gap-3 mb-2">
               <div
-                className="w-14 h-14 rounded-full border-2 border-ink flex items-center justify-center font-display text-2xl text-paper"
+                className="w-12 h-12 rounded-full border-2 border-ink flex items-center justify-center font-display text-xl text-paper shrink-0"
                 style={{ background: p.color }}
               >
                 {p.glyph}
               </div>
               <div className="min-w-0">
-                <div className="font-display font-bold text-xl leading-tight truncate">{p.name}</div>
-                <div className="font-marker text-sm text-ink-soft">
+                <div className="font-display font-bold text-lg leading-tight truncate">{p.name}</div>
+                <div className="font-marker text-xs text-ink-soft">
                   <span className="px-1.5 py-0.5 bg-paper-2 border border-ink/40 mr-1">{kindBadge[p.kind]}</span>
                   {p.tagline.replace(/^[^·]+·\s*/, "")}
                 </div>
               </div>
             </div>
 
-            <div className="font-marker text-xs text-terracotta uppercase tracking-wider mb-1">
+            <div className="font-marker text-[10px] text-terracotta uppercase tracking-wider mb-1">
               {p.mapLabel}
             </div>
             <div className="relative border border-ink/40 bg-paper-2 aspect-[4/3] overflow-hidden">
               <StylizedMap tint={p.color} showLabels={false}>
                 {p.pins.map((pin, j) => (
-                  <Pin key={j} x={pin.x} y={pin.y} color={p.color} size={14} delay={i * 0.08 + j * 0.05} />
+                  <Pin key={j} x={pin.x} y={pin.y} color={p.color} size={12} delay={i * 0.08 + j * 0.05} />
                 ))}
               </StylizedMap>
             </div>
 
-            <div className="font-marker text-sm text-pin mt-3">{p.stat}</div>
+            <div className="font-marker text-xs text-pin mt-2">{p.stat}</div>
+
+            <div className="mt-2 pt-2 border-t border-ink/20">
+              <div className="font-marker text-[10px] uppercase tracking-wider text-ink-soft mb-1">recent</div>
+              <ul className="space-y-1">
+                {p.activity.map((a, j) => (
+                  <motion.li
+                    key={j}
+                    initial={{ opacity: 0, x: -6 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.08 + 0.3 + j * 0.06 }}
+                    className="flex items-baseline gap-1.5 text-[12px] leading-tight"
+                  >
+                    <span
+                      className="font-marker shrink-0 w-4 text-center"
+                      style={{ color: p.color }}
+                    >
+                      {activityIcon[a.kind]}
+                    </span>
+                    <span className="font-display flex-1 min-w-0">
+                      <span className="text-ink-soft">{activityVerb[a.kind]}</span>{" "}
+                      <span className="font-bold">{a.place}</span>
+                      {a.note && <span className="text-ink-soft"> · {a.note}</span>}
+                    </span>
+                    <span className="font-marker text-[10px] text-ink-soft shrink-0">{a.when}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
           </motion.div>
         ))}
       </div>
