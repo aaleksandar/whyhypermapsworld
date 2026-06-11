@@ -142,3 +142,48 @@
     color: var(--color-foreground);
   }
 }
+
+/* HyperMaps deck tokens */
+:root {
+  --paper: #f1e7d0;
+  --paper-2: #e8dcbf;
+  --ink: #1a1714;
+  --ink-soft: #3d342a;
+  --terracotta: #c85a3a;
+  --sage: #6b8e6f;
+  --pin: #e6396a;
+  --water: #9ec5d6;
+  --mustard: #d9a441;
+  --marker: #2a2622;
+}
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-terracotta: var(--terracotta);
+  --color-sage: var(--sage);
+  --color-pin: var(--pin);
+  --color-water: var(--water);
+  --color-mustard: var(--mustard);
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Manrope", system-ui, sans-serif;
+  --font-marker: "Caveat", cursive;
+}
+.paper-grain {
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(rgba(60,40,20,0.06) 1px, transparent 1px),
+    radial-gradient(rgba(60,40,20,0.04) 1px, transparent 1px);
+  background-size: 3px 3px, 7px 7px;
+  background-position: 0 0, 1px 2px;
+}
+.contour-bg {
+  background-image:
+    radial-gradient(ellipse 60% 40% at 20% 30%, transparent 40%, rgba(107,142,111,0.08) 41%, transparent 42%),
+    radial-gradient(ellipse 50% 35% at 70% 60%, transparent 40%, rgba(200,90,58,0.06) 41%, transparent 42%),
+    radial-gradient(ellipse 80% 50% at 50% 80%, transparent 50%, rgba(26,23,20,0.05) 51%, transparent 52%);
+}
+.sticker {
+  box-shadow: 2px 3px 0 rgba(26,23,20,0.85), 0 8px 18px rgba(26,23,20,0.15);
+}
