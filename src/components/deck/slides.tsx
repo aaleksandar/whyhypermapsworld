@@ -48,16 +48,17 @@ export function SlidePersonas() {
   return (
     <SlideShell>
       <Eyebrow>problem 01</Eyebrow>
-      <H1 className="text-5xl md:text-6xl max-w-4xl mb-10">
+      <H1 className="text-3xl md:text-6xl max-w-4xl mb-6 md:mb-10">
         The same city means <span className="text-terracotta italic">different things</span> to different people.
       </H1>
-      <div className="grid grid-cols-3 grid-rows-2 gap-6 flex-1 max-w-5xl">
+      <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-3 md:grid-rows-2 gap-3 md:gap-6 flex-1 max-w-5xl">
         {personaQuotes.map((p, i) => (
           <motion.div
             key={i}
             onMouseEnter={() => setHover(i)}
             onMouseLeave={() => setHover(null)}
-            className="relative bg-paper border-2 border-ink sticker p-4 overflow-hidden cursor-pointer"
+            onClick={() => setHover(hover === i ? null : i)}
+            className="relative bg-paper border-2 border-ink sticker p-2 md:p-4 overflow-hidden cursor-pointer"
             style={{ transform: `rotate(${[-1.5, 1, -0.5, 1.5, -1, 0.8][i]}deg)` }}
             whileHover={{ scale: 1.04, zIndex: 5 }}
           >
@@ -69,14 +70,14 @@ export function SlidePersonas() {
                 backgroundPosition: `${(i % 3) * 50}% ${Math.floor(i / 3) * 100}%`,
               }}
             />
-            <div className="mt-2 font-marker text-lg text-ink-soft">{p.name}</div>
+            <div className="mt-1 md:mt-2 font-marker text-sm md:text-lg text-ink-soft">{p.name}</div>
             <AnimatePresence>
               {hover === i && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
-                  className="absolute inset-0 bg-ink/95 text-paper p-5 flex items-center font-display italic text-lg"
+                  className="absolute inset-0 bg-ink/95 text-paper p-3 md:p-5 flex items-center font-display italic text-xs md:text-lg"
                 >
                   "{p.q}"
                 </motion.div>
