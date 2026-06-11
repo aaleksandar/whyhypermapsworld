@@ -56,9 +56,6 @@ export function SlidePersonas() {
       <H1 className="text-3xl md:text-6xl max-w-4xl mb-3 md:mb-6">
         The same city means <span className="text-terracotta italic">different things</span> to different people.
       </H1>
-      <p className="font-marker text-sm md:text-base text-terracotta mb-4 md:mb-6 animate-pulse">
-        👆 tap a face to hear what they're really asking
-      </p>
       <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-3 md:grid-rows-2 gap-3 md:gap-6 flex-1 max-w-5xl">
         {personaQuotes.map((p, i) => (
           <motion.div
@@ -73,12 +70,10 @@ export function SlidePersonas() {
           >
             {!seen.has(i) && (
               <motion.div
-                className="absolute -top-2 -right-2 z-10 w-7 h-7 rounded-full bg-pin border-2 border-ink grid place-items-center text-paper font-marker text-xs shadow-[2px_2px_0_var(--ink)]"
-                animate={{ scale: [1, 1.15, 1] }}
-                transition={{ duration: 1.2, repeat: Infinity }}
-              >
-                tap
-              </motion.div>
+                className="absolute -top-1.5 -right-1.5 z-10 w-3.5 h-3.5 rounded-full bg-pin border-2 border-ink"
+                animate={{ scale: [1, 1.4, 1], boxShadow: ["0 0 0 0 var(--pin)", "0 0 0 8px transparent", "0 0 0 0 var(--pin)"] }}
+                transition={{ duration: 1.4, repeat: Infinity }}
+              />
             )}
             <div
               className="aspect-[3/2] bg-cover bg-no-repeat"
