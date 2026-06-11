@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 export function SlideShell({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
-    <div className={`h-full w-full px-16 py-20 flex flex-col contour-bg ${className}`}>
+    <div className={`min-h-full w-full px-5 pt-14 pb-24 md:px-16 md:py-20 flex flex-col contour-bg ${className}`}>
       {children}
     </div>
   );
