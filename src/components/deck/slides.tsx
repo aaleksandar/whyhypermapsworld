@@ -1170,7 +1170,7 @@ export function SlidePin() {
         </div>
 
         {/* detail panel */}
-        <div className="md:col-span-3 grid grid-rows-[auto_auto_auto] md:grid-rows-[auto_1fr_auto] gap-3 md:gap-4 min-h-0">
+        <div className="md:col-span-3 min-h-0">
           <AnimatePresence mode="wait">
             <motion.div
               key={d.name}
