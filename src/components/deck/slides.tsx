@@ -1353,21 +1353,21 @@ export function SlideClose() {
       ))}
       <div className="relative z-10 max-w-4xl">
         <Eyebrow>the vision</Eyebrow>
-        <H1 className="text-7xl md:text-[8rem] leading-[0.9]">
+        <H1 className="text-5xl md:text-[8rem] leading-[0.9]">
           Belong <span className="italic text-pin">anywhere.</span>
         </H1>
-        <p className="font-display italic text-2xl text-ink-soft mt-8 max-w-3xl mx-auto">
+        <p className="font-display italic text-lg md:text-2xl text-ink-soft mt-6 md:mt-8 max-w-3xl mx-auto">
           A world where every city reveals communities, spaces, and experiences that resonate with who you are.
         </p>
-        <div className="mt-12 flex items-center justify-center gap-4 flex-wrap">
-          <a href="mailto:hello@hypermaps.world" className="px-6 py-3 bg-ink text-paper border-2 border-ink sticker font-display font-bold text-lg">
+        <div className="mt-8 md:mt-12 flex items-center justify-center gap-3 md:gap-4 flex-wrap">
+          <a href="mailto:hello@hypermaps.world" className="px-4 py-2 md:px-6 md:py-3 bg-ink text-paper border-2 border-ink sticker font-display font-bold text-sm md:text-lg">
             hello@hypermaps.world
           </a>
-          <a href="https://hypermaps.world" className="px-6 py-3 bg-pin text-paper border-2 border-ink sticker font-display font-bold text-lg">
+          <a href="https://hypermaps.world" className="px-4 py-2 md:px-6 md:py-3 bg-pin text-paper border-2 border-ink sticker font-display font-bold text-sm md:text-lg">
             hypermaps.world
           </a>
         </div>
-        <div className="mt-10 font-marker text-xl text-terracotta">thanks for scrolling →</div>
+        <div className="mt-8 md:mt-10 font-marker text-base md:text-xl text-terracotta">thanks for scrolling →</div>
       </div>
     </SlideShell>
   );
