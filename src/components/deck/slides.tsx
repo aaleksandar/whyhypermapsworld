@@ -641,7 +641,7 @@ export function SlideAsk() {
 }
 
 /* 11. Pin context */
-type PinPhoto = { label: string; draw: (c: string) => JSX.Element };
+type PinPhoto = { label: string; draw: (c: string) => React.ReactNode };
 type PinThread = { q: string; replies: number; hot?: boolean };
 type PinSpot = {
   name: string;
