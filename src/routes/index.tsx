@@ -13,6 +13,12 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Pitch deck for HyperMaps.world: a playful, human-first map where you enter many worlds and find your vibe." },
       { property: "og:title", content: "HyperMaps.world — A map that knows your vibe" },
       { property: "og:description", content: "A playful, human-first map. Many worlds. Living layers. Your community curating the city." },
+      { property: "og:url", content: "https://why.hypermaps.world/" },
+      { name: "twitter:title", content: "HyperMaps.world — A map that knows your vibe" },
+      { name: "twitter:description", content: "A playful, human-first map. Many worlds. Living layers. Your community curating the city." },
+    ],
+    links: [
+      { rel: "canonical", href: "https://why.hypermaps.world/" },
     ],
   }),
   component: Index,
