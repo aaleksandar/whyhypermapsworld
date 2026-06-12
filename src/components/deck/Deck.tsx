@@ -66,8 +66,9 @@ export function Deck({ slides }: DeckProps) {
           <section
             key={s.id}
             className="snap-start shrink-0 w-screen h-[100svh] relative paper-grain overflow-y-auto overflow-x-hidden md:overflow-hidden"
-            aria-label={s.title}
+            aria-labelledby={`slide-heading-${s.id}`}
           >
+            <h2 id={`slide-heading-${s.id}`} className="sr-only">{s.title}</h2>
             {s.render()}
           </section>
         ))}
