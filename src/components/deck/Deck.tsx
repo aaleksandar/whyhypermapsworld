@@ -66,8 +66,9 @@ export function Deck({ slides }: DeckProps) {
           <section
             key={s.id}
             className="snap-start shrink-0 w-screen h-[100svh] relative paper-grain overflow-y-auto overflow-x-hidden md:overflow-hidden"
-            aria-label={s.title}
+            aria-labelledby={`slide-heading-${s.id}`}
           >
+            <h2 id={`slide-heading-${s.id}`} className="sr-only">{s.title}</h2>
             {s.render()}
           </section>
         ))}
@@ -97,6 +98,8 @@ export function Deck({ slides }: DeckProps) {
           height="20"
           viewBox={`0 0 ${slides.length * 28 + 40} 20`}
           preserveAspectRatio="xMidYMid meet"
+          role="navigation"
+          aria-label="Slide progress"
         >
           <path
             d={`M 10 10 L ${slides.length * 28 + 30} 10`}
@@ -106,8 +109,16 @@ export function Deck({ slides }: DeckProps) {
             fill="none"
             opacity="0.35"
           />
-          {slides.map((_, i) => (
-            <g key={i} onClick={() => goTo(i)} style={{ cursor: "pointer" }}>
+          {slides.map((s, i) => (
+            <g
+              key={i}
+              onClick={() => goTo(i)}
+              style={{ cursor: "pointer" }}
+              role="button"
+              aria-label={`Go to slide ${i + 1}: ${s.title}`}
+              aria-current={i === active ? "true" : undefined}
+            >
+              <title>{`Slide ${i + 1}: ${s.title}`}</title>
               <circle
                 cx={20 + i * 28}
                 cy={10}

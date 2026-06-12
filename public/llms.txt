@@ -1,0 +1,9 @@
+# Hypermaps.world
+
+> A playful, human-first map that resonates with who you are. Explore many worlds, follow your friends' taste, and find your vibe.
+
+Hypermaps.world is a pitch deck and concept site for a community-curated mapping experience. It presents the product vision through an interactive horizontal slide deck: personas, information decay, many worlds, how it works, ask-the-area, pin context, competition, and vision.
+
+## Pages
+
+- [Pitch deck](/): Interactive horizontal slide deck explaining Hypermaps.world — many worlds, living layers, community curation.
