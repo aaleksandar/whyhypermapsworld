@@ -9,7 +9,7 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "HyperMaps.world — A map that knows your vibe" },
+      { title: "Hypermaps World — A map that knows your vibe" },
       { name: "description", content: "Pitch deck for HyperMaps.world: a playful, human-first map where you enter many worlds and find your vibe." },
       { property: "og:title", content: "HyperMaps.world — A map that knows your vibe" },
       { property: "og:description", content: "A playful, human-first map. Many worlds. Living layers. Your community curating the city." },
